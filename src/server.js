@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const routes = require("./routes/route");
 const { get404 } = require("./controllers/404");
+const path = require("path");
 // Load environment variables from .env file
 dotenv.config();
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", "views");
+app.use(express.static(path.join(__dirname, "../content")));
 // MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {
