@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Flicker Fantacy</title>
+    <title>Flicker Fantasy</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -45,7 +45,7 @@
       <div class="container-xxl position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
           <a href="" class="navbar-brand p-0">
-            <h1 class="text-primary m-0">Flicker Fantacy</h1>
+            <h1 class="text-primary m-0">Flicker Fantasy</h1>
             <!-- <img src="img/logo.png" alt="Logo"> -->
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -56,11 +56,12 @@
               <a href="index.html" class="nav-item nav-link active">Home</a>
               <a href="about.html" class="nav-item nav-link">About</a>
               <a href="service.html" class="nav-item nav-link">Service</a>
-              <a href="service.html" class="nav-item nav-link">Refund Policy</a>
-              <a href="service.html" class="nav-item nav-link">Terms & Condition</a>
               <a href="contact.html" class="nav-item nav-link">Contact</a>
+              <a href="contact.html" class="nav-item nav-link">FAQ</a>
+              <a href="service.html" class="nav-item nav-link">T&C</a>
+              <a href="service.html" class="nav-item nav-link">Refund Policy</a>
+              <a href="contact.html" class="nav-item nav-link">Gallery</a>
             </div>
-            <a href="" class="btn btn-primary py-2 px-4">Book</a>
           </div>
         </nav>
       </div>
@@ -70,11 +71,22 @@
       <br />
       <br />
       <br />
-      <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-        <h1 class="mb-5">Our Services</h1>
+      <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+          <div class="owl-carousel testimonial-carousel">
+            <% imageUrlArray.forEach(image => { %>
+            <div class="testimonial-item bg-transparent border rounded p-4">
+              <img src="<%= image %>" class="Image" />
+            </div>
+            <% }); %>
+          </div>
+        </div>
       </div>
+      <!-- <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+        <h1 class="mb-5">Our Services</h1>
+      </div> -->
       <!-- Service Start -->
-      <div class="container-xxl py-5">
+      <!-- <div class="container-xxl py-5">
         <div class="container">
           <div class="row g-4">
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
@@ -111,11 +123,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- Service End -->
 
       <!-- About Start -->
-      <div class="container-xxl py-5">
+      <!-- <div class="container-xxl py-5">
         <div class="container">
           <div class="row g-5 align-items-center">
             <div class="col-lg-6">
@@ -136,7 +148,7 @@
             </div>
             <div class="col-lg-6">
               <h5 class="section-title ff-secondary text-start text-primary fw-normal">About Us</h5>
-              <h1 class="mb-4">Welcome to Flicker Fantacy</h1>
+              <h1 class="mb-4">Welcome to Flicker Fantasy</h1>
               <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos erat ipsum et lorem et sit, sed stet lorem sit.</p>
               <p class="mb-4">
                 Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet
@@ -144,7 +156,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- About End -->
 
       <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
