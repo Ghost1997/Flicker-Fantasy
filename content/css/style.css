@@ -466,3 +466,82 @@
   padding-right: 0;
   border-right: none;
 }
+
+div.radio-with-Icon {
+  display: block;
+}
+div.radio-with-Icon p.radioOption-Item {
+  display: inline-block;
+  width: 8rem;
+  height: 8rem;
+  box-sizing: border-box;
+  margin: 25px 15px;
+  border: none;
+}
+div.radio-with-Icon p.radioOption-Item label {
+  display: block;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.525);
+  color: #000000;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: none;
+  font-size: 11px;
+  padding-top: 25px;
+  text-align: center;
+  margin: 0 !important;
+}
+div.radio-with-Icon p.radioOption-Item label:hover,
+div.radio-with-Icon p.radioOption-Item label:focus,
+div.radio-with-Icon p.radioOption-Item label:active {
+  opacity: 0.5;
+  background-color: #de1831;
+  color: #fff;
+  margin: 0 !important;
+}
+div.radio-with-Icon p.radioOption-Item label::after,
+div.radio-with-Icon p.radioOption-Item label:after,
+div.radio-with-Icon p.radioOption-Item label::before,
+div.radio-with-Icon p.radioOption-Item label:before {
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+}
+div.radio-with-Icon p.radioOption-Item label i.fa {
+  display: block;
+  font-size: 50px;
+}
+div.radio-with-Icon p.radioOption-Item input[type="radio"] {
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+div.radio-with-Icon p.radioOption-Item input[type="radio"]:active ~ label {
+  opacity: 1;
+}
+div.radio-with-Icon p.radioOption-Item input[type="radio"]:checked ~ label {
+  opacity: 1;
+  border: none;
+  background-color: #de1831;
+  color: #fff;
+}
+div.radio-with-Icon p.radioOption-Item input[type="radio"]:hover,
+div.radio-with-Icon p.radioOption-Item input[type="radio"]:focus,
+div.radio-with-Icon p.radioOption-Item input[type="radio"]:active {
+  margin: 0 !important;
+}
+div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:before,
+div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:after {
+  margin: 0 !important;
+}
+
+.center-align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
