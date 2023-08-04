@@ -545,3 +545,20 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:after {
   justify-content: center;
   align-items: center;
 }
+
+.slot-button {
+  display: inline-block;
+  padding: 8px 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #333;
+  cursor: ;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.slot-button:hover {
+  background-color: #333;
+  color: #fff;
+}
