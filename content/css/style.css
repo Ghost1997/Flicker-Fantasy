@@ -567,3 +567,18 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:after {
   opacity: 0.5;
   pointer-events: none;
 }
+
+@media (max-width: 768px) {
+  div.radio-with-Icon p.radioOption-Item {
+    width: 100%; /* Make the radio items full width on smaller screens */
+    margin: 15px 0; /* Adjust margin for smaller spacing between items */
+  }
+
+  div.radio-with-Icon p.radioOption-Item label {
+    /* Adjust font size and padding for better readability on smaller screens */
+    font-size: 14px;
+    padding: 5px;
+  }
+
+  /* Additional adjustments as needed */
+}
