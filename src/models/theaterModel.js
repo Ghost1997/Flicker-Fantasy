@@ -6,6 +6,7 @@ const slotSchema = new mongoose.Schema({
 });
 
 const theaterSchema = new mongoose.Schema({
+  theaterId: { type: Number, required: true, unique: true },
   name: { type: String, required: true },
   slots: [slotSchema],
   createdDate: { type: Date, default: Date.now },

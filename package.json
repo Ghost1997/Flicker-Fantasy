@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon src/server.js",
-    "start:prod": "node src/server.js"
+    "start:dev": "nodemon APP_ENV=development src/server.js",
+    "start:prod": "node  APP_ENV=production src/server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "moment": "^2.29.4",
     "mongoose": "^7.4.1",
     "nodemon": "^3.0.1"
   }

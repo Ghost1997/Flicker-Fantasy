@@ -562,3 +562,8 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:after {
   background-color: #333;
   color: #fff;
 }
+
+#slotContainer.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

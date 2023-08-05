@@ -2,10 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { savePicture } = require("../controllers/pictureController");
 const { homePage } = require("../controllers/homeController");
-const { saveTheaterInfo } = require("../controllers/theaterController");
+const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
+const { bookTheater } = require("../controllers/bookingController");
 
 router.post("/pictures", savePicture);
 router.post("/theater/saveInfo", saveTheaterInfo);
+router.post("/theater/getSlotInfo", getSlotInfo);
+router.post("/booking/bookTheater", bookTheater);
 router.get("/", homePage);
 
 module.exports = router;

@@ -49,50 +49,87 @@
       $dropdown.off("mouseenter mouseleave");
     }
   });
-
+  const host = "https://restaurant-gmpb.onrender.com";
+  // const host = "http://localhost:3000";
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
   const modalBody = document.querySelector(".final-form");
-
+  let theaterId;
+  const closeModalButton = document.getElementById("closeModalButton");
   theaterRadios.forEach((radio) => {
     radio.addEventListener("click", function () {
       const theaterType = this.getAttribute("data-theater");
+      if (theaterType === "executive") theaterId = 0;
+      else if (theaterType === "standerd") theaterId = 1;
+      else if (theaterType === "couple") theaterId = 2;
       const today = new Date().toISOString().split("T")[0];
       datePicker.setAttribute("min", today);
     });
   });
+  datePicker.addEventListener("change", async function () {
+    const selectedDate = formatDateFromISOToDMY(this.value);
 
-  const slotsData = [
-    { id: 1, value: "09:00 - 10:45", booked: true },
-    { id: 2, value: "11:00 - 12:45", booked: false },
-    { id: 3, value: "13:00 - 14:45", booked: false },
-    { id: 4, value: "11:00 - 12:45", booked: false },
-    { id: 5, value: "13:00 - 14:45", booked: false },
-    { id: 6, value: "11:00 - 12:45", booked: false },
-    { id: 7, value: "13:00 - 14:45", booked: false },
-  ];
+    // Make API call to get slot info
+    try {
+      const response = await fetch(`${host}/theater/getSlotInfo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          theaterId, // Replace with the actual theater ID
+          dateValue: selectedDate,
+        }),
+      });
 
-  function updateSlotDisplay(selectedDate) {
+      if (!response.ok) {
+        throw new Error(`API Request Error: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+
+      // Process the responseData to update slot display
+      updateSlotDisplay(selectedDate, responseData.data);
+    } catch (error) {
+      console.error(error.message);
+    }
+  });
+  closeModalButton.addEventListener("click", function () {
+    window.location.href = "/";
+  });
+
+  function updateSlotDisplay(selectedDate, slotsData) {
     slotContainer.innerHTML = "";
 
-    // Generate and append slot buttons for available slots
-    const availableSlots = slotsData.filter((slot) => !slot.booked);
-    availableSlots.forEach((slot) => {
-      const slotButton = document.createElement("button");
-      slotButton.className = "slot-button";
-      slotButton.innerHTML = slot.value;
-      slotButton.onclick = function () {
-        openBookingForm(selectedDate, slot.value);
-      };
-      slotContainer.appendChild(slotButton);
-    });
-  }
+    // if (slotsData.length === 0) {
 
-  datePicker.addEventListener("change", function () {
-    const selectedDate = this.value;
-    updateSlotDisplay(selectedDate);
-  });
+    // } else {
+
+    const availableSlots = slotsData.filter((slot) => !slot.booked);
+    if (availableSlots.length) {
+      const slotsAvailableMessage = document.createElement("h5");
+      slotsAvailableMessage.textContent = "Slots available :";
+      slotContainer.style.marginLeft = "2rem";
+      slotContainer.appendChild(slotsAvailableMessage);
+      availableSlots.forEach((slot) => {
+        const slotButton = document.createElement("button");
+        slotButton.className = "slot-button";
+        slotButton.innerHTML = slot.value;
+        slotButton.onclick = function () {
+          slotContainer.classList.add("disabled");
+          datePicker.disabled = true;
+          openBookingForm(selectedDate, slot.value);
+        };
+        slotContainer.appendChild(slotButton);
+      });
+    } else {
+      const noSlotsMessage = document.createElement("h5");
+      noSlotsMessage.textContent = "No slots available";
+      slotContainer.style.marginLeft = "0";
+      slotContainer.appendChild(noSlotsMessage);
+    }
+  }
 
   function openBookingForm(slotDate, slotTime) {
     modalBody.innerHTML = `
@@ -100,32 +137,34 @@
       <h5>Date: ${slotDate} & Time: ${slotTime}</h5>
       <br/>
       <form id="userDetailsForm">
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" class="form-control" id="name" required>
-      </div>
-      <div class="mb-3">
-        <label for="whatsapp" class="form-label">WhatsApp Number</label>
-        <input type="tel" class="form-control" id="whatsapp" required>
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" required>
-      </div>
-      <div class="mb-3">
-        <label for="numberOfPeople" class="form-label">Number of People</label>
-        <input type="number" class="form-control" id="numberOfPeople" min="0" max="20" required>
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="decorationRequired">
-        <label class="form-check-label" for="decorationRequired">Decoration Required</label>
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="cakeRequired">
-        <label class="form-check-label" for="cakeRequired">Cake Required</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" class="form-control" id="name" required>
+  </div>
+  <div class="mb-3">
+    <label for="whatsapp" class="form-label">WhatsApp Number</label>
+    <input type="tel" class="form-control" id="whatsapp" pattern="[0-9]{10}" required>
+    <small class="form-text text-muted">10-digit mobile number.</small>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" required>
+  </div>
+  <div class="mb-3">
+    <label for="numberOfPeople" class="form-label">Number of People</label>
+    <input type="number" class="form-control" id="numberOfPeople" min="0" max="20" required>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="decorationRequired">
+    <label class="form-check-label" for="decorationRequired">Decoration Required</label>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="cakeRequired">
+    <label class="form-check-label" for="cakeRequired">Cake Required</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
     `;
 
     // Show the modal
@@ -134,21 +173,20 @@
 
     // Handle form submission
     const userDetailsForm = document.getElementById("userDetailsForm");
-    userDetailsForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      // Process form data here...
-
-      // Clear selected date and slot
-      datePicker.value = "";
-      slotContainer.innerHTML = "";
-      modalBody.innerHTML = "";
-
-      // Close the modal
-      datePickerModal.hide();
-    });
   }
 
+  function formatDateFromISOToDMY(isoDate) {
+    const parts = isoDate.split("-");
+    if (parts.length !== 3) {
+      throw new Error("Invalid ISO date format");
+    }
+
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    return `${day}/${month}/${year}`;
+  }
   // Back to top button
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
