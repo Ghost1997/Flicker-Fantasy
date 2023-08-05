@@ -19,4 +19,22 @@ const homePage = async (req, res) => {
   }
 };
 
-module.exports = { homePage };
+const aboutPage = async (req, res) => {
+  try {
+    res.render("about");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const termsPage = async (req, res) => {
+  try {
+    res.render("terms");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = { homePage, aboutPage, termsPage };
