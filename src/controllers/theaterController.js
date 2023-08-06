@@ -1,6 +1,6 @@
 const Theater = require("../models/theaterModel");
 const Booking = require("../models/bookingModel");
-const moment = require("moment");
+const moment = require("moment-timezone");
 const saveTheaterInfo = async (req, res) => {
   try {
     const { data } = req.body;
@@ -31,7 +31,6 @@ function checkTimeSlot(timeSlot) {
   const startTime = startTimeStr.trim();
   const endTime = endTimeStr.trim();
   const currentTime = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
-  console.log(currentTime);
   if (currentTime < startTime) {
     return false;
   } else if (currentTime >= startTime && currentTime <= endTime) {
@@ -53,7 +52,7 @@ const getSlot = async (theaterId, dateValue) => {
   }));
 
   const finalSlots = result.map((ele) => {
-    if (dateValue === moment().format("DD/MM/YYYY") && ele.booked === false) {
+    if (dateValue === moment().tz("Asia/Kolkata").format("DD/MM/YYYY") && ele.booked === false) {
       ele.booked = checkTimeSlot(ele.value);
     }
     return ele;

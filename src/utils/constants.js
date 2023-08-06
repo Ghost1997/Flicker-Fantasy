@@ -7,9 +7,9 @@ const pricingInfo = {
 };
 
 const theaterType = {
-  0: executive,
-  1: standerd,
-  2: couple,
+  0: "executive",
+  1: "standerd",
+  2: "couple",
 };
 
 module.exports = { pricingInfo, theaterType };
