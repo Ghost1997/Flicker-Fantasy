@@ -3,7 +3,7 @@ const router = express.Router();
 const { savePicture } = require("../controllers/pictureController");
 const { homePage, aboutPage, termsPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
-const { bookTheater } = require("../controllers/bookingController");
+const { bookTheater, calculate } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
 
 router.post("/pictures", savePicture);
@@ -14,5 +14,6 @@ router.post("/testimonial/save", saveTestimonial);
 router.get("/", homePage);
 router.get("/about", aboutPage);
 router.get("/terms", termsPage);
+router.post("/calculate", calculate);
 
 module.exports = router;

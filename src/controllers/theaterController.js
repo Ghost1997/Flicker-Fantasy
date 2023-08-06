@@ -1,6 +1,6 @@
 const Theater = require("../models/theaterModel");
 const Booking = require("../models/bookingModel");
-
+const moment = require("moment");
 const saveTheaterInfo = async (req, res) => {
   try {
     const { data } = req.body;
@@ -15,26 +15,10 @@ const saveTheaterInfo = async (req, res) => {
 const getSlotInfo = async (req, res) => {
   try {
     const { theaterId, dateValue } = req.body;
-
-    const theater = await Theater.findOne({ theaterId });
-    if (!theater) {
-      return res.status(200).json({
-        message: "Theater not found.",
-        data: [],
-      });
-    }
-
-    const bookings = await Booking.find({ theaterId, bookingDate: dateValue }, "bookingId bookingDate theaterId slotId bookingStatus");
-
-    const result = theater.slots.map((ele) => ({
-      id: ele.id,
-      value: ele.value,
-      booked: bookings.some((booking) => booking.bookingDate === dateValue && booking.slotId === ele.id && booking.bookingStatus === "Confirmed"),
-    }));
-
+    const data = await getSlot(theaterId, dateValue);
     res.status(200).json({
       message: "Success",
-      data: result,
+      data,
     });
   } catch (error) {
     console.error(error);
@@ -42,4 +26,39 @@ const getSlotInfo = async (req, res) => {
   }
 };
 
-module.exports = { saveTheaterInfo, getSlotInfo };
+function checkTimeSlot(timeSlot) {
+  const [startTimeStr, endTimeStr] = timeSlot.split("-");
+  const startTime = startTimeStr.trim();
+  const endTime = endTimeStr.trim();
+  const currentTime = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  if (currentTime < startTime) {
+    return false;
+  } else if (currentTime >= startTime && currentTime <= endTime) {
+    return true;
+  } else {
+    return true;
+  }
+}
+
+const getSlot = async (theaterId, dateValue) => {
+  const theater = await Theater.findOne({ theaterId });
+
+  const bookings = await Booking.find({ theaterId, bookingDate: dateValue }, "bookingId bookingDate theaterId slotId bookingStatus");
+
+  const result = theater.slots.map((ele) => ({
+    id: ele.id,
+    value: ele.value,
+    booked: bookings.some((booking) => booking.bookingDate === dateValue && booking.slotId === ele.id && booking.bookingStatus === "Confirmed"),
+  }));
+
+  const finalSlots = result.map((ele) => {
+    if (dateValue === moment().format("DD/MM/YYYY") && ele.booked === false) {
+      ele.booked = checkTimeSlot(ele.value);
+    }
+    return ele;
+  });
+  return finalSlots;
+};
+
+module.exports = { saveTheaterInfo, getSlotInfo, getSlot };

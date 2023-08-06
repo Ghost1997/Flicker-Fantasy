@@ -480,8 +480,6 @@ div.radio-with-Icon p.radioOption-Item {
 }
 div.radio-with-Icon p.radioOption-Item label {
   display: block;
-  height: 100%;
-  width: 100%;
   padding: 10px;
   border-radius: 10px;
   border: 2px solid rgba(0, 0, 0, 0.525);

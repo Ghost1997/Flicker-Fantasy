@@ -90,7 +90,7 @@
       const responseData = await response.json();
 
       // Process the responseData to update slot display
-      updateSlotDisplay(selectedDate, responseData.data);
+      updateSlotDisplay(selectedDate, responseData.data, theaterId);
     } catch (error) {
       console.error(error.message);
     }
@@ -99,7 +99,7 @@
     window.location.href = "/";
   });
 
-  function updateSlotDisplay(selectedDate, slotsData) {
+  function updateSlotDisplay(selectedDate, slotsData, theaterId) {
     slotContainer.innerHTML = "";
 
     // if (slotsData.length === 0) {
@@ -116,10 +116,11 @@
         const slotButton = document.createElement("button");
         slotButton.className = "slot-button";
         slotButton.innerHTML = slot.value;
+        slotButton.name = "slot";
         slotButton.onclick = function () {
           slotContainer.classList.add("disabled");
           datePicker.disabled = true;
-          openBookingForm(selectedDate, slot.value);
+          openBookingForm(selectedDate, slot.value, slot.id, theaterId);
         };
         slotContainer.appendChild(slotButton);
       });
@@ -131,39 +132,40 @@
     }
   }
 
-  function openBookingForm(slotDate, slotTime) {
+  function openBookingForm(slotDate, slotTime, slotId, theaterId) {
     modalBody.innerHTML = `
     <br/>
       <h5>Date: ${slotDate} & Time: ${slotTime}</h5>
       <br/>
-      <form id="userDetailsForm">
+      <input type="hidden" value="${slotDate}" name="date"  id="date">
+      <input type="hidden" value="${slotId}" name="slot"  id="slot">
+      <input type="hidden" value="${theaterId}" name="theater"  id="theater">
   <div class="mb-3">
     <label for="name" class="form-label">Name</label>
-    <input type="text" class="form-control" id="name" required>
+    <input type="text" name="name" class="form-control" id="name" required>
   </div>
   <div class="mb-3">
     <label for="whatsapp" class="form-label">WhatsApp Number</label>
-    <input type="tel" class="form-control" id="whatsapp" pattern="[0-9]{10}" required>
-    <small class="form-text text-muted">10-digit mobile number.</small>
+    <input name="whatsapp" type="tel" class="form-control" id="whatsapp" pattern="[0-9]{10}" placeholder="10-digit number" required>
   </div>
   <div class="mb-3">
     <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" id="email" required>
+    <input type="email" name="email" class="form-control" id="email" required>
   </div>
   <div class="mb-3">
     <label for="numberOfPeople" class="form-label">Number of People</label>
-    <input type="number" class="form-control" id="numberOfPeople" min="0" max="20" required>
+    <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="6" required>
   </div>
   <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="decorationRequired">
+    <input type="checkbox" name="decoration" class="form-check-input" id="decorationRequired">
     <label class="form-check-label" for="decorationRequired">Decoration Required</label>
   </div>
   <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="cakeRequired">
+    <input type="checkbox" name="cake" class="form-check-input" id="cakeRequired">
     <label class="form-check-label" for="cakeRequired">Cake Required</label>
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+
 
     `;
 
@@ -173,6 +175,41 @@
 
     // Handle form submission
     const userDetailsForm = document.getElementById("userDetailsForm");
+    userDetailsForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const theaterid = document.getElementById("theater").value;
+      const date = document.getElementById("date").value;
+      const slot = document.getElementById("slot").value;
+      const name = document.getElementById("name").value;
+      const whatsapp = document.getElementById("whatsapp").value;
+      const email = document.getElementById("email").value;
+      const count = document.getElementById("numberOfPeople").value;
+      const decorationRequired = document.getElementById("decorationRequired").checked;
+      const cakeRequired = document.getElementById("cakeRequired").checked;
+      const response = await fetch(`${host}/calculate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          date,
+          slot,
+          name,
+          whatsapp,
+          email,
+          count,
+          decorationRequired,
+          cakeRequired,
+          theaterid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Request Error: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+    });
   }
 
   function formatDateFromISOToDMY(isoDate) {
