@@ -137,34 +137,71 @@
     <br/>
       <h5>Date: ${slotDate} & Time: ${slotTime}</h5>
       <br/>
-      <input type="hidden" value="${slotDate}" name="date"  id="date">
-      <input type="hidden" value="${slotId}" name="slot"  id="slot">
-      <input type="hidden" value="${theaterId}" name="theater"  id="theater">
-  <div class="mb-3">
-    <label for="name" class="form-label">Name</label>
-    <input type="text" name="name" class="form-control" id="name" required>
-  </div>
-  <div class="mb-3">
-    <label for="whatsapp" class="form-label">WhatsApp Number</label>
-    <input name="whatsapp" type="tel" class="form-control" id="whatsapp" pattern="[0-9]{10}" placeholder="10-digit number" required>
-  </div>
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input type="email" name="email" class="form-control" id="email" required>
-  </div>
-  <div class="mb-3">
-    <label for="numberOfPeople" class="form-label">Number of People</label>
-    <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="6" required>
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" name="decoration" class="form-check-input" id="decorationRequired">
-    <label class="form-check-label" for="decorationRequired">Decoration Required</label>
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" name="cake" class="form-check-input" id="cakeRequired">
-    <label class="form-check-label" for="cakeRequired">Cake Required</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+      <input type="hidden" value="${slotDate}" name="date" id="date">
+      <input type="hidden" value="${slotId}" name="slot" id="slot">
+      <input type="hidden" value="${theaterId}" name="theater" id="theater">
+
+<div class="mb-3">
+  <label for="name" class="form-label">Name</label>
+  <input type="text" name="name" class="form-control" id="name" required>
+</div>
+
+<div class="mb-3">
+  <label for="whatsapp" class="form-label">WhatsApp Number</label>
+  <input name="whatsapp" type="tel" class="form-control" id="whatsapp" pattern="[0-9]{10}" placeholder="10-digit number" required>
+</div>
+
+<div class="mb-3">
+  <label for="email" class="form-label">Email</label>
+  <input type="email" name="email" class="form-control" id="email" required>
+</div>
+
+<div class="mb-3">
+  <label for="numberOfPeople" class="form-label">Number of People</label>
+  <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="6" required>
+</div>
+
+<div class="mb-3">
+  <label for="cake" class="form-label">Cake</label>
+  <select name="cake" class="form-select" id="cake">
+    <option value="" selected>Not Required</option>
+    <option value="blackForest">Black Forest - ₹500</option>
+    <option value="butterScotch">Butter Scotch - ₹500</option>
+    <option value="chocolate">Chocolate - ₹500</option>
+    <option value="pineApple">Pine Apple - ₹500</option>
+    <option value="roundRedVelvet">Round Red Velvet - ₹600</option>
+    <option value="buleBerry">Blueberry - ₹600</option>
+    <option value="mangoCake">Mango Cake - ₹600</option>
+    <option value="heartRedVelvet">Heart Red Velvet - ₹600</option>
+    <option value="deathByChocolate">Death By Chocolate - ₹700</option>
+    <option value="chocoAlmond">Choco Almond - ₹750</option>
+    <option value="heartPinata">Heart Pinata - ₹850</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label for="decoration" class="form-label">Decoration</label>
+  <select name="decoration" class="form-select" id="decoration">
+    <option value="" selected>Not Required</option>
+    <option value="Birthday">Birthday - ₹300</option>
+    <option value="Anniversary">Anniversary - ₹300</option>
+    <option value="Romantic Date">Romantic Date - ₹300</option>
+    <option value="Marriage Proposal">Marriage Proposal - ₹300</option>
+    <option value="Bride To Be">Bride To Be - ₹300</option>
+    <option value="Farewell">Farewell - ₹300</option>
+    <option value="Congratulations">Congratulations - ₹300</option>
+    <option value="Baby Shower">Baby Shower - ₹300</option>
+  </select>
+</div>
+<button type="submit" class="btn btn-primary">Check Price</button>
+<br>
+<br>
+<br>
+<div class="mb-3 text-center">
+<button id="payButton" style="display: none" class="btn btn-primary"></button>
+</div>
+
+
 
 
     `;
@@ -175,6 +212,7 @@
 
     // Handle form submission
     const userDetailsForm = document.getElementById("userDetailsForm");
+
     userDetailsForm.addEventListener("submit", async function (event) {
       event.preventDefault();
       const theaterid = document.getElementById("theater").value;
@@ -184,8 +222,8 @@
       const whatsapp = document.getElementById("whatsapp").value;
       const email = document.getElementById("email").value;
       const count = document.getElementById("numberOfPeople").value;
-      const decorationRequired = document.getElementById("decorationRequired").checked;
-      const cakeRequired = document.getElementById("cakeRequired").checked;
+      const decoration = document.getElementById("decoration").value;
+      const cake = document.getElementById("cake").value;
       const response = await fetch(`${host}/calculate`, {
         method: "POST",
         headers: {
@@ -198,8 +236,8 @@
           whatsapp,
           email,
           count,
-          decorationRequired,
-          cakeRequired,
+          decoration,
+          cake,
           theaterid,
         }),
       });
@@ -209,6 +247,30 @@
       }
 
       const responseData = await response.json();
+      const amount = responseData.amount;
+      // const amountDisplay = document.getElementById("amountDisplay");
+      // amountDisplay.textContent = `Total Amount: ₹${amount}`;
+      const payButton = document.getElementById("payButton");
+      payButton.textContent = `Pay Now: ₹${amount}`;
+      payButton.style.display = "inline";
+      payButton.addEventListener("click", function () {
+        const options = {
+          key: "rzp_test_3VHA6PauX0jlhZ", // Replace with your actual Razorpay API key
+          amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
+          currency: "INR",
+          name: "Flicker Fantasy",
+          description: "Booking Payment",
+          order_id: responseData.orderId, // This should come from your server response
+          handler: function (response) {
+            // Handle the payment success
+            console.log("Payment successful:", response);
+            // You can redirect or perform other actions after successful payment
+          },
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+      });
     });
   }
 
