@@ -198,7 +198,7 @@
 <br>
 <br>
 <div class="mb-3 text-center">
-<button id="payButton" style="display: none" class="btn btn-primary"></button>
+<button id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
 </div>
 
 
@@ -215,64 +215,80 @@
 
     userDetailsForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      const theaterid = document.getElementById("theater").value;
-      const date = document.getElementById("date").value;
-      const slot = document.getElementById("slot").value;
-      const name = document.getElementById("name").value;
-      const whatsapp = document.getElementById("whatsapp").value;
-      const email = document.getElementById("email").value;
-      const count = document.getElementById("numberOfPeople").value;
-      const decoration = document.getElementById("decoration").value;
-      const cake = document.getElementById("cake").value;
-      const response = await fetch(`${host}/calculate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          date,
-          slot,
-          name,
-          whatsapp,
-          email,
-          count,
-          decoration,
-          cake,
-          theaterid,
-        }),
-      });
-
+      const response = await calculatePrice();
       if (!response.ok) {
         throw new Error(`API Request Error: ${response.statusText}`);
       }
 
       const responseData = await response.json();
       const amount = responseData.amount;
-      // const amountDisplay = document.getElementById("amountDisplay");
-      // amountDisplay.textContent = `Total Amount: ₹${amount}`;
-      const payButton = document.getElementById("payButton");
-      payButton.textContent = `Pay Now: ₹${amount}`;
-      payButton.style.display = "inline";
-      payButton.addEventListener("click", function () {
-        const options = {
-          key: "rzp_test_3VHA6PauX0jlhZ", // Replace with your actual Razorpay API key
-          amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
-          currency: "INR",
-          name: "Flicker Fantasy",
-          description: "Booking Payment",
-          order_id: responseData.orderId, // This should come from your server response
-          handler: function (response) {
-            // Handle the payment success
-            console.log("Payment successful:", response);
-            // You can redirect or perform other actions after successful payment
-          },
-        };
 
-        const rzp = new Razorpay(options);
-        rzp.open();
-      });
+      await updatePayButtonPrice(amount, responseData.orderId);
     });
+
+    const cakeDropdown = document.getElementById("cake");
+    const decorationDropdown = document.getElementById("decoration");
+
+    cakeDropdown.addEventListener("change", changePayButtonPrice);
+    decorationDropdown.addEventListener("change", changePayButtonPrice);
   }
+
+  const calculatePrice = async () => {
+    const theaterid = document.getElementById("theater").value;
+    const date = document.getElementById("date").value;
+    const slot = document.getElementById("slot").value;
+    const name = document.getElementById("name").value;
+    const whatsapp = document.getElementById("whatsapp").value;
+    const email = document.getElementById("email").value;
+    const count = document.getElementById("numberOfPeople").value;
+    const decoration = document.getElementById("decoration").value;
+    const cake = document.getElementById("cake").value;
+    const response = await fetch(`${host}/calculate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        date,
+        slot,
+        name,
+        whatsapp,
+        email,
+        count,
+        decoration,
+        cake,
+        theaterid,
+      }),
+    });
+    return response;
+  };
+  const updatePayButtonPrice = async (amount, orderId) => {
+    const payButton = document.getElementById("payButton");
+    payButton.textContent = `Pay Now: ₹${amount}`;
+    payButton.style.display = "inline";
+    payButton.addEventListener("click", function () {
+      const options = {
+        key: "rzp_test_3VHA6PauX0jlhZ", // Replace with your actual Razorpay API key
+        amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
+        currency: "INR",
+        name: "Flicker Fantasy",
+        description: "Booking Payment",
+        order_id: orderId, // This should come from your server response
+        handler: function (response) {
+          // Handle the payment success
+          console.log("Payment successful:", response);
+          // You can redirect or perform other actions after successful payment
+        },
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    });
+  };
+  const changePayButtonPrice = async () => {
+    const payButton = document.getElementById("payButton");
+    payButton.style.display = "none";
+  };
 
   function formatDateFromISOToDMY(isoDate) {
     const parts = isoDate.split("-");
