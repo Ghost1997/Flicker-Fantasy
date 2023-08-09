@@ -23,7 +23,21 @@ const cakePricingInfo = {
   chocoAlmond: 750,
   heartPinata: 850,
 };
+const cakeName = {
+  blackForest: "Black Forest",
+  butterScotch: "Butter Scotch",
+  chocolate: "Chocolate",
+  pineApple: "Pine Apple",
+  roundRedVelvet: "Round Red Velvet",
+  buleBerry: "Blueberry",
+  mangoCake: "Mango Cake",
+  heartRedVelvet: "Heart Red Velvet",
+  deathByChocolate: "Death By Chocolate",
+  chocoAlmond: "Choco Almond",
+  heartPinata: "Heart Pinata",
+};
+
 const decorationPrice = 300;
 const decoration = ["Birthday", "Aniversary", "Romantic Date", "Marriage Proposal", "Bride To Be", "Farewell", "Congratulations", "Baby Shower"];
 
-module.exports = { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo };
+module.exports = { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName };

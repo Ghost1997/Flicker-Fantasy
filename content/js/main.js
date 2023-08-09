@@ -63,8 +63,12 @@
       if (theaterType === "executive") theaterId = 0;
       else if (theaterType === "standerd") theaterId = 1;
       else if (theaterType === "couple") theaterId = 2;
-      const today = new Date().toISOString().split("T")[0];
-      datePicker.setAttribute("min", today);
+      const todayIST = new Date();
+      todayIST.setHours(todayIST.getHours() + 5); // Add 5 hours for UTC+5
+      todayIST.setMinutes(todayIST.getMinutes() + 30); // Add 30 minutes for UTC+5:30
+
+      const todayISTFormatted = todayIST.toISOString().split("T")[0];
+      datePicker.setAttribute("min", todayISTFormatted);
     });
   });
   datePicker.addEventListener("change", async function () {
@@ -223,7 +227,7 @@
       const responseData = await response.json();
       const amount = responseData.amount;
 
-      await updatePayButtonPrice(amount, responseData.orderId);
+      await updatePayButtonPrice(amount, responseData.orderId, responseData.payload);
     });
 
     const cakeDropdown = document.getElementById("cake");
@@ -262,22 +266,30 @@
     });
     return response;
   };
-  const updatePayButtonPrice = async (amount, orderId) => {
+  const updatePayButtonPrice = async (amount, orderId, payload) => {
     const payButton = document.getElementById("payButton");
     payButton.textContent = `Pay Now: ₹${amount}`;
     payButton.style.display = "inline";
-    payButton.addEventListener("click", function () {
+    payButton.addEventListener("click", async function () {
       const options = {
-        key: "rzp_test_3VHA6PauX0jlhZ", // Replace with your actual Razorpay API key
+        key: "rzp_test_OdnawryqhvxPn7", // Replace with your actual Razorpay API key
         amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
         currency: "INR",
         name: "Flicker Fantasy",
         description: "Booking Payment",
-        order_id: orderId, // This should come from your server response
-        handler: function (response) {
+        order_id: orderId,
+        prefill: {
+          name: payload.name,
+          email: payload.email,
+          contact: payload.whatsapp,
+        },
+        handler: async (response) => {
           // Handle the payment success
           console.log("Payment successful:", response);
-          // You can redirect or perform other actions after successful payment
+          const bookingResponse = await confirmBooking(response, payload);
+          const responseData = await bookingResponse.json();
+          const queryParams = new URLSearchParams(responseData).toString();
+          window.location.href = `/booking/success?${queryParams}`;
         },
       };
 
@@ -302,6 +314,20 @@
 
     return `${day}/${month}/${year}`;
   }
+
+  const confirmBooking = async (paymentInfo, userInfo) => {
+    const response = await fetch(`${host}/booking/bookTheater`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        paymentInfo,
+        userInfo,
+      }),
+    });
+    return response;
+  };
   // Back to top button
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {

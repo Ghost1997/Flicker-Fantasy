@@ -26,27 +26,11 @@ const bookingSchema = new mongoose.Schema({
     enum: ["Pending", "Confirmed", "Cancelled"],
     default: "Confirmed",
   },
-  userDetails: {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    whatsapp: {
-      type: String,
-      required: true,
-    },
-    cakeRequired: {
-      type: Boolean,
-      default: false,
-    },
-    decorationRequired: {
-      type: Boolean,
-      default: false,
-    },
+  userDetails: { type: Object },
+  paymentDetails: { type: Object },
+  paymentResponse: { type: Object },
+  signatureVerified: {
+    type: Boolean,
   },
   createdDate: {
     type: Date,
