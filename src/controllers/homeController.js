@@ -5,6 +5,7 @@ const moment = require("moment-timezone");
 const { pricingInfo } = require("../utils/constants");
 const homePage = async (req, res) => {
   try {
+    const whatsApp = process.env.BUSINESS_NUMBER;
     const imageCount = process.env.IMAGE_COUNT;
     const testimonialCount = process.env.FEEDBACK_COUNT;
     const [images, testimonials] = await Promise.all([Picture.find().sort({ createdDate: -1 }).limit(imageCount), Testimonial.find().sort({ createdAt: -1 }).limit(testimonialCount)]);
@@ -27,7 +28,7 @@ const homePage = async (req, res) => {
         comment: ele.comment,
       };
     });
-    res.render("home", { imageUrlArray, testimonialArray, slotInfo, priceInfo });
+    res.render("home", { imageUrlArray, testimonialArray, slotInfo, priceInfo, whatsApp });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
@@ -36,7 +37,8 @@ const homePage = async (req, res) => {
 
 const aboutPage = async (req, res) => {
   try {
-    res.render("about");
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    res.render("about", { whatsApp });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
@@ -45,7 +47,8 @@ const aboutPage = async (req, res) => {
 
 const termsPage = async (req, res) => {
   try {
-    res.render("terms");
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    res.render("terms", { whatsApp });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
@@ -54,7 +57,8 @@ const termsPage = async (req, res) => {
 
 const contactPage = async (req, res) => {
   try {
-    res.render("contact");
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    res.render("contact", { whatsApp });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
