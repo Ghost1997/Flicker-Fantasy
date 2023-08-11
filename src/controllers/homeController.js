@@ -52,6 +52,15 @@ const termsPage = async (req, res) => {
   }
 };
 
+const contactPage = async (req, res) => {
+  try {
+    res.render("contact");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
 const slotAvailable = (data, today) => {
   let count = 0;
   data.forEach((element) => {
@@ -59,4 +68,4 @@ const slotAvailable = (data, today) => {
   });
   return `${count} slots available on ${today}`;
 };
-module.exports = { homePage, aboutPage, termsPage };
+module.exports = { homePage, aboutPage, termsPage, contactPage };

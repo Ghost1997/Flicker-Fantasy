@@ -6,75 +6,116 @@
     <title>Order Success</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f8f8;
-        text-align: center;
-        padding: 50px;
+          font-family: Arial, sans-serif;
+          background-color: #f8f8f8;
+          text-align: center;
+          margin: 0;
       }
+
       .container {
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 30px;
-        max-width: 500px;
-        margin: 0 auto;
+          background-color: #ffffff;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          margin: 20px auto;
+          max-width: 600px;
       }
-      h1 {
-        color: #333333;
-        margin-bottom: 20px;
-      }
-      p {
-        font-size: 18px;
-        color: #666666;
-        margin-bottom: 30px;
-      }
-      .order-details {
-        background-color: #f2f2f2;
-        padding: 20px;
-        border-radius: 4px;
-        font-size: 16px;
-        margin-bottom: 20px;
-        text-align: left;
-      }
+
       .brand-name {
-        font-size: 24px;
-        color: #007bff;
-        margin-bottom: 10px;
+          font-size: 28px;
+          color: #007bff;
+          margin-bottom: 10px;
       }
+
+      .logo {
+          width: 100px;
+          height: auto;
+          margin-top: 10px;
+      }
+
+      h1 {
+          font-size: 28px;
+          color: #333333;
+          margin-bottom: 10px;
+      }
+
+      h2 {
+          font-size: 24px;
+          color: #333333;
+          margin-bottom: 10px;
+      }
+
+      p {
+          font-size: 18px;
+          color: #666666;
+          margin-bottom: 20px;
+      }
+
+      .order-details {
+          background-color: #f2f2f2;
+          padding: 15px;
+          border-radius: 4px;
+          font-size: 16px;
+          margin-bottom: 20px;
+          text-align: left;
+      }
+
+      .btn-container {
+          margin-top: 20px;
+      }
+
       .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-        margin-right: 10px;
-        margin-bottom: 10px;
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: #007bff;
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 4px;
+          font-weight: bold;
+          transition: background-color 0.3s ease;
+          margin-right: 10px;
+          font-size: 16px;
       }
+
       .btn:hover {
-        background-color: #0056b3;
+          background-color: #0056b3;
       }
-      .print-btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #ffffff;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-        margin-top: 20px;
-      }
-      .print-btn:hover {
-        background-color: #0056b3;
+
+      @media screen and (max-width: 768px) {
+          .container {
+              padding: 15px;
+          }
+
+          h1 {
+              font-size: 24px;
+          }
+
+          h2 {
+              font-size: 20px;
+          }
+
+          p {
+              font-size: 16px;
+          }
+
+          .order-details {
+              font-size: 14px;
+          }
+
+          .brand-name {
+              font-size: 24px;
+          }
+
+          .btn {
+              font-size: 14px;
+          }
       }
     </style>
   </head>
   <body>
     <div class="container">
       <h1 class="brand-name">Flicker Fantasy</h1>
+      <img src="logo.png" alt="Logo" class="logo" />
       <h2>Order Successful</h2>
       <p>Thank you for your booking! Your order has been successfully processed.</p>
       <div class="order-details">
@@ -89,8 +130,10 @@
         <strong>Contact ID:</strong> <%= data.contactId %> <br />
         <strong>Email:</strong> <%= data.email %>
       </div>
-      <a href="/" class="btn">Return Home</a>
-      <button class="btn print-btn" onclick="window.print()">Print</button>
+      <div class="btn-container">
+        <a href="/" class="btn">Return Home</a>
+        <button class="btn" onclick="window.print()">Print</button>
+      </div>
     </div>
   </body>
 </html>
