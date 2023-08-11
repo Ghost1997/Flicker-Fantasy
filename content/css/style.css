@@ -580,3 +580,7 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:after {
 
   /* Additional adjustments as needed */
 }
+
+.logo {
+  width: 100px;
+}
