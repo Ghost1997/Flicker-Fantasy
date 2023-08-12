@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { savePicture } = require("../controllers/pictureController");
-const { homePage, aboutPage, termsPage, contactPage } = require("../controllers/homeController");
+const { homePage, aboutPage, termsPage, contactPage, faqPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
 const { confirmBooking, calculate, successBooking } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
@@ -17,5 +17,6 @@ router.get("/terms", termsPage);
 router.post("/calculate", calculate);
 router.get("/booking/success", successBooking);
 router.get("/contact", contactPage);
+router.get("/faq", faqPage);
 
 module.exports = router;
