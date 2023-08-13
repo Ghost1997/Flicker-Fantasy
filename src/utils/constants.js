@@ -39,5 +39,6 @@ const cakeName = {
 
 const decorationPrice = 300;
 const decoration = ["Birthday", "Aniversary", "Romantic Date", "Marriage Proposal", "Bride To Be", "Farewell", "Congratulations", "Baby Shower"];
+const emailSubject = "Flicker Fantasy Order Confirmation";
 
-module.exports = { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName };
+module.exports = { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject };

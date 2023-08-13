@@ -1,29 +1,11 @@
 const Booking = require("../models/bookingModel");
-const { getTodaysFormattedDate } = require("../utils/helper");
-const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName } = require("../utils/constants");
+const { getTodaysFormattedDate, sendEmailWithTemplate } = require("../utils/helper");
+const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject } = require("../utils/constants");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-
-// const bookTheater = async (req, res) => {
-//   try {
-//     const data = req.body;
-//     const { todaysDate, timeStamp } = getTodaysFormattedDate();
-//     const newBooking = new Booking({
-//       bookingId: timeStamp,
-//       bookingDate: todaysDate,
-//       amountPaid,
-//       theaterId,
-//       slotId,
-//       amountPaid,
-//       userDetails,
-//     });
-//     const savedBooking = await newBooking.save();
-//     res.status(201).json(savedBooking);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ message: "Server Error" });
-//   }
-// };
+const path = require("path");
+const fs = require("fs").promises;
+const ejs = require("ejs");
 
 const calculate = async (req, res) => {
   const payload = req.body;
@@ -113,6 +95,7 @@ const confirmBooking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
+    await sendOrderConfirmationEmail(finalOutput);
     res.status(201).json(finalOutput);
   } catch (err) {
     console.error(err);
@@ -127,6 +110,19 @@ const successBooking = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const sendOrderConfirmationEmail = async (finalOutput) => {
+  try {
+    console.log();
+    const templatePath = path.join(__dirname, "../../views", "orderSuccess.ejs");
+    const templateContent = await fs.readFile(templatePath, "utf-8");
+    const htmlContent = ejs.render(templateContent, { data: finalOutput });
+    // Modify this function call to include BCC if needed
+    sendEmailWithTemplate(finalOutput.email, emailSubject, htmlContent);
+  } catch (error) {
+    console.error("Error sending order confirmation email:", error);
   }
 };
 

@@ -8,7 +8,7 @@ const saveTestimonial = async (req, res) => {
       comment,
     });
     const savedTestimonial = await newTestimonial.save();
-    res.status(201).json(savedTestimonial);
+    res.render("submittedReview");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error saving testimonial" });

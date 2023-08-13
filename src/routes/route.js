@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { savePicture } = require("../controllers/pictureController");
-const { homePage, aboutPage, termsPage, contactPage, faqPage } = require("../controllers/homeController");
+const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, galleryPage, refundPage, servicesPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
 const { confirmBooking, calculate, successBooking } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
+const { registerAdmin, loginAdmin, loginPage } = require("../controllers/adminController");
 
+router.post("/admin/register", registerAdmin);
+router.post("/admin/login", loginAdmin);
 router.post("/pictures", savePicture);
 router.post("/theater/saveInfo", saveTheaterInfo);
 router.post("/theater/getSlotInfo", getSlotInfo);
@@ -18,5 +21,10 @@ router.post("/calculate", calculate);
 router.get("/booking/success", successBooking);
 router.get("/contact", contactPage);
 router.get("/faq", faqPage);
-
+router.get("/feedback", reviewPage);
+router.get("/login", reviewPage);
+router.get("/admin/login", loginPage);
+router.get("/gallery", galleryPage);
+router.get("/refund", refundPage);
+router.get("/services", servicesPage);
 module.exports = router;

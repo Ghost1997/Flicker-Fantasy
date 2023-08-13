@@ -73,6 +73,43 @@ const faqPage = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+const reviewPage = async (req, res) => {
+  try {
+    res.render("review");
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+const refundPage = async (req, res) => {
+  try {
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    res.render("refund", { whatsApp });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const servicesPage = async (req, res) => {
+  try {
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    res.render("services", { whatsApp });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const galleryPage = async (req, res) => {
+  try {
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    res.render("gallery", { whatsApp });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 
 const slotAvailable = (data, today) => {
   let count = 0;
@@ -81,4 +118,4 @@ const slotAvailable = (data, today) => {
   });
   return `${count} slots available on ${today}`;
 };
-module.exports = { homePage, aboutPage, termsPage, contactPage, faqPage };
+module.exports = { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, galleryPage, refundPage, servicesPage };

@@ -49,8 +49,10 @@
       $dropdown.off("mouseenter mouseleave");
     }
   });
-  const host = "https://restaurant-gmpb.onrender.com";
-  // const host = "http://localhost:3000";
+  // const host = "https://restaurant-gmpb.onrender.com";
+  // const rKey = "rzp_test_OdnawryqhvxPn7"
+  const host = "http://localhost:3000";
+  const rKey = "rzp_test_3VHA6PauX0jlhZ";
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
@@ -272,7 +274,7 @@
     payButton.style.display = "inline";
     payButton.addEventListener("click", async function () {
       const options = {
-        key: "rzp_test_OdnawryqhvxPn7", // Replace with your actual Razorpay API key
+        key: rKey, // Replace with your actual Razorpay API key
         amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
         currency: "INR",
         name: "Flicker Fantasy",
