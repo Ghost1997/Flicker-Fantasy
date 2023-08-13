@@ -171,25 +171,14 @@
       <br/>
       <br/>
       <div class="container">
-        <div class="mySlides">
-          <div class="numbertext">1 / 6</div>
-          <img src="/img/about-1.jpg" style="width:100%; max-height: calc(100vh - 200px);">
-        </div>
+        <% images.forEach((ele,index) => { %>
+          <div class="mySlides">
+            <div class="numbertext"><%= index+1 %> / <%= images.length %></div>
+            <img src="<%= ele.url %>" style="width:100%; max-height: calc(100vh - 200px);">
+          </div>
+          <% }); %>
+       
         
-        <div class="mySlides">
-          <div class="numbertext">2 / 6</div>
-          <img src="/img/about-2.jpg" style="width:100%; max-height: calc(100vh - 200px);">
-        </div>
-        
-        <div class="mySlides">
-          <div class="numbertext">3 / 6</div>
-          <img src="/img/about-3.jpg" style="width:100%; max-height: calc(100vh - 200px);">
-        </div>
-        
-        <div class="mySlides">
-          <div class="numbertext">4 / 6</div>
-          <img src="/img/about-4.jpg" style="width:100%; max-height: calc(100vh - 200px);">
-        </div>
       
        
           
@@ -201,18 +190,12 @@
         </div>
       
         <div class="row">
-          <div class="column">
-            <img class="demo cursor" src="/img/about-1.jpg" style="width:100%" onclick="currentSlide(1)">
-          </div>
-          <div class="column">
-            <img class="demo cursor" src="/img/about-2.jpg" style="width:100%" onclick="currentSlide(2)" >
-          </div>
-          <div class="column">
-            <img class="demo cursor" src="/img/about-3.jpg" style="width:100%" onclick="currentSlide(3)" >
-          </div>
-          <div class="column">
-            <img class="demo cursor" src="/img/about-4.jpg" style="width:100%" onclick="currentSlide(4)" >
-          </div>
+          <% images.forEach((ele,index) => { %>
+            <div class="column">
+              <img class="demo cursor" src="<%= ele.url %>" style="width:100%" onclick="currentSlide('<%= index+1 %>')">
+            </div>
+            <% }); %>
+
        
         </div>
       </div>

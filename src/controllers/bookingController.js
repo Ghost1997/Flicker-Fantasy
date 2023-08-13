@@ -95,7 +95,7 @@ const confirmBooking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
-    await sendOrderConfirmationEmail(finalOutput);
+    // await sendOrderConfirmationEmail(finalOutput);
     res.status(201).json(finalOutput);
   } catch (err) {
     console.error(err);

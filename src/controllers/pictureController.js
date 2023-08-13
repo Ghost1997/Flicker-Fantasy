@@ -1,9 +1,17 @@
 const Picture = require("../models/pictureModel");
+const path = require("path");
+const fs = require("fs");
 
 const savePicture = async (req, res) => {
   try {
-    const pictures = req.body; // Assuming the request body contains an array of URL objects
-    const savedPictures = await Picture.insertMany(pictures);
+    const { type } = req.body;
+    const photos = req.files.map((file) => {
+      return {
+        type,
+        url: file.path.replace("content", ""),
+      };
+    });
+    const savedPictures = await Picture.insertMany(photos);
     res.status(201).json(savedPictures);
   } catch (error) {
     console.log(error);
@@ -11,4 +19,34 @@ const savePicture = async (req, res) => {
   }
 };
 
-module.exports = { savePicture };
+const deletePictures = async (req, res) => {
+  try {
+    const photoId = req.body.id;
+    const photo = await Picture.findById(photoId);
+    if (!photo) {
+      return res.status(404).json({ message: "Photo not found" });
+    }
+    fs.unlinkSync(path.join("./content", photo.url));
+    await Picture.findByIdAndDelete(photoId);
+
+    res.json({ message: "Photo deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const galleryPage = async (req, res) => {
+  try {
+    const whatsApp = process.env.BUSINESS_NUMBER;
+    const count = process.env.GALLERY_COUNT;
+    const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 }).limit(count);
+
+    res.render("gallery", { whatsApp, images });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = { savePicture, deletePictures, galleryPage };

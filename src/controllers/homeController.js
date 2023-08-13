@@ -101,16 +101,6 @@ const servicesPage = async (req, res) => {
   }
 };
 
-const galleryPage = async (req, res) => {
-  try {
-    const whatsApp = process.env.BUSINESS_NUMBER;
-    res.render("gallery", { whatsApp });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
 const slotAvailable = (data, today) => {
   let count = 0;
   data.forEach((element) => {
@@ -118,4 +108,4 @@ const slotAvailable = (data, today) => {
   });
   return `${count} slots available on ${today}`;
 };
-module.exports = { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, galleryPage, refundPage, servicesPage };
+module.exports = { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage };

@@ -1,15 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { savePicture } = require("../controllers/pictureController");
-const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, galleryPage, refundPage, servicesPage } = require("../controllers/homeController");
+const { savePicture, deletePictures, galleryPage } = require("../controllers/pictureController");
+const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
 const { confirmBooking, calculate, successBooking } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
 const { registerAdmin, loginAdmin, loginPage } = require("../controllers/adminController");
-
+const { upload } = require("../middlewares/uplaodMiddleware");
 router.post("/admin/register", registerAdmin);
 router.post("/admin/login", loginAdmin);
-router.post("/pictures", savePicture);
+router.post("/pictures", upload.array("photos", 10), savePicture);
+router.post("/deletePictures", deletePictures);
 router.post("/theater/saveInfo", saveTheaterInfo);
 router.post("/theater/getSlotInfo", getSlotInfo);
 router.post("/booking/bookTheater", confirmBooking);
