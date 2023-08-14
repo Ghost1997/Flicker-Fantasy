@@ -124,10 +124,6 @@
     padding: 10px 0;
     margin-left: 0;
   }
-
-  .navbar-dark .navbar-brand img {
-    max-height: 45px;
-  }
 }
 
 @media (min-width: 992px) {

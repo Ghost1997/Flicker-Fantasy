@@ -67,12 +67,13 @@
         width: auto;
         padding: 16px;
         margin-top: -50px;
-        color: white;
+        color: black;
         font-weight: bold;
         font-size: 20px;
         border-radius: 0 3px 3px 0;
         user-select: none;
         -webkit-user-select: none;
+        background-color: cyan;
       }
       
       /* Position the "next button" to the right */
@@ -100,7 +101,7 @@
       .caption-container {
         text-align: center;
         background-color: #222;
-        padding: 2px 16px;
+
         color: white;
       }
       
@@ -172,7 +173,7 @@
       <br/>
       <div class="container">
         <% images.forEach((ele,index) => { %>
-          <div class="mySlides">
+          <div class="mySlides" style="width: 80%; max-width: 800px; margin: 0 auto;">
             <div class="numbertext"><%= index+1 %> / <%= images.length %></div>
             <img src="<%= ele.url %>" style="width:100%; max-height: calc(100vh - 200px);">
           </div>
