@@ -50,7 +50,7 @@
     }
   });
   // const host = "https://restaurant-gmpb.onrender.com";
-  // const rKey = "rzp_test_OdnawryqhvxPn7"
+  // const rKey = "rzp_test_OdnawryqhvxPn7";
   const host = "http://localhost:3000";
   const rKey = "rzp_test_3VHA6PauX0jlhZ";
   const datePicker = document.getElementById("datepicker");
