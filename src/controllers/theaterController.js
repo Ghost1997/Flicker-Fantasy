@@ -31,9 +31,8 @@ function checkTimeSlot(timeSlot) {
   const startTime = startTimeStr.trim();
   const endTime = endTimeStr.trim();
 
-  const currentTime = new Date();
-  const currentHour = currentTime.getHours();
-  const currentMinute = currentTime.getMinutes();
+  const currentTime = new Date().toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
+  const [currentHour, currentMinute] = currentTime.split(":").map((str) => parseInt(str));
 
   const [startHour, startMinute] = startTime.split(":").map((str) => parseInt(str));
   const [endHour, endMinute] = endTime.split(":").map((str) => parseInt(str));
