@@ -30,13 +30,43 @@ function checkTimeSlot(timeSlot) {
   const [startTimeStr, endTimeStr] = timeSlot.split("-");
   const startTime = startTimeStr.trim();
   const endTime = endTimeStr.trim();
-  const currentTime = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
-  if (currentTime < startTime) {
-    return false;
-  } else if (currentTime >= startTime && currentTime <= endTime) {
-    return true;
+
+  const currentTime = new Date();
+  const currentHour = currentTime.getHours();
+  const currentMinute = currentTime.getMinutes();
+
+  const [startHour, startMinute] = startTime.split(":").map((str) => parseInt(str));
+  const [endHour, endMinute] = endTime.split(":").map((str) => parseInt(str));
+
+  if (startHour < endHour) {
+    // Time slot does not cross midnight
+    if (currentHour > startHour && currentHour < endHour) {
+      return true;
+    } else if (currentHour === startHour && currentMinute >= startMinute) {
+      return true;
+    } else if (currentHour === endHour && currentMinute <= endMinute) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (startHour > endHour) {
+    // Time slot crosses midnight
+    if (currentHour > startHour || currentHour < endHour) {
+      return true;
+    } else if (currentHour === startHour && currentMinute >= startMinute) {
+      return true;
+    } else if (currentHour === endHour && currentMinute <= endMinute) {
+      return true;
+    } else {
+      return false;
+    }
   } else {
-    return true;
+    // Time slot starts and ends at the same hour
+    if (currentHour === startHour && currentMinute >= startMinute && currentMinute <= endMinute) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
@@ -52,6 +82,7 @@ const getSlot = async (theaterId, dateValue) => {
   }));
 
   const finalSlots = result.map((ele) => {
+    // console.log(dateValue, moment().tz("Asia/Kolkata").format("DD/MM/YYYY"));
     if (dateValue === moment().tz("Asia/Kolkata").format("DD/MM/YYYY") && ele.booked === false) {
       ele.booked = checkTimeSlot(ele.value);
     }
