@@ -1,6 +1,6 @@
 const Booking = require("../models/bookingModel");
 const { getTodaysFormattedDate, sendEmailWithTemplate } = require("../utils/helper");
-const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject } = require("../utils/constants");
+const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject, slotInfo } = require("../utils/constants");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
@@ -8,40 +8,50 @@ const fs = require("fs").promises;
 const ejs = require("ejs");
 
 const calculate = async (req, res) => {
-  const payload = req.body;
-  const razorpay = new Razorpay({
-    key_id: process.env.PAYMENT_API_KEY,
-    key_secret: process.env.PAYMENT_SECRET,
-  });
-  const amount = calculateAmount(payload.theaterid, payload.cake, payload.decoration);
-  const dateValue = getTodaysFormattedDate();
-  const receipt = dateValue.timeStamp;
-  const options = {
-    amount: amount * 100,
-    currency: "INR",
-    receipt,
-  };
-  const order = await razorpay.orders.create(options);
-  const orderId = order.id;
-  payload.receipt = receipt;
-  res.status(200).json({ amount, orderId, payload });
+  try {
+    const payload = req.body;
+    const razorpay = new Razorpay({
+      key_id: process.env.PAYMENT_API_KEY,
+      key_secret: process.env.PAYMENT_SECRET,
+    });
+    const amount = calculateAmount(payload.theaterid, payload.cake, payload.decoration);
+    const dateValue = getTodaysFormattedDate();
+    const receipt = dateValue.timeStamp;
+    const options = {
+      amount: amount * 100,
+      currency: "INR",
+      receipt,
+    };
+    const order = await razorpay.orders.create(options);
+    const orderId = order.id;
+    payload.receipt = receipt;
+    res.status(200).json({ amount, orderId, payload });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const calculateAmount = (theaterId, cake, decoration) => {
-  let amount = 0;
+  try {
+    let amount = 0;
+    const theaterTypeSelected = theaterType[theaterId];
+    amount += pricingInfo[theaterTypeSelected];
 
-  const theaterTypeSelected = theaterType[theaterId];
-  amount += pricingInfo[theaterTypeSelected];
+    if (cake.length && cakePricingInfo[cake]) {
+      amount += cakePricingInfo[cake];
+    }
 
-  if (cake.length && cakePricingInfo[cake]) {
-    amount += cakePricingInfo[cake];
+    if (decoration.length) {
+      amount += decorationPrice;
+    }
+    console.log(amount);
+    const additionalCharge = amount * 0.025; // 2.5% of the total amount
+    amount += additionalCharge;
+    console.log(additionalCharge);
+    return parseInt(amount);
+  } catch (err) {
+    console.log(err);
   }
-
-  if (decoration.length) {
-    amount += decorationPrice;
-  }
-
-  return amount;
 };
 
 const confirmBooking = async (req, res) => {
@@ -87,7 +97,7 @@ const confirmBooking = async (req, res) => {
       orderId: bookingData.bookingId,
       amount: bookingData.amountPaid,
       theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${bookingData.slotId} on ${bookingData.bookingDate}`,
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
       decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
@@ -125,5 +135,16 @@ const sendOrderConfirmationEmail = async (finalOutput) => {
     console.error("Error sending order confirmation email:", error);
   }
 };
+
+function getSlotInfo(theaterId, slotId) {
+  const theater = slotInfo.find((theater) => theater.theaterId === theaterId);
+  if (theater) {
+    const slot = theater.slots.find((slot) => slot.id === slotId);
+    if (slot) {
+      return slot.value;
+    }
+  }
+  return "Slot information not found";
+}
 
 module.exports = { calculate, confirmBooking, successBooking };

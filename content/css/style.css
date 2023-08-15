@@ -613,3 +613,23 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"] + label:after {
     font-size: 22px;
   }
 }
+
+.note-text {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #f4cccc;
+  border-radius: 5px;
+  background-color: #fff5f5;
+}
+
+.note-red {
+  font-size: 14px;
+  color: #d8000c;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.note-content {
+  font-size: 12px;
+  color: #d8000c;
+}
