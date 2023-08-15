@@ -102,8 +102,18 @@
     }
   });
   closeModalButton.addEventListener("click", function () {
-    window.location.href = "/";
+    resetModal();
   });
+
+  function resetModal() {
+    // Clear the selected date
+    document.getElementById("datepicker").value = "";
+    document.getElementById("slotContainer").innerHTML = "";
+    document.querySelector(".final-form").innerHTML = "";
+    $("#datePickerModal").modal("hide");
+    datePicker.disabled = false;
+    slotContainer.classList.remove("disabled");
+  }
 
   function updateSlotDisplay(selectedDate, slotsData, theaterId) {
     slotContainer.innerHTML = "";
