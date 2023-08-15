@@ -1,46 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Flicker Fantasy</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="" name="keywords" />
-    <meta content="" name="description" />
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon" />
+<head>
+  <meta charset="utf-8" />
+  <title>Flicker Fantasy</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="" name="keywords" />
+  <meta content="" name="description" />
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap" rel="stylesheet" />
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon" />
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet" />
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
+    rel="stylesheet" />
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Libraries Stylesheet -->
+  <link href="lib/animate/animate.min.css" rel="stylesheet" />
+  <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+  <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet" />
-  </head>
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Template Stylesheet -->
+  <link href="css/style.css" rel="stylesheet" />
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    section {
+      height: 100vh;
+      width: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .column {
+      width: 100%;
+      padding: 0 1em 1em 1em;
+      text-align: center;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      padding: 2em 1.5em;
+      background: linear-gradient(#ffffff 50%, #FEA116 50%);
+      background-size: 100% 200%;
+      background-position: 0 2.5%;
+      border-radius: 5px;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      transition: 0.5s;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f194c;
+      margin: 1em 0;
+    }
+
+    p {
+      color: #575a7b;
+      font-size: 15px;
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+    }
+
+    .icon-wrapper {
+      background-color: #FEA116;
+      position: relative;
+      margin: auto;
+      font-size: 30px;
+      height: 2.5em;
+      width: 2.5em;
+      color: #ffffff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: 0.5s;
+    }
+
+    .card:hover {
+      background-position: 0 100%;
+    }
+
+    .card:hover .icon-wrapper {
+      background-color: #ffffff;
+      color: #FEA116;
+    }
+
+    .card:hover h3 {
+      color: #ffffff;
+    }
+
+    .card:hover p {
+      color: #f0f0f0;
+    }
+
+    @media screen and (min-width: 768px) {
+      section {
+        padding: 0 2em;
+      }
+
+      .column {
+        flex: 0 50%;
+        max-width: 50%;
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      section {
+        padding: 1em 3em;
+      }
+
+      .column {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+      }
+    }
+
+    /* Additional Responsive Styles */
+    @media screen and (min-width: 576px) {
+      .column {
+        padding: 0 1em;
+      }
+    }
+
+    @media screen and (min-width: 768px) {
+      .column {
+        flex: 0 50%;
+        max-width: 50%;
+      }
+    }
+
+    @media screen and (min-width: 992px) {
+      .column {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+      }
+    }
+  </style>
+</head>
+
+<body>
 
   <body>
     <div class="container-xxl bg-white p-0">
       <!-- Spinner Start -->
-      <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+      <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
       <!-- Spinner End -->
-      
+
 
       <!-- Navbar & Hero Start -->
       <div class="container-xxl position-relative p-0">
@@ -69,50 +202,131 @@
           </div>
         </nav>
       </div>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
+      <br />
+      <br />
+      <br />
+      <hr>
+      <div class="row">
+        <h2 class="section-heading" style="text-align: center;">Our Services</h2>
+      </div>
       <!-- Navbar & Hero End -->
-      <!-- About Start -->
+      <div style="margin-top: 4rem;">
+        <ul>
+          <li>
+            <p class="mb-4">Watch your favorite movies and shows on Big Screen and to celebrate special occasions
+              like Birthdays, Anniversaries, etc.
+              Cast your streaming service on the big screen by playing your favorite games.</p>
+          </li>
+          <li>
+            <p class="mb-4">Time to use the best service on the big screen by watching your preferred
+              entertainment
+              shows, series, movies, games, sports and events on the large screen with full privacy in the mini
+              theatre.</p>
+          </li>
+          <li>
+            <p class="mb-4">Special surprise to your loved ones.
+              Romantic setup surprise (Never let anyone treat your loved ones like ordinary) -
+              so surprise them with a romantic date with Creative Ideas. </p>
+          </li>
+          <li>
+            <p class="mb-4">Groom, Bride Decoration and bachelor party with friends and family by presenting
+              Innovative videos on the large screen. .</p>
+          </li>
+          <li>
+            <p class="mb-4">Expressing your feelings to your dearest ones by giving more surprises.
+              Birthday blast, romantic dates, bachelor party, Anniversary surprise, friend’s day out with amazing
+              movies.</p>
+          </li>
+          <li>
+            <p class="mb-4">We provide the best services to satisfy the customer. Decorations starting @ just
+              Rs.300
+              for mini privacy theatre.
+              Can get your own content to watch amazing short movies, series with your own accounts.</p>
+          </li>
+
+          <li>
+            <p class="mb-4">Required arrangement will be provided from us like – Large screen and Dolby sound
+              effect
+              with WiFi-Connectivity.
+              We are streaming now!</p>
+          </li>
+      </div>
+
       <div class="container-xxl py-5">
         <div class="container">
-          <div class="row g-5 align-items-center">
-
+          <div class="row g-4 align-items-center">
             <div class="col-lg-12">
-              <h1  style="text-align: center;" class="mb-4">Services</h1>
-              <hr>
-              <br/>
-              <br/>
-              
+              <section>
+
+                <div class="row">
+                  <div class="column">
+                    <div class="card">
+                      <div class="icon-wrapper">
+                        <i class="fa fa-film" aria-hidden="true"></i>
+                      </div>
+                      <h3>Private Theater</h3>
+
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="card">
+                      <div class="icon-wrapper">
+                        <i class="fa fa-television" aria-hidden="true"></i>
+                      </div>
+                      <h3>Freedom of Choice</h3>
+
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="card">
+                      <div class="icon-wrapper">
+                        <i class="fa fa-tree" aria-hidden="true"></i>
+                      </div>
+                      <h3>Decoration services</h3>
+
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="card">
+                      <div class="icon-wrapper">
+                        <i class="fa fa-birthday-cake" aria-hidden="true"></i>
+                      </div>
+                      <h3>Cake, snacks and beverages</h3>
+
+                    </div>
+                  </div>
+                </div>
+
+              </section>
+
+
             </div>
+
           </div>
         </div>
       </div>
 
-      <a
-      href="https://wa.me/<%= whatsApp %>"
-      class="whatsapp_float"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <i class="fa fa-whatsapp whatsapp-icon"></i>
-    </a>
+      </ul>
+      <a href="https://wa.me/<%= whatsApp %>" class="whatsapp_float" target="_blank" rel="noopener noreferrer">
+        <i class="fa fa-whatsapp whatsapp-icon"></i>
+      </a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+      <!-- JavaScript Libraries -->
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="lib/wow/wow.min.js"></script>
+      <script src="lib/easing/easing.min.js"></script>
+      <script src="lib/waypoints/waypoints.min.js"></script>
+      <script src="lib/counterup/counterup.min.js"></script>
+      <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+      <script src="lib/tempusdominus/js/moment.min.js"></script>
+      <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+      <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+      <!-- Template Javascript -->
+      <script src="js/main.js"></script>
   </body>
+</body>
+
 </html>
