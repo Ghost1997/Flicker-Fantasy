@@ -200,6 +200,12 @@
   </select>
 </div>
 <button type="submit" class="btn btn-primary">Check Price</button>
+<div class="note-text">
+    <p class="note-red">Please note:</p>
+    <p class="note-content">
+      Final amount will consist of Booking fee + 2.5% platform fees
+    </p>
+  </div>
 <br>
 <br>
 <br>
