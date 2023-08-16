@@ -57,6 +57,8 @@
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
   const modalBody = document.querySelector(".final-form");
+  const movieContainer1 = document.querySelector(".movie-container1");
+  const movieContainer2 = document.querySelector(".movie-container2");
   let theaterId;
   const closeModalButton = document.getElementById("closeModalButton");
   theaterRadios.forEach((radio) => {
@@ -65,6 +67,9 @@
       if (theaterType === "executive") theaterId = 0;
       else if (theaterType === "standerd") theaterId = 1;
       else if (theaterType === "couple") theaterId = 2;
+
+      if (theaterId === 2) showMovieContainer("movie-container2");
+      else showMovieContainer("movie-container1");
       const todayIST = new Date();
       todayIST.setHours(todayIST.getHours() + 5); // Add 5 hours for UTC+5
       todayIST.setMinutes(todayIST.getMinutes() + 30); // Add 30 minutes for UTC+5:30
@@ -104,6 +109,14 @@
   closeModalButton.addEventListener("click", function () {
     resetModal();
   });
+
+  function showMovieContainer(containerClass) {
+    movieContainer1.style.display = "none";
+    movieContainer2.style.display = "none";
+
+    const selectedContainer = document.querySelector(`.${containerClass}`);
+    selectedContainer.style.display = "block";
+  }
 
   function resetModal() {
     // Clear the selected date
