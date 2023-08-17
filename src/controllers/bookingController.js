@@ -16,7 +16,7 @@ const calculate = async (req, res) => {
     });
     const amount = calculateAmount(payload.theaterid, payload.cake, payload.decoration);
     const dateValue = getTodaysFormattedDate();
-    const receipt = dateValue.timeStamp;
+    const receipt = dateValue.timeStamp.toString();
     const options = {
       amount: amount * 100,
       currency: "INR",
