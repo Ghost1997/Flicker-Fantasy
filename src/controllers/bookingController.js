@@ -105,7 +105,7 @@ const confirmBooking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
-    // await sendOrderConfirmationEmail(finalOutput);
+    await sendOrderConfirmationNotifiaction(finalOutput);
     res.status(201).json(finalOutput);
   } catch (err) {
     console.error(err);
@@ -123,14 +123,31 @@ const successBooking = async (req, res) => {
   }
 };
 
-const sendOrderConfirmationEmail = async (finalOutput) => {
+const sendOrderConfirmationNotifiaction = async (finalOutput) => {
   try {
-    console.log();
-    const templatePath = path.join(__dirname, "../../views", "orderSuccess.ejs");
-    const templateContent = await fs.readFile(templatePath, "utf-8");
-    const htmlContent = ejs.render(templateContent, { data: finalOutput });
-    // Modify this function call to include BCC if needed
-    sendEmailWithTemplate(finalOutput.email, emailSubject, htmlContent);
+    const accountSid = process.env.TWILLIO_SID;
+    const authToken = process.env.TWILLIO_AUTH;
+    const client = require("twilio")(accountSid, authToken);
+
+    const sendMessage = await client.messages.create({
+      body: `
+    Thank you for Booking with Flicker Fantasy!
+
+    Booking details:
+    Order Id: ${finalOutput.orderId}
+    Name: ${finalOutput.name}
+    Slot Info: ${finalOutput.slotInfo}
+    Number of people: ${finalOutput.noOfPerson}
+    Location: Vijaynagar
+    Theater: ${finalOutput.theaterName}
+    Decoration: ${finalOutput.decorationName}
+    Cake: ${finalOutput.cakeName}
+    Total amount: Rs ${finalOutput.amount}
+    
+    Looking forward to host you!😊`,
+      from: "whatsapp:+14155238886",
+      to: `whatsapp:+91${finalOutput.contactId}`,
+    });
   } catch (error) {
     console.error("Error sending order confirmation email:", error);
   }
@@ -147,4 +164,4 @@ function getSlotInfo(theaterId, slotId) {
   return "Slot information not found";
 }
 
-module.exports = { calculate, confirmBooking, successBooking };
+module.exports = { calculate, confirmBooking, successBooking, getSlotInfo };
