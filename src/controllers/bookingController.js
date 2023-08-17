@@ -129,21 +129,21 @@ const sendOrderConfirmationNotifiaction = async (finalOutput) => {
     const client = require("twilio")(accountSid, authToken);
 
     const sendMessage = await client.messages.create({
-      body: `
-    Thank you for Booking with Flicker Fantasy!
+      body: `Thank you for Booking with Flicker Fantasy!
 
-    Booking details:
-    Order Id: ${finalOutput.orderId}
-    Name: ${finalOutput.name}
-    Slot Info: ${finalOutput.slotInfo}
-    Number of people: ${finalOutput.noOfPerson}
-    Location: Vijaynagar
-    Theater: ${finalOutput.theaterName}
-    Decoration: ${finalOutput.decorationName}
-    Cake: ${finalOutput.cakeName}
-    Total amount: Rs ${finalOutput.amount}
-    
-    Looking forward to host you!😊`,
+Booking details:
+
+Order Id: ${finalOutput.orderId}
+Name: ${finalOutput.name}
+Slot Info: ${finalOutput.slotInfo}
+Number of people: ${finalOutput.noOfPerson}
+Location: Vijaynagar
+Theater: ${finalOutput.theaterName}
+Decoration: ${finalOutput.decorationName}
+Cake: ${finalOutput.cakeName}
+Total amount: Rs ${finalOutput.amount}
+
+Looking forward to host you!😊`,
       from: "whatsapp:+14155238886",
       to: `whatsapp:+91${finalOutput.contactId}`,
     });
