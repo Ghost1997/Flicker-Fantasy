@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const routes = require("./routes/route");
 const { get404 } = require("./controllers/404");
 const path = require("path");
-// Load environment variables from .env file
+const session = require("express-session");
 dotenv.config();
 
 // Create Express app
@@ -21,6 +21,14 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", "views");
 app.use(express.static(path.join(__dirname, "../content")));
+
+app.use(
+  session({
+    secret: "your-secret-key", // Change this to your secret key
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 // MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI, {

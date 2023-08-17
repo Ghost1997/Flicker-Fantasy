@@ -3,13 +3,13 @@ const Admin = require("../models/adminModel");
 
 const authenticateAdmin = async (req, res, next) => {
   try {
-    const authToken = req.header("Authorization");
-
+    const authToken = req.session.authToken;
+    const secret = process.env.JWT_SECRET;
     if (!authToken) {
-      return res.status(401).json({ error: "Authentication token missing." });
+      return res.render("unauthorized");
     }
 
-    const decodedToken = jwt.verify(authToken, "your_secret_key"); // Replace with your actual secret key
+    const decodedToken = jwt.verify(authToken, secret); // Replace with your actual secret key
     const admin = await Admin.findOne({ _id: decodedToken._id });
 
     if (!admin) {
@@ -24,4 +24,4 @@ const authenticateAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = authenticateAdmin;
+module.exports = { authenticateAdmin };

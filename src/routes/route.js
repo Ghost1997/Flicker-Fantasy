@@ -5,10 +5,13 @@ const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refund
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
 const { confirmBooking, calculate, successBooking } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
-const { registerAdmin, loginAdmin, loginPage } = require("../controllers/adminController");
+const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout } = require("../controllers/adminController");
 const { upload } = require("../middlewares/uplaodMiddleware");
+const { authenticateAdmin } = require("../middlewares/authMiddleware");
 router.post("/admin/register", registerAdmin);
 router.post("/admin/login", loginAdmin);
+router.get("/admin/dashboard", authenticateAdmin, adminDashboard);
+router.get("/admin/logout", logout);
 router.post("/pictures", upload.array("photos", 10), savePicture);
 router.post("/deletePictures", deletePictures);
 router.post("/theater/saveInfo", saveTheaterInfo);
@@ -28,4 +31,5 @@ router.get("/admin/login", loginPage);
 router.get("/gallery", galleryPage);
 router.get("/refund", refundPage);
 router.get("/services", servicesPage);
+
 module.exports = router;

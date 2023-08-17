@@ -1,6 +1,10 @@
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Booking = require("../models/bookingModel");
+const { theaterType, decoration, cakeName } = require("../utils/constants");
+const { getSlotInfo } = require("./bookingController");
+
 const registerAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -47,8 +51,8 @@ const loginAdmin = async (req, res) => {
 
     // Password matched, generate a JWT token
     const authToken = jwt.sign({ _id: admin._id }, process.env.JWT_SECRET);
-
-    res.status(200).json({ message: "Login successful.", name: admin.name, email, authToken });
+    req.session.authToken = authToken;
+    res.status(200).json({ success: true, message: "Login successful.", name: admin.name, email, authToken });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error logging in." });
@@ -64,4 +68,78 @@ const loginPage = async (req, res) => {
   }
 };
 
-module.exports = { registerAdmin, loginAdmin, loginPage };
+const adminDashboard = async (req, res) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Perform aggregation
+    const result = await Booking.aggregate([
+      {
+        $addFields: {
+          // Convert the string date to a date object
+          bookingDateAsISO: {
+            $dateFromString: {
+              dateString: {
+                $concat: [
+                  { $substr: ["$bookingDate", 6, 4] },
+                  "-", // Year
+                  { $substr: ["$bookingDate", 3, 2] },
+                  "-", // Month
+                  { $substr: ["$bookingDate", 0, 2] }, // Day
+                ],
+              },
+              format: "%Y-%m-%d",
+            },
+          },
+        },
+      },
+      { $match: { bookingDateAsISO: { $gte: today } } }, // Filter by bookingDate
+      { $sort: { slotId: 1 } }, // Sort by slotId in ascending order
+      { $limit: 25 },
+      {
+        $project: {
+          bookingId: 1,
+          bookingDate: 1,
+          theaterId: 1,
+          slotId: 1,
+          amountPaid: 1,
+          bookingStatus: 1,
+          userDetails: 1,
+        },
+      },
+    ]);
+    const finalOutput = result.map((bookingData) => {
+      return {
+        orderId: bookingData.bookingId,
+        amount: bookingData.amountPaid,
+        theaterName: theaterType[bookingData.theaterId],
+        slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId),
+        date: bookingData.bookingDate,
+        noOfPerson: bookingData.userDetails.noOfPerson,
+        cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
+        decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+        name: bookingData.userDetails.name,
+        contactId: bookingData.userDetails.whatsapp,
+        email: bookingData.userDetails.email,
+      };
+    });
+
+    res.render("adminDashboard", { data: finalOutput });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error loading admin login page" });
+  }
+};
+
+const logout = async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(500).send("Error logging out");
+    }
+    // Redirect the user to the login page after logout
+    res.redirect("/admin/login");
+  });
+};
+module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout };
