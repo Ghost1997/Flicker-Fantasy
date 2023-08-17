@@ -47,7 +47,6 @@ const calculateAmount = (theaterId, cake, decoration) => {
     console.log(amount);
     const additionalCharge = amount * 0.025; // 2.5% of the total amount
     amount += additionalCharge;
-    console.log(additionalCharge);
     return parseInt(amount);
   } catch (err) {
     console.log(err);
