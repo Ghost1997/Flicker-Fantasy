@@ -44,10 +44,10 @@ const calculateAmount = (theaterId, cake, decoration) => {
     if (decoration.length) {
       amount += decorationPrice;
     }
-    console.log(amount);
+
     const additionalCharge = amount * 0.025; // 2.5% of the total amount
-    amount += additionalCharge;
-    return parseInt(amount);
+    amount += parseInt(additionalCharge);
+    return amount;
   } catch (err) {
     console.log(err);
   }
