@@ -30,7 +30,10 @@ function checkTimeSlot(timeSlot) {
   const [startTimeStr, endTimeStr] = timeSlot.split("-");
   const startTime = startTimeStr.trim();
   const endTime = endTimeStr.trim();
-  const currentTime = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
+  let currentTime = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Asia/Kolkata" });
+  const [hours, minutes] = currentTime.split(":");
+  const formattedHours = hours === "24" ? "00" : hours;
+  currentTime = `${formattedHours}:${minutes}`;
   if (currentTime < startTime) {
     return false;
   } else if (currentTime >= startTime && currentTime <= endTime) {

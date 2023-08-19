@@ -80,7 +80,9 @@ const adminDashboard = async (req, res) => {
 const getBookingDetails = async (req) => {
   const { search } = req.query;
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const indianTimeZoneOffset = 330; // (5 hours * 60 minutes) + 30 minutes
+  today.setUTCMinutes(today.getUTCMinutes() + indianTimeZoneOffset);
+  today.setUTCHours(0, 0, 0, 0);
   const searchFilter = search
     ? {
         $or: [{ "userDetails.name": { $regex: search, $options: "i" } }, { "userDetails.whatsapp": { $regex: search, $options: "i" } }, { bookingId: { $regex: search, $options: "i" } }],
