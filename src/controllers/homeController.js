@@ -8,7 +8,7 @@ const homePage = async (req, res) => {
     const whatsApp = process.env.BUSINESS_NUMBER;
     const imageCount = process.env.IMAGE_COUNT;
     const testimonialCount = process.env.FEEDBACK_COUNT;
-    const [images, testimonials] = await Promise.all([Picture.find().sort({ createdDate: -1 }).limit(imageCount), Testimonial.find().sort({ createdAt: -1 }).limit(testimonialCount)]);
+    const [images, testimonials] = await Promise.all([Picture.find({ type: "home" }).sort({ createdDate: -1 }).limit(imageCount), Testimonial.find().sort({ createdAt: -1 }).limit(testimonialCount)]);
     const today = moment().tz("Asia/Kolkata").format("DD/MM/YYYY");
     const imageUrlArray = images.map((ele) => ele.url);
     const [executive, standerd, couple] = await Promise.all([getSlot(0, today), getSlot(1, today), getSlot(2, today)]);
