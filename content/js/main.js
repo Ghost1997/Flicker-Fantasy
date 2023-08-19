@@ -49,10 +49,8 @@
       $dropdown.off("mouseenter mouseleave");
     }
   });
-  const host = "https://restaurant-gmpb.onrender.com";
+  const host = "http://13.53.174.158:3000";
   const rKey = "rzp_test_OdnawryqhvxPn7";
-  // const host = "http://localhost:3000";
-  // const rKey = "rzp_test_3VHA6PauX0jlhZ";
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
