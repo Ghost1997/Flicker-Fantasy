@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const Booking = require("../models/bookingModel");
 const { theaterType, decoration, cakeName } = require("../utils/constants");
 const { getSlotInfo } = require("./bookingController");
-
+const Picture = require("../models/pictureModel");
 const registerAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -70,62 +70,79 @@ const loginPage = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    // Perform aggregation
-    const result = await Booking.aggregate([
-      {
-        $addFields: {
-          // Convert the string date to a date object
-          bookingDateAsISO: {
-            $dateFromString: {
-              dateString: {
-                $concat: [
-                  { $substr: ["$bookingDate", 6, 4] },
-                  "-", // Year
-                  { $substr: ["$bookingDate", 3, 2] },
-                  "-", // Month
-                  { $substr: ["$bookingDate", 0, 2] }, // Day
-                ],
-              },
-              format: "%Y-%m-%d",
+    const finalOutput = await getBookingDetails(req);
+    res.render("adminDashboard", { data: finalOutput });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error loading admin login page" });
+  }
+};
+const getBookingDetails = async (req) => {
+  const { search } = req.query;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const searchFilter = search
+    ? {
+        $or: [{ "userDetails.name": { $regex: search, $options: "i" } }, { "userDetails.whatsapp": { $regex: search, $options: "i" } }, { bookingId: { $regex: search, $options: "i" } }],
+      }
+    : {};
+  // Perform aggregation
+  const result = await Booking.aggregate([
+    {
+      $addFields: {
+        // Convert the string date to a date object
+        bookingDateAsISO: {
+          $dateFromString: {
+            dateString: {
+              $concat: [
+                { $substr: ["$bookingDate", 6, 4] },
+                "-", // Year
+                { $substr: ["$bookingDate", 3, 2] },
+                "-", // Month
+                { $substr: ["$bookingDate", 0, 2] }, // Day
+              ],
             },
+            format: "%Y-%m-%d",
           },
         },
       },
-      { $match: { bookingDateAsISO: { $gte: today } } }, // Filter by bookingDate
-      { $sort: { slotId: 1 } }, // Sort by slotId in ascending order
-      { $limit: 25 },
-      {
-        $project: {
-          bookingId: 1,
-          bookingDate: 1,
-          theaterId: 1,
-          slotId: 1,
-          amountPaid: 1,
-          bookingStatus: 1,
-          userDetails: 1,
-        },
+    },
+    { $match: { bookingDateAsISO: { $gte: today }, ...searchFilter } }, // Filter by bookingDate
+    { $sort: { bookingDateAsISO: 1, slotId: 1 } }, // Sort by slotId in ascending order
+    { $limit: 25 },
+    {
+      $project: {
+        bookingId: 1,
+        bookingDate: 1,
+        theaterId: 1,
+        slotId: 1,
+        amountPaid: 1,
+        bookingStatus: 1,
+        userDetails: 1,
       },
-    ]);
-    const finalOutput = result.map((bookingData) => {
-      return {
-        orderId: bookingData.bookingId,
-        amount: bookingData.amountPaid,
-        theaterName: theaterType[bookingData.theaterId],
-        slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId),
-        date: bookingData.bookingDate,
-        noOfPerson: bookingData.userDetails.noOfPerson,
-        cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
-        decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
-        name: bookingData.userDetails.name,
-        contactId: bookingData.userDetails.whatsapp,
-        email: bookingData.userDetails.email,
-      };
-    });
-
-    res.render("adminDashboard", { data: finalOutput });
+    },
+  ]);
+  const finalOutput = result.map((bookingData) => {
+    return {
+      orderId: bookingData.bookingId,
+      amount: bookingData.amountPaid,
+      theaterName: theaterType[bookingData.theaterId],
+      slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId),
+      date: bookingData.bookingDate,
+      noOfPerson: bookingData.userDetails.noOfPerson,
+      cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
+      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+      name: bookingData.userDetails.name,
+      contactId: bookingData.userDetails.whatsapp,
+      email: bookingData.userDetails.email,
+    };
+  });
+  return finalOutput;
+};
+const search = async (req, res) => {
+  try {
+    const finalOutput = await getBookingDetails(req);
+    res.json({ data: finalOutput });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error loading admin login page" });
@@ -142,4 +159,15 @@ const logout = async (req, res) => {
     res.redirect("/admin/login");
   });
 };
-module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout };
+
+const adminImage = async (req, res) => {
+  try {
+    const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 });
+
+    res.render("adminImage", { images });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error loading admin login page" });
+  }
+};
+module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage };

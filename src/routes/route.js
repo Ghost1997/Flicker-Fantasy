@@ -1,16 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const { savePicture, deletePictures, galleryPage } = require("../controllers/pictureController");
+const { savePicture, deletePictures, galleryPage, getAllImages } = require("../controllers/pictureController");
 const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
 const { confirmBooking, calculate, successBooking } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
-const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout } = require("../controllers/adminController");
+const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage } = require("../controllers/adminController");
 const { upload } = require("../middlewares/uplaodMiddleware");
 const { authenticateAdmin } = require("../middlewares/authMiddleware");
 router.post("/admin/register", registerAdmin);
 router.post("/admin/login", loginAdmin);
 router.get("/admin/dashboard", authenticateAdmin, adminDashboard);
+router.get("/admin/search", authenticateAdmin, search);
+router.get("/admin/upload", authenticateAdmin, adminImage);
 router.get("/admin/logout", logout);
 router.post("/pictures", upload.array("photos", 10), savePicture);
 router.post("/deletePictures", deletePictures);
@@ -31,5 +33,5 @@ router.get("/admin/login", loginPage);
 router.get("/gallery", galleryPage);
 router.get("/refund", refundPage);
 router.get("/services", servicesPage);
-
+router.get("/pictures/getAll", getAllImages);
 module.exports = router;

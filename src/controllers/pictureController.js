@@ -12,7 +12,7 @@ const savePicture = async (req, res) => {
       };
     });
     const savedPictures = await Picture.insertMany(photos);
-    res.status(201).json(savedPictures);
+    res.status(201).json({ success: true, savedPictures });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error saving pictures to the database." });
@@ -29,7 +29,7 @@ const deletePictures = async (req, res) => {
     fs.unlinkSync(path.join("./content", photo.url));
     await Picture.findByIdAndDelete(photoId);
 
-    res.json({ message: "Photo deleted successfully" });
+    res.json({ success: true, message: "Photo deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -49,4 +49,15 @@ const galleryPage = async (req, res) => {
   }
 };
 
-module.exports = { savePicture, deletePictures, galleryPage };
+const getAllImages = async (req, res) => {
+  try {
+    const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 });
+
+    res.json({ images });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = { savePicture, deletePictures, galleryPage, getAllImages };

@@ -10,8 +10,77 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .image {
+            position: relative;
+        }
+
+        .image img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #ddd;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            border: 2px solid gray;
+            color: gray;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .upload-btn-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
         .confirmation-modal {
             display: none;
             position: fixed;
@@ -267,10 +336,11 @@
         <div class="l-navbar" id="nav-bar">
             <nav class="nav">
                 <div>
-                    <div class="nav_list"> <a href="/admin/dashboard" class="nav_link active"> <i
+                    <div class="nav_list"> <a href="/admin/dashboard" class="nav_link"> <i
                                 class='bx bx-grid-alt nav_icon'></i>
                             <span class="nav_name">Dashboard</span> </a> <a href="/admin/upload" class="nav_link"> <i
-                                class='bx bx-user nav_icon'></i> <span class="nav_name">Upload Pictures</span> </a>
+                                class='bx bx-user nav_icon'></i> <span class="nav_name active">Upload Pictures</span>
+                        </a>
                         <a class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i>
                             <span class="nav_name">Manual
                                 Booking</span> </a>
@@ -281,81 +351,31 @@
             </nav>
         </div>
         <!--Container Main start-->
-        <div class="height-100 bg-light">
-            <div class="container mt-4">
-                <div class="row">
-                    <div class="col-md-4 ">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Search by Name, Phone or Order Id"
-                                id="searchInput">
-                            <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
 
-                        <table class="table table-striped">
-                            <thead>
-                                <tr style="text-transform: capitalize; text-align: left;">
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
+        </div>
 
-                                    <th>Date</th>
-                                    <th>Slot</th>
-                                    <th>Theater</th>
-                                    <th>Cake</th>
-                                    <th>Decoration</th>
-                                    <th>Amount</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bookingTableBody" style="text-transform: capitalize; text-align: left;">
-                                <% data.forEach(ele=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= ele.orderId %>
-                                        </td>
-                                        <td>
-                                            <%= ele.name %>
-                                        </td>
-                                        <td>
-                                            <%= ele.contactId %>
-                                        </td>
+        <div class="container">
+            <h1>Image Gallery</h1>
 
-                                        <td>
-                                            <%= ele.date %>
-                                        </td>
-                                        <td>
-                                            <%= ele.slotInfo %>
-                                        </td>
-                                        <td>
-                                            <%= ele.theaterName %>
-                                        </td>
-                                        <td>
-                                            <%= ele.cakeName %>
-                                        </td>
-                                        <td>
-                                            <%= ele.decorationName %>
-                                        </td>
-                                        <td>
-                                            Rs.<%= ele.amount %>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-primary btn-sm edit-button">Edit</button>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
-                            </tbody>
-                    </div>
-                    </table>
+            <div class="upload-btn-wrapper">
+                <button class="btn">Upload Images</button>
+                <input type="file" name="image" accept="image/*" multiple />
+            </div>
+
+            <div class="gallery" id="imageGallery">
+                <!-- Images will be dynamically added here -->
+            </div>
+
+        </div>
+        <div class="confirmation-modal" id="confirmationModal">
+            <div class="confirmation-content">
+                <p>Are you sure you want to delete this image?</p>
+                <div class="confirmation-buttons">
+                    <button class="confirm" id="confirmDelete">Yes</button>
+                    <button id="cancelDelete">Cancel</button>
                 </div>
             </div>
         </div>
-
-        </div>
-
         <div class="confirmation-modal" id="logoutConfirmationModal">
             <div class="confirmation-content">
                 <p>Are you sure you want to log out?</p>
@@ -366,66 +386,153 @@
             </div>
         </div>
         <script>
-            const bookingTableBody = document.getElementById('bookingTableBody');
-            async function fetchDataFromAPI(query) {
-                try {
-                    const response = await fetch(`/admin/search?search=${query}`);
-                    const data = await response.json();
-                    return data;
-                } catch (error) {
-                    console.error("Error fetching data:", error);
-                    return [];
-                }
-            }
-            async function searchBookings(query) {
-                const { data } = await fetchDataFromAPI(query);
+            const imageGallery = document.getElementById("imageGallery");
 
-                if (data.length > 0) {
-                    populateTable(data);
-                } else {
-                    // Display a message indicating no results found
-                    bookingTableBody.innerHTML = `<tr>
-                    <td colspan="10" class="text-center">No results found</td>
-                </tr>`;;
-                }
-            }
-
-
-            searchButton.addEventListener('click', async () => {
-                await searchBookings(searchInput.value);
-            });
-
-            searchInput.addEventListener('keyup', async (event) => {
-                if (event.key === 'Enter') {
-                    await searchBookings(searchInput.value);
-                }
-            });
-            function populateTable(data) {
-                // Clear the existing content
-                bookingTableBody.innerHTML = "";
-
-                data.forEach(ele => {
-                    const row = `
-        <tr>
-            <td>${ele.orderId}</td>
-            <td>${ele.name}</td>
-            <td>${ele.contactId}</td>
-            <td>${ele.date}</td>
-            <td>${ele.slotInfo}</td>
-            <td>${ele.theaterName}</td>
-            <td>${ele.cakeName}</td>
-            <td>${ele.decorationName}</td>
-            <td>Rs.${ele.amount}</td>
-            <td>
-                <button class="btn btn-primary btn-sm edit-button">Edit</button>
-            </td>
-        </tr>
-        `;
-                    bookingTableBody.insertAdjacentHTML('beforeend', row);
-
+            // Function to display images from API response
+            function displayImages(images) {
+                imageGallery.innerHTML = "";
+                images.forEach(image => {
+                    const imageElement = document.createElement("div");
+                    imageElement.className = "image";
+                    imageElement.innerHTML = `
+                      <img src="${image.url}" alt="img">
+                      <button class="delete-btn" data-id="${image._id}">Delete</button>
+                  `;
+                    imageGallery.appendChild(imageElement);
                 });
             }
 
+            // Fetch and display images on page load
+            fetchImages();
+
+            // Fetch images from API
+            function fetchImages() {
+                // Replace with your API endpoint to fetch images
+                const apiUrl = "/pictures/getAll";
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.images.length)
+                        displayImages(data.images);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching images:", error);
+                    });
+            }
+
+            // Delete image using API
+            function deleteImage(imageId) {
+                // Replace with your API endpoint to delete image
+                const apiUrl = `/deletePictures`;
+                fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: imageId
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            // Image deleted successfully, refresh images
+                            fetchImages();
+                        } else {
+                            console.error("Error deleting image:", result.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error deleting image:", error);
+                    });
+            }
+
+
+
+            // Upload image using API
+            const uploadBtn = document.querySelector(".upload-btn-wrapper .btn");
+            const uploadInput = document.querySelector(".upload-btn-wrapper input[type='file']");
+
+            uploadInput.addEventListener("change", event => {
+                const selectedFile = event.target.files[0];
+                if (selectedFile) {
+                    const formData = new FormData();
+                    formData.append("photos", selectedFile);
+                    formData.append("type", "gallery");
+
+                    // Replace with your API endpoint to upload image
+                    const apiUrl = "/pictures";
+                    fetch(apiUrl, {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+
+                                fetchImages();
+                            } else {
+                                console.error("Error uploading image:", result.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error uploading image:", error);
+                        });
+                }
+            });
+
+            const confirmationModal = document.getElementById("confirmationModal");
+            const confirmDeleteButton = document.getElementById("confirmDelete");
+            const cancelDeleteButton = document.getElementById("cancelDelete");
+
+            // Variable to store the image ID to be deleted
+            let imageToDeleteId = null;
+
+            // Event listener for delete buttons
+            imageGallery.addEventListener("click", event => {
+                if (event.target.classList.contains("delete-btn")) {
+                    imageToDeleteId = event.target.getAttribute("data-id");
+                    confirmationModal.style.display = "flex"; // Display the modal
+                }
+            });
+
+            // Event listener for confirm delete button
+            confirmDeleteButton.addEventListener("click", () => {
+                if (imageToDeleteId) {
+                    deleteImage(imageToDeleteId);
+                    imageToDeleteId = null; // Clear the imageToDeleteId
+                    confirmationModal.style.display = "none"; // Hide the modal
+                }
+            });
+
+            // Event listener for cancel delete button
+            cancelDeleteButton.addEventListener("click", () => {
+                imageToDeleteId = null; // Clear the imageToDeleteId
+                confirmationModal.style.display = "none"; // Hide the modal
+            });
+
+            const logoutButton = document.getElementById("logout");
+            const logoutConfirmationModal = document.getElementById("logoutConfirmationModal");
+            const confirmLogoutButton = document.getElementById("confirmLogout");
+            const cancelLogoutButton = document.getElementById("cancelLogout");
+
+            // Event listener for Log Out button
+            logoutButton.addEventListener("click", () => {
+                logoutConfirmationModal.style.display = "flex"; // Display the modal
+            });
+
+            // Event listener for confirm Log Out button
+            confirmLogoutButton.addEventListener("click", () => {
+                // Redirect the user to the logout URL
+                window.location.href = "/admin/logout"; // Replace with the actual logout URL
+            });
+
+            // Event listener for cancel Log Out button
+            cancelLogoutButton.addEventListener("click", () => {
+                logoutConfirmationModal.style.display = "none"; // Hide the modal
+            });
+        </script>
+        <script>
 
 
 
@@ -465,42 +572,6 @@
                 }
                 linkColor.forEach(l => l.addEventListener('click', colorLink))
 
-                function loadUploadComponent() {
-                    fetch('/admin/uplaod') // Replace with the actual path to your EJS upload component
-                        .then(response => response.text())
-                        .then(content => {
-                            mainContent.innerHTML = content;
-                        })
-                        .catch(error => {
-                            console.error('Error loading upload component:', error);
-                        });
-                }
-
-                // Assuming you have a button with the id "uploadButton"
-                const uploadButton = document.getElementById('uploadButton');
-                uploadButton.addEventListener('click', loadUploadComponent);
-            });
-
-            const logoutButton = document.getElementById("logout");
-            console.log(logoutButton, "*****")
-            const logoutConfirmationModal = document.getElementById("logoutConfirmationModal");
-            const confirmLogoutButton = document.getElementById("confirmLogout");
-            const cancelLogoutButton = document.getElementById("cancelLogout");
-
-            // Event listener for Log Out button
-            logoutButton.addEventListener("click", () => {
-                logoutConfirmationModal.style.display = "flex"; // Display the modal
-            });
-
-            // Event listener for confirm Log Out button
-            confirmLogoutButton.addEventListener("click", () => {
-                // Redirect the user to the logout URL
-                window.location.href = "/admin/logout"; // Replace with the actual logout URL
-            });
-
-            // Event listener for cancel Log Out button
-            cancelLogoutButton.addEventListener("click", () => {
-                logoutConfirmationModal.style.display = "none"; // Hide the modal
             });
         </script>
     </body>
