@@ -141,6 +141,41 @@
     font-weight: 600;
     box-sizing: content-box;
   }
+
+  .slider-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .slider {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .slide {
+    position: relative;
+    flex: 0 0 100%;
+  }
+
+  .slide img {
+    max-width: 80%;
+    max-height: 80%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .slide-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
 </style>
 
 <body>
@@ -188,23 +223,22 @@
     <br />
     <br />
     <hr>
-    <br />
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-      <div class="container">
-        <div class="owl-carousel testimonial-carousel">
-          <% imageUrlArray.forEach(ele=> { %>
-            <div class="testimonial-item bg-transparent border rounded p-1">
-              <img src="<%= ele.image %>" class="Image" />
-              <p style="text-align: center; margin-top: 20px; text-transform: capitalize;"><strong>
-                  <%= ele.name %> Theater
-                </strong></p>
+    <div class="slider-container">
+      <div class="slider">
+        <% imageUrlArray.forEach(ele=> { %>
+
+          <div class="slide">
+            <img src="<%= ele.image %>" alt="Image 1">
+            <div class="slide-title">
+              <%= ele.name %> Theater
             </div>
+          </div>
 
-            <% }); %>
-        </div>
-
+          <% }); %>
+            <!-- Add more slides here -->
       </div>
     </div>
+
     <hr>
     <h1 class="mb-5 text-center">Book Now</h1>
     <div class="center-align">
@@ -366,6 +400,23 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
   <!-- Template Javascript -->
   <script src="js/main.js"></script>
+  <script>
+    function autoSlide() {
+      const slider = document.querySelector('.slider');
+      const slides = document.querySelectorAll('.slide');
+      const slideWidth = slides[0].clientWidth;
+
+      let currentIndex = 0;
+
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+      }, 3000); // Change slide every 5 seconds
+    }
+
+    // Call the autoSlide function when the page loads
+    window.addEventListener('load', autoSlide);
+  </script>
 </body>
 
 </html>
