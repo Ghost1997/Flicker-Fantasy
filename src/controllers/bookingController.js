@@ -1,6 +1,6 @@
 const Booking = require("../models/bookingModel");
-const { getTodaysFormattedDate, sendEmailWithTemplate } = require("../utils/helper");
-const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject, slotInfo } = require("../utils/constants");
+const { getTodaysFormattedDate } = require("../utils/helper");
+const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, advanceDecorationPrice, slotInfo } = require("../utils/constants");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
@@ -42,7 +42,7 @@ const calculateAmount = (theaterId, cake, decoration) => {
     }
 
     if (decoration.length) {
-      amount += decorationPrice;
+      decoration.includes("Advance") ? (amount += advanceDecorationPrice) : (amount += decorationPrice);
     }
 
     const additionalCharge = amount * 0.025; // 2.5% of the total amount

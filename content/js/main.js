@@ -209,16 +209,28 @@
 <div class="mb-3">
   <label for="decoration" class="form-label">Decoration</label>
   <select name="decoration" class="form-select" id="decoration">
-    <option value="" selected>Not Required</option>
-    <option value="Birthday">Birthday - ₹300</option>
-    <option value="Anniversary">Anniversary - ₹300</option>
-    <option value="Romantic Date">Romantic Date - ₹300</option>
-    <option value="Marriage Proposal">Marriage Proposal - ₹300</option>
-    <option value="Bride To Be">Bride To Be - ₹300</option>
-    <option value="Farewell">Farewell - ₹300</option>
-    <option value="Congratulations">Congratulations - ₹300</option>
-    <option value="Baby Shower">Baby Shower - ₹300</option>
-  </select>
+  <option value="" selected>Not Required</option>
+  <optgroup label="Regular Decoration - ₹300">
+      <option value="Birthday">Birthday</option>
+      <option value="Anniversary">Anniversary</option>
+      <option value="Romantic Date">Romantic Date</option>
+      <option value="Marriage Proposal">Marriage Proposal</option>
+      <option value="Bride To Be">Bride To Be</option>
+      <option value="Farewell">Farewell</option>
+      <option value="Congratulations">Congratulations</option>
+      <option value="Baby Shower">Baby Shower</option>
+  </optgroup>
+  <optgroup label="Advanced Decoration - ₹500">
+      <option value="Birthday-Advance">Birthday - Advanced</option>
+      <option value="Anniversary-Advance">Anniversary - Advanced</option>
+      <option value="Romantic Date-Advance">Romantic Date - Advanced</option>
+      <option value="Marriage Proposal-Advance">Marriage Proposal - Advanced</option>
+      <option value="Bride To Be-Advance">Bride To Be - Advanced</option>
+      <option value="Farewell-Advance">Farewell - Advanced</option>
+      <option value="Congratulations-Advance">Congratulations - Advanced</option>
+      <option value="Baby Shower-Advance">Baby Shower - Advanced</option>
+  </optgroup>
+</select>
 </div>
 <button type="submit" class="btn btn-primary">Check Price</button>
 <div class="note-text">
@@ -375,8 +387,6 @@
     delay: 10,
     time: 2000,
   });
-
-  // Modal Video
 
   // Testimonials carousel
   $(".testimonial-carousel").owlCarousel({

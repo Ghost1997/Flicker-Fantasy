@@ -38,7 +38,25 @@ const cakeName = {
 };
 
 const decorationPrice = 300;
-const decoration = ["Birthday", "Aniversary", "Romantic Date", "Marriage Proposal", "Bride To Be", "Farewell", "Congratulations", "Baby Shower"];
+const advanceDecorationPrice = 500;
+const decoration = [
+  "Birthday",
+  "Anniversary",
+  "Romantic Date",
+  "Marriage Proposal",
+  "Bride To Be",
+  "Farewell",
+  "Congratulations",
+  "Baby Shower",
+  "Birthday-Advance",
+  "Anniversary-Advance",
+  "Romantic Date-Advance",
+  "Marriage Proposal-Advance",
+  "Bride To Be-Advance",
+  "Farewell-Advance",
+  "Congratulations-Advance",
+  "Baby Shower-Advance",
+];
 const emailSubject = "Flicker Fantasy Order Confirmation";
 
 const slotInfo = [
@@ -177,4 +195,4 @@ const slotInfo = [
     ],
   },
 ];
-module.exports = { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject, slotInfo };
+module.exports = { advanceDecorationPrice, pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, emailSubject, slotInfo };
