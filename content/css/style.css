@@ -470,7 +470,7 @@ div.radio-with-Icon p.radioOption-Item label:focus,
 div.radio-with-Icon p.radioOption-Item label:active {
   opacity: 0.5;
   background-color: #de1831;
-  color: #fff;
+  color: #0f172b;
   margin: 0 !important;
 }
 div.radio-with-Icon p.radioOption-Item label::after,
@@ -498,7 +498,7 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"]:checked ~ label {
   opacity: 1;
   border: none;
   background-color: #de1831;
-  color: #fff;
+  color: #333;
 }
 div.radio-with-Icon p.radioOption-Item input[type="radio"]:hover,
 div.radio-with-Icon p.radioOption-Item input[type="radio"]:focus,

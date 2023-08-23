@@ -192,10 +192,14 @@
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
       <div class="container">
         <div class="owl-carousel testimonial-carousel">
-          <% imageUrlArray.forEach(image=> { %>
+          <% imageUrlArray.forEach(ele=> { %>
             <div class="testimonial-item bg-transparent border rounded p-1">
-              <img src="<%= image %>" class="Image" />
+              <img src="<%= ele.image %>" class="Image" />
+              <p style="text-align: center; margin-top: 20px; text-transform: capitalize;"><strong>
+                  <%= ele.name %> Theater
+                </strong></p>
             </div>
+
             <% }); %>
         </div>
 
@@ -210,7 +214,7 @@
             <input type="radio" name="theaterId" id="BannerType1" value="0"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="executive" />
-            <label for="BannerType1">
+            <label for="BannerType1" style="background-color:aquamarine;">
               <i class="fa fa-3x fa-users text-primary mb-4"></i>
 
               <strong>Executive Theater</strong>
@@ -227,7 +231,7 @@
             <input type="radio" name="theaterId" id="BannerType2" value="2"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="couple" />
-            <label for="BannerType2">
+            <label for="BannerType2" style="background-color:aquamarine;">
               <i class="fa fa-3x fa-solid fa-heart text-primary mb-4"></i>
 
               <strong>Couples Theater</strong>
@@ -240,10 +244,10 @@
             </label>
           </p>
           <p class="radioOption-Item">
-            <input type="radio" name="theaterId" id="BannerType3" value="1"
+            <input style="background-color: gold;" type="radio" name="theaterId" id="BannerType3" value="1"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="standerd" />
-            <label for="BannerType3">
+            <label for="BannerType3" style="background-color:aquamarine;">
               <i class="fa fa-3x fa-user text-primary mb-4"></i>
               <strong>Standard Theater</strong>
               <br />
