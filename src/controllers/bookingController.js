@@ -115,7 +115,8 @@ const confirmBooking = async (req, res) => {
 const successBooking = async (req, res) => {
   try {
     const data = req.query;
-    res.render("order", { data });
+    if (Object.keys(data).length === 0) res.render("404");
+    else res.render("order", { data });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });

@@ -113,4 +113,4 @@ const slotAvailable = (data, today) => {
   });
   return `${count} slots available on ${today}`;
 };
-module.exports = { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage };
+module.exports = { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage, slotAvailable };

@@ -14,7 +14,11 @@ const saveTheaterInfo = async (req, res) => {
 
 const getSlotInfo = async (req, res) => {
   try {
-    const { theaterId, dateValue } = req.body;
+    let { theaterId, dateValue, orderId } = req.body;
+    if (orderId && !theaterId) {
+      const booking = await Booking.findOne({ bookingId: orderId }).select("theaterId");
+      theaterId = booking.theaterId;
+    }
     const data = await getSlot(theaterId, dateValue);
     res.status(200).json({
       message: "Success",

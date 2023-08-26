@@ -49,8 +49,9 @@
       $dropdown.off("mouseenter mouseleave");
     }
   });
-  const host = "http://13.53.174.158:3000";
+
   const rKey = "rzp_test_OdnawryqhvxPn7";
+
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
@@ -81,7 +82,7 @@
 
     // Make API call to get slot info
     try {
-      const response = await fetch(`${host}/theater/getSlotInfo`, {
+      const response = await fetch(`/theater/getSlotInfo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -288,7 +289,7 @@
     const count = document.getElementById("numberOfPeople").value;
     const decoration = document.getElementById("decoration").value;
     const cake = document.getElementById("cake").value;
-    const response = await fetch(`${host}/calculate`, {
+    const response = await fetch(`/calculate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -325,8 +326,6 @@
           contact: payload.whatsapp,
         },
         handler: async (response) => {
-          // Handle the payment success
-          console.log("Payment successful:", response);
           const bookingResponse = await confirmBooking(response, payload);
           const responseData = await bookingResponse.json();
           const queryParams = new URLSearchParams(responseData).toString();
@@ -357,7 +356,7 @@
   }
 
   const confirmBooking = async (paymentInfo, userInfo) => {
-    const response = await fetch(`${host}/booking/bookTheater`, {
+    const response = await fetch(`/booking/bookTheater`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

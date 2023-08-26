@@ -172,4 +172,39 @@ const adminImage = async (req, res) => {
     res.status(500).json({ error: "Error loading admin login page" });
   }
 };
-module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage };
+const adminBooking = async (req, res) => {
+  try {
+    res.render("adminBooking");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error loading admin login page" });
+  }
+};
+
+const updateBooking = async (req, res) => {
+  const { bookingId, newBookingDate, newSlotId } = req.body;
+  try {
+    // Find the booking by bookingId
+    const booking = await Booking.findOne({ bookingId });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    // Update bookingDate and slotId if new values are provided
+    if (newBookingDate) {
+      booking.bookingDate = newBookingDate;
+      booking.slotId = newSlotId;
+    }
+    // Save the updated booking
+    const updatedBooking = await booking.save();
+
+    const slotValue = getSlotInfo(updatedBooking.theaterId, updatedBooking.slotId);
+
+    res.status(200).json({ message: "Booking updated successfully", slotValue });
+  } catch (error) {
+    console.error("Error updating booking:", error);
+    res.status(500).json({ message: "An error occurred while updating booking" });
+  }
+};
+module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking };

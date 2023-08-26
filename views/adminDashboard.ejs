@@ -4,7 +4,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>PAdmin</title>
+    <title>Admin</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js">
@@ -270,8 +270,8 @@
                     <div class="nav_list"> <a href="/admin/dashboard" class="nav_link active"> <i
                                 class='bx bx-grid-alt nav_icon'></i>
                             <span class="nav_name">Dashboard</span> </a> <a href="/admin/upload" class="nav_link"> <i
-                                class='bx bx-user nav_icon'></i> <span class="nav_name">Upload Pictures</span> </a>
-                        <a class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i>
+                                class='bx bx-image-add nav_icon'></i> <span class="nav_name">Upload Pictures</span> </a>
+                        <a href="/admin/booking" class="nav_link"> <i class='bx bx-book-content nav_icon'></i></i>
                             <span class="nav_name">Manual
                                 Booking</span> </a>
                     </div>
@@ -324,10 +324,10 @@
                                             <%= ele.contactId %>
                                         </td>
 
-                                        <td>
+                                        <td class="date-cell">
                                             <%= ele.date %>
                                         </td>
-                                        <td>
+                                        <td class="slot-cell">
                                             <%= ele.slotInfo %>
                                         </td>
                                         <td>
@@ -342,7 +342,11 @@
                                         <td>
                                             Rs.<%= ele.amount %>
                                         </td>
-                                        <td>
+                                        <td class="action-cell">
+                                            <button class="btn btn-success btn-sm save-button"
+                                                style="display: none;">Save</button>
+                                            <button class="btn btn-danger btn-sm clear-button"
+                                                style="display: none;">Clear</button>
                                             <button class="btn btn-primary btn-sm edit-button">Edit</button>
                                         </td>
                                     </tr>
@@ -355,6 +359,7 @@
         </div>
 
         </div>
+
 
         <div class="confirmation-modal" id="logoutConfirmationModal">
             <div class="confirmation-content">
@@ -406,20 +411,27 @@
 
                 data.forEach(ele => {
                     const row = `
-        <tr>
+                    <tr>
             <td>${ele.orderId}</td>
             <td>${ele.name}</td>
             <td>${ele.contactId}</td>
-            <td>${ele.date}</td>
-            <td>${ele.slotInfo}</td>
+            <td class="date-cell">
+                ${ele.date}
+            </td>
+            <td class="slot-cell">
+                ${ele.slotInfo}
+            </td>
             <td>${ele.theaterName}</td>
             <td>${ele.cakeName}</td>
             <td>${ele.decorationName}</td>
             <td>Rs.${ele.amount}</td>
-            <td>
+            <td class="action-cell">
+                <button class="btn btn-success btn-sm save-button" style="display: none;">Save</button>
+                <button class="btn btn-danger btn-sm clear-button" style="display: none;">Clear</button>
                 <button class="btn btn-primary btn-sm edit-button">Edit</button>
             </td>
         </tr>
+        
         `;
                     bookingTableBody.insertAdjacentHTML('beforeend', row);
 
@@ -482,7 +494,6 @@
             });
 
             const logoutButton = document.getElementById("logout");
-            console.log(logoutButton, "*****")
             const logoutConfirmationModal = document.getElementById("logoutConfirmationModal");
             const confirmLogoutButton = document.getElementById("confirmLogout");
             const cancelLogoutButton = document.getElementById("cancelLogout");
@@ -502,6 +513,188 @@
             cancelLogoutButton.addEventListener("click", () => {
                 logoutConfirmationModal.style.display = "none"; // Hide the modal
             });
+
+            function enableEditFields(row) {
+                const dateCell = row.querySelector(".date-cell");
+                const slotCell = row.querySelector(".slot-cell");
+                const actionCell = row.querySelector(".action-cell");
+                const dateInput = document.querySelector(".date-picker");
+
+                const dateValue = dateCell.textContent;
+                const slotValue = slotCell.textContent;
+                const todayIST = new Date();
+                todayIST.setHours(todayIST.getHours() + 5); // Add 5 hours for UTC+5
+                todayIST.setMinutes(todayIST.getMinutes() + 30); // Add 30 minutes for UTC+5:30
+
+                const todayISTFormatted = todayIST.toISOString().split("T")[0];
+
+                // Replace date cell content with a date picker
+                dateCell.innerHTML = `<input type="date" class="form-control date-picker"  min="${todayISTFormatted}" required>`;
+
+
+
+                actionCell.innerHTML = `
+            <button class="btn btn-success btn-sm save-button">Save</button>
+            <button class="btn btn-danger btn-sm clear-button">Clear</button>
+        `;
+
+                // Clear button click event
+                const clearButton = row.querySelector(".clear-button");
+                clearButton.addEventListener("click", () => {
+                    // Restore original values
+                    dateCell.innerHTML = dateValue;
+                    slotCell.innerHTML = slotValue;
+                    actionCell.innerHTML = `
+                <button class="btn btn-primary btn-sm edit-button">Edit</button>
+            `;
+
+                    // Reattach edit button event listener
+                    const editButton = row.querySelector(".edit-button");
+                    editButton.addEventListener("click", () => {
+                        enableEditFields(row);
+                    });
+                });
+
+            }
+
+            // Assuming you have a reference to the table with id "bookingTable"
+            const bookingTable = document.getElementById("bookingTableBody");
+            bookingTable.addEventListener("change", async event => {
+                const target = event.target;
+                const row = target.closest("tr");
+                const orderId = row.querySelector("td:first-child").textContent;
+
+                if (target.classList.contains("date-picker")) {
+                    const selectedDate = formatDateFromISOToDMY(target.value);
+
+                    if (selectedDate) {
+                        try {
+                            const response = await fetch(`/theater/getSlotInfo`, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    orderId: parseInt(orderId), // Replace with the actual theater ID
+                                    dateValue: selectedDate,
+                                }),
+                            });
+
+                            if (!response.ok) {
+                                throw new Error(`API Request Error: ${response.statusText}`);
+                            }
+
+                            const responseData = await response.json();
+                            updateSlotDropdown(row, responseData.data);
+                            // Process the responseData to update slot display
+                            // updateSlotDisplay(selectedDate, responseData.data, theaterId);
+                        } catch (error) {
+                            console.error(error.message);
+                        }
+                    }
+                }
+            });
+            bookingTable.addEventListener("click", async (event) => {
+                const target = event.target;
+
+                if (target.classList.contains("edit-button")) {
+                    const row = target.closest("tr");
+                    enableEditFields(row);
+                }
+                else if (target.classList.contains("save-button")) {
+                    const row = target.closest("tr");
+                    const orderId = row.querySelector("td:first-child").textContent;
+                    const selectedDateInput = row.querySelector(".date-picker");
+                    const selectedDate = selectedDateInput.value;
+
+                    // Get the selected slot ID from the dropdown
+                    const selectedSlotDropdown = row.querySelector(".slot-dropdown");
+                    const selectedSlotId = selectedSlotDropdown.value;
+                    try {
+                        const response = await fetch("/admin/updateBooking", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                bookingId: parseInt(orderId),
+                                newBookingDate: formatDateFromISOToDMY(selectedDate),
+                                newSlotId: parseInt(selectedSlotId),
+                            }),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`API Request Error: ${response.statusText}`);
+                        }
+
+                        const responseData = await response.json();
+                        // Update the row content with the new data
+                        row.querySelector(".date-cell").textContent = formatDateFromISOToDMY(selectedDate);
+                        row.querySelector(".slot-cell").textContent = responseData.slotValue;
+                        // Update other fields as needed
+
+                        // Disable the edit mode and revert to original content
+                        const actionCell = row.querySelector(".action-cell");
+                        actionCell.innerHTML = `
+                <button class="btn btn-primary btn-sm edit-button">Edit</button>
+            `;
+
+                    } catch (error) {
+                        console.error(error.message);
+                    }
+                }
+                else if (target.classList.contains("clear-button")) {
+                    // Clear the edit mode and revert to original content
+                    const row = target.closest("tr");
+                    // Clear row content
+                    // ...
+                }
+            });
+
+            function updateSlotDropdown(row, slotData) {
+                const slotCell = row.querySelector(".slot-cell");
+
+                if (slotData.length > 0) {
+                    const selectDropdown = document.createElement("select");
+                    selectDropdown.className = "form-select slot-dropdown"; // Add necessary classes
+
+                    slotData.forEach(slot => {
+                        if (!slot.booked) {
+                            const option = document.createElement("option");
+                            option.value = slot.id;
+                            option.textContent = slot.value;
+                            selectDropdown.appendChild(option);
+                        }
+                    });
+
+                    slotCell.innerHTML = ""; // Clear existing content
+                    slotCell.appendChild(selectDropdown); // Append the new dropdown
+
+                    // Enable the dropdown
+                    selectDropdown.disabled = false;
+                } else {
+                    slotCell.innerHTML = '<select class="form-select slot-dropdown" disabled><option value="" disabled selected>No slots available</option></select>';
+                }
+            }
+
+            function formatDateFromISOToDMY(isoDate) {
+                const parts = isoDate.split("-");
+                if (parts.length !== 3) {
+                    throw new Error("Invalid ISO date format");
+                }
+
+                const year = parts[0];
+                const month = parts[1];
+                const day = parts[2];
+
+                return `${day}/${month}/${year}`;
+            }
+
+            // document.querySelectorAll(".slot-cell").forEach(slotCell => {
+            //     const slotValue = slotCell.textContent;
+            //     slotCell.innerHTML = slotValue;
+            //     slotDropdown.disabled = true;
+            // });
         </script>
     </body>
 
