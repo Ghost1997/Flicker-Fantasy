@@ -62,21 +62,31 @@
     }
 
     /* Next & previous buttons */
+    .button-container {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .prev,
     .next {
       cursor: pointer;
-      position: absolute;
-      top: 40%;
-      width: auto;
-      padding: 16px;
-      margin-top: -50px;
+      width: 30px;
+      height: 30px;
       color: black;
       font-weight: bold;
       font-size: 20px;
-      border-radius: 0 3px 3px 0;
+      border-radius: 50%;
       user-select: none;
       -webkit-user-select: none;
       background-color: cyan;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Position the "next button" to the right */
@@ -113,17 +123,8 @@
       color: white;
     }
 
-    .row:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
 
-    /* Six columns side by side */
-    .column {
-      float: left;
-      width: 16.66%;
-    }
+
 
     /* Add a transparency effect for thumnbail images */
     .demo {
@@ -133,6 +134,23 @@
     .active,
     .demo:hover {
       opacity: 1;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-content: space-between;
+      margin: 5px;
+      /* Adjust as needed */
+    }
+
+    .column {
+      float: left;
+      width: 15%;
+      /* Display 4 columns */
+      margin: 5px;
+      /* Adjust this value */
     }
   </style>
 </head>
@@ -182,20 +200,22 @@
     <br />
     <div class="container">
       <% images.forEach((ele,index)=> { %>
-        <div class="mySlides" style="width: 80%; max-width: 800px; margin: 0 auto;">
+        <div class="mySlides" style="width: 80%; max-width: 800px; margin: 0 auto; position: relative;">
           <div class="numbertext">
             <%= index+1 %> / <%= images.length %>
           </div>
-          <img src="<%= ele.url %>" style="width:100%; max-height: calc(100vh - 200px);">
+          <img src="<%= ele.url %>" style="width: 100%; max-height: calc(100vh - 200px);">
+
+          <div class="button-container">
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+          </div>
         </div>
         <% }); %>
 
 
 
 
-
-          <a class="prev" onclick="plusSlides(-1)">❮</a>
-          <a class="next" onclick="plusSlides(1)">❯</a>
 
           <div class="caption-container">
             <p id="caption"></p>
@@ -208,60 +228,60 @@
                   onclick="currentSlide('<%= index+1 %>')">
               </div>
               <% }); %>
-
-
           </div>
     </div>
+  </div>
 
-    <a href="https://wa.me/<%= whatsApp %>" class="whatsapp_float" target="_blank" rel="noopener noreferrer">
-      <i class="fa fa-whatsapp whatsapp-icon"></i>
-    </a>
+  <a href="https://wa.me/<%= whatsApp %>" class="whatsapp_float" target="_blank" rel="noopener noreferrer">
+    <i class="fa fa-whatsapp whatsapp-icon"></i>
+  </a>
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/waypoints/waypoints.min.js"></script>
+  <script src="lib/counterup/counterup.min.js"></script>
+  <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+  <script src="lib/tempusdominus/js/moment.min.js"></script>
+  <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+  <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-    <script>
-      let slideIndex = 1;
-      showSlides(slideIndex);
+  <!-- Template Javascript -->
+  <script src="js/main.js"></script>
+  <script>
+    let slideIndex = 1;
+    showSlides(slideIndex);
 
-      function plusSlides(n) {
-        showSlides(slideIndex += n);
+    function plusSlides(n) {
+
+      showSlides(slideIndex = parseInt(slideIndex) + n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      let slides = document.getElementsByClassName("mySlides");
+      let dots = document.getElementsByClassName("demo");
+      let captionText = document.getElementById("caption");
+      if (n > slides.length) { slideIndex = 1 }
+      if (n < 1) { slideIndex = slides.length }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
       }
-
-      function currentSlide(n) {
-        showSlides(slideIndex = n);
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
       }
-
-      function showSlides(n) {
-        let i;
-        let slides = document.getElementsByClassName("mySlides");
-        let dots = document.getElementsByClassName("demo");
-        let captionText = document.getElementById("caption");
-        if (n > slides.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = slides.length }
-        for (i = 0; i < slides.length; i++) {
-          slides[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
-          dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
-        captionText.innerHTML = dots[slideIndex - 1].alt;
-      }
-    </script>
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+      captionText.innerHTML = dots[slideIndex - 1].alt;
+    }
+  </script>
 </body>
 
 </html>
