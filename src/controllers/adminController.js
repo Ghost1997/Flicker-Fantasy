@@ -207,4 +207,38 @@ const updateBooking = async (req, res) => {
     res.status(500).json({ message: "An error occurred while updating booking" });
   }
 };
-module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking };
+
+const booking = async (req, res) => {
+  try {
+    const { userInfo } = req.body;
+    const payload = userInfo.payload;
+    // Create Booking
+    const newBooking = new Booking({
+      bookingId: payload.receipt,
+      bookingDate: payload.date,
+      amountPaid: userInfo.amount,
+      theaterId: parseInt(payload.theaterid),
+      slotId: parseInt(payload.slot),
+      userDetails: { name: payload.name, whatsapp: payload.whatsapp, email: payload.email, noOfPerson: payload.count, decoration: payload.decoration, cake: payload.cake },
+    });
+    const bookingData = await newBooking.save();
+    const finalOutput = {
+      orderId: bookingData.bookingId,
+      amount: bookingData.amountPaid,
+      theaterName: theaterType[bookingData.theaterId],
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
+      noOfPerson: bookingData.userDetails.noOfPerson,
+      cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
+      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+      name: bookingData.userDetails.name,
+      contactId: bookingData.userDetails.whatsapp,
+      email: bookingData.userDetails.email,
+    };
+    // await sendOrderConfirmationNotifiaction(finalOutput);
+    res.status(201).json({ success: true, finalOutput });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking, booking };

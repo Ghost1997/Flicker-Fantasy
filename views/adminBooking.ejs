@@ -11,50 +11,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 800px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+        .note-text {
             margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #f4cccc;
+            border-radius: 5px;
+            background-color: #fff5f5;
         }
 
-        .image {
-            position: relative;
+        .note-red {
+            font-size: 14px;
+            color: #d8000c;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        .image img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            border: 1px solid #ddd;
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
+        .note-content {
+            font-size: 12px;
+            color: #d8000c;
         }
 
         .upload-btn-wrapper {
@@ -65,8 +39,7 @@
         }
 
         .btn {
-            border: 2px solid gray;
-            color: gray;
+            border: 2px solid;
             background-color: white;
             padding: 8px 20px;
             border-radius: 8px;
@@ -118,44 +91,7 @@
             color: white;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
 
-        .container {
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .form-control {
-            border-radius: 5px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-
-        .table th,
-        .table td {
-            vertical-align: middle;
-        }
-
-        .edit-button {
-            padding: 5px 10px;
-        }
 
         @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
@@ -323,6 +259,64 @@
                 width: 100%;
             }
         }
+
+        .slot-button {
+            display: inline-block;
+            padding: 8px 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+            color: #333;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .slot-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #bookingForm {
+            background-color: #ffffff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #bookingForm h1 {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #bookingForm label {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+        }
+
+        #bookingForm select,
+        #bookingForm input[type="date"],
+        #bookingForm input[type="text"],
+        #bookingForm input[type="tel"],
+        #bookingForm input[type="email"],
+        #bookingForm input[type="number"],
+        #bookingForm button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+        }
+
+        #bookingForm button[type="submit"] {
+            background-color: #4723D9;
+            color: #ffffff;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -350,104 +344,391 @@
                 </a>
             </nav>
         </div>
-        <!--Container Main start-->
+        <br>
+        <h1 style="text-align: center;font-weight: 400; font-family: Nunito" ,sans-serif; ">Book Now</h1>
 
-        </div>
+        <div class=" container mt-5" style="max-width: 50%;">
 
+            <form id="bookingForm">
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="theaterSelect" class="form-label">Select Theater:</label>
+                            <select class="form-select" id="theaterSelect" required>
+                                <option value="0">Executive Theater</option>
+                                <option value="1">Standard Theater</option>
+                                <option value="2">Couples Theater</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="datePicker" class="form-label">Select Date:</label>
+                            <input type="date" class="form-control" id="datePicker" required disabled>
+                        </div>
+                    </div>
+                </div>
+                <div id="slotContainer" style="margin-left: 2rem;" class="mt-3"></div>
+                <div id="userDetails"></div>
 
-        <div class="confirmation-modal" id="confirmationModal">
-            <div class="confirmation-content">
-                <p>Are you sure you want to delete this image?</p>
-                <div class="confirmation-buttons">
-                    <button class="confirm" id="confirmDelete">Yes</button>
-                    <button id="cancelDelete">Cancel</button>
+            </form>
+
+            <div class=" confirmation-modal" id="confirmationModal">
+                <div class="confirmation-content">
+                    <p>Are you sure you want to delete this image?</p>
+                    <div class="confirmation-buttons">
+                        <button class="confirm" id="confirmDelete">Yes</button>
+                        <button id="cancelDelete">Cancel</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="confirmation-modal" id="logoutConfirmationModal">
-            <div class="confirmation-content">
-                <p>Are you sure you want to log out?</p>
-                <div class="confirmation-buttons">
-                    <button class="confirm" id="confirmLogout">Yes</button>
-                    <button id="cancelLogout">Cancel</button>
+            <div class="confirmation-modal" id="logoutConfirmationModal">
+                <div class="confirmation-content">
+                    <p>Are you sure you want to log out?</p>
+                    <div class="confirmation-buttons">
+                        <button class="confirm" id="confirmLogout">Yes</button>
+                        <button id="cancelLogout">Cancel</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <script>
 
+            <script>
+                const theaterSelect = document.getElementById('theaterSelect');
+                const datePicker = document.getElementById('datePicker');
+                const slotContainer = document.getElementById("slotContainer");
+                const modalBody = document.getElementById("userDetails");
+                // Get current date for minimum date in the date picker
+                const currentDate = new Date().toISOString().split('T')[0];
+                datePicker.setAttribute('min', currentDate);
 
+                // Simulate available theater
 
+                // Enable date picker when theater is selected
+                theaterSelect.addEventListener('change', () => {
+                    datePicker.disabled = false;
+                });
+                const slotSelect = document.getElementById('slotSelect');
+                async function fetchSlots(selectedDate, theaterId) {
+                    try {
+                        const response = await fetch(`/theater/getSlotInfo`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                theaterId, // Replace with the actual theater ID
+                                dateValue: selectedDate,
+                            }),
+                        });
 
+                        if (!response.ok) {
+                            throw new Error(`API Request Error: ${response.statusText}`);
+                        }
 
+                        const responseData = await response.json();
+                        updateSlotDisplay(selectedDate, responseData.data, theaterId);
 
+                    } catch (error) {
+                        console.error('Error fetching slots:', error);
+                    }
+                }
+                datePicker.addEventListener('change', () => {
+                    const selectedDate = formatDateFromISOToDMY(datePicker.value);
+                    const theaterId = theaterSelect.value
+                    if (selectedDate && theaterId) {
+                        fetchSlots(selectedDate, theaterId);
+                    }
+                });
+                function updateSlotDisplay(selectedDate, slotsData, theaterId) {
+                    slotContainer.innerHTML = "";
 
+                    // if (slotsData.length === 0) {
 
+                    // } else {
 
-
-
-            const logoutButton = document.getElementById("logout");
-            const logoutConfirmationModal = document.getElementById("logoutConfirmationModal");
-            const confirmLogoutButton = document.getElementById("confirmLogout");
-            const cancelLogoutButton = document.getElementById("cancelLogout");
-
-            // Event listener for Log Out button
-            logoutButton.addEventListener("click", () => {
-                logoutConfirmationModal.style.display = "flex"; // Display the modal
-            });
-
-            // Event listener for confirm Log Out button
-            confirmLogoutButton.addEventListener("click", () => {
-                // Redirect the user to the logout URL
-                window.location.href = "/admin/logout"; // Replace with the actual logout URL
-            });
-
-            // Event listener for cancel Log Out button
-            cancelLogoutButton.addEventListener("click", () => {
-                logoutConfirmationModal.style.display = "none"; // Hide the modal
-            });
-        </script>
-        <script>
-
-
-
-            document.addEventListener("DOMContentLoaded", function (event) {
-
-                const showNavbar = (toggleId, navId, bodyId, headerId) => {
-                    const toggle = document.getElementById(toggleId),
-                        nav = document.getElementById(navId),
-                        bodypd = document.getElementById(bodyId),
-                        headerpd = document.getElementById(headerId)
-
-                    // Validate that all variables exist
-                    if (toggle && nav && bodypd && headerpd) {
-                        toggle.addEventListener('click', () => {
-                            // show navbar
-                            nav.classList.toggle('show')
-                            // change icon
-                            toggle.classList.toggle('bx-x')
-                            // add padding to body
-                            bodypd.classList.toggle('body-pd')
-                            // add padding to header
-                            headerpd.classList.toggle('body-pd')
-                        })
+                    const availableSlots = slotsData.filter((slot) => !slot.booked);
+                    if (availableSlots.length) {
+                        const slotsAvailableMessage = document.createElement("h6");
+                        slotsAvailableMessage.textContent = "Slots Available :";
+                        slotContainer.style.marginLeft = "2rem";
+                        slotContainer.appendChild(slotsAvailableMessage);
+                        availableSlots.forEach((slot) => {
+                            const slotButton = document.createElement("button");
+                            slotButton.className = "slot-button";
+                            slotButton.innerHTML = slot.value;
+                            slotButton.name = "slot";
+                            slotButton.onclick = function () {
+                                openBookingForm(selectedDate, slot.value, slot.id, theaterId);
+                            };
+                            slotContainer.appendChild(slotButton);
+                        });
+                    } else {
+                        const noSlotsMessage = document.createElement("h5");
+                        noSlotsMessage.textContent = "No slots available";
+                        slotContainer.style.marginLeft = "0";
+                        slotContainer.appendChild(noSlotsMessage);
                     }
                 }
 
-                showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+                function openBookingForm(slotDate, slotTime, slotId, theaterId) {
+                    theaterSelect.disabled = true;
+                    datePicker.disabled = true;
+                    slotContainer.classList.add("disabled");
+                    modalBody.innerHTML = `
+    <br/>
+    
+      <h5 style="text-align: center;"><strong>Date: ${slotDate} & Time: ${slotTime}</strong></h5>
+      <br/>
+      <input type="hidden" value="${slotDate}" name="date" id="date">
+      <input type="hidden" value="${slotId}" name="slot" id="slot">
+      <input type="hidden" value="${theaterId}" name="theater" id="theater">
 
-                /*===== LINK ACTIVE =====*/
-                const linkColor = document.querySelectorAll('.nav_link')
+<div class="mb-3">
+  <label for="name" class="form-label">Name</label>
+  <input type="text" name="name" class="form-control" id="name" required>
+</div>
 
-                function colorLink() {
-                    if (linkColor) {
-                        linkColor.forEach(l => l.classList.remove('active'))
-                        this.classList.add('active')
-                    }
+<div class="mb-3">
+  <label for="whatsapp" class="form-label">WhatsApp Number</label>
+  <input name="whatsapp" type="tel" class="form-control" id="whatsapp" pattern="[0-9]{10}" placeholder="10-digit number" required>
+</div>
+
+<div class="mb-3">
+  <label for="email" class="form-label">Email</label>
+  <input type="email" name="email" class="form-control" id="email" required>
+</div>
+
+<div class="mb-3">
+  <label for="numberOfPeople" class="form-label">Number of People</label>
+  <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="6" required>
+</div>
+
+<div class="mb-3">
+  <label for="cake" class="form-label">Cake</label>
+  <select name="cake" class="form-select" id="cake">
+    <option value="" selected>Not Required</option>
+    <option value="blackForest">Black Forest - ₹500</option>
+    <option value="butterScotch">Butter Scotch - ₹500</option>
+    <option value="chocolate">Chocolate - ₹500</option>
+    <option value="pineApple">Pine Apple - ₹500</option>
+    <option value="roundRedVelvet">Round Red Velvet - ₹600</option>
+    <option value="buleBerry">Blueberry - ₹600</option>
+    <option value="mangoCake">Mango Cake - ₹600</option>
+    <option value="heartRedVelvet">Heart Red Velvet - ₹600</option>
+    <option value="deathByChocolate">Death By Chocolate - ₹700</option>
+    <option value="chocoAlmond">Choco Almond - ₹750</option>
+    <option value="heartPinata">Heart Pinata - ₹850</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <label for="decoration" class="form-label">Decoration</label>
+  <select name="decoration" class="form-select" id="decoration">
+  <option value="" selected>Not Required</option>
+  <optgroup label="Regular Decoration - ₹300">
+      <option value="Birthday">Birthday</option>
+      <option value="Anniversary">Anniversary</option>
+      <option value="Romantic Date">Romantic Date</option>
+      <option value="Marriage Proposal">Marriage Proposal</option>
+      <option value="Bride To Be">Bride To Be</option>
+      <option value="Farewell">Farewell</option>
+      <option value="Congratulations">Congratulations</option>
+      <option value="Baby Shower">Baby Shower</option>
+  </optgroup>
+  <optgroup label="Advanced Decoration - ₹500">
+      <option value="Birthday-Advance">Birthday - Advanced</option>
+      <option value="Anniversary-Advance">Anniversary - Advanced</option>
+      <option value="Romantic Date-Advance">Romantic Date - Advanced</option>
+      <option value="Marriage Proposal-Advance">Marriage Proposal - Advanced</option>
+      <option value="Bride To Be-Advance">Bride To Be - Advanced</option>
+      <option value="Farewell-Advance">Farewell - Advanced</option>
+      <option value="Congratulations-Advance">Congratulations - Advanced</option>
+      <option value="Baby Shower-Advance">Baby Shower - Advanced</option>
+  </optgroup>
+</select>
+</div>
+<button type="submit" class="btn btn-primary">Check Price</button>
+<div class="note-text">
+    <p class="note-red">Please note:</p>
+    <p class="note-content">
+      Final amount will consist of Booking fee + 2.5% platform fees
+    </p>
+  </div>
+<br>
+<br>
+<br>
+<div class="mb-3 text-center">
+<button id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
+<div id="priceInfo" class="mb-3"></div>
+</div>
+
+
+
+
+    `;
+
+                    // Show the modal
+                    // const datePickerModal = new bootstrap.Modal(document.getElementById("datePickerModal"));
+                    // datePickerModal.show();
+
+                    // Handle form submission
+                    const userDetailsForm = document.getElementById("bookingForm");
+                    userDetailsForm.addEventListener("submit", async function (event) {
+                        event.preventDefault();
+                        const response = await calculatePrice();
+                        if (!response.ok) {
+                            throw new Error(`API Request Error: ${response.statusText}`);
+                        }
+
+                        const responseData = await response.json();
+                        const amount = responseData.amount;
+
+                        // Display the calculated price
+                        const priceInfo = document.getElementById("priceInfo");
+
+                        // Show the "Book Now" button with the price
+                        const payButton = document.getElementById("payButton");
+                        payButton.style.display = "inline";
+                        payButton.innerHTML = `Book Now (₹${amount})`;
+
+                        payButton.addEventListener("click", async () => {
+                            // Make the API call here
+                            try {
+                                const response = await fetch("/admin/booking", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        userInfo: responseData,
+                                    }),
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error("API Request Error");
+                                }
+
+                                alert("Booking successful!");
+
+                                window.location.href = `/admin/booking`
+                            } catch (error) {
+                                console.error("Error booking:", error);
+                                // Show an error toast message
+                                toastr.error("Booking failed. Please try again later.");
+                            }
+                        });
+
+                    });
+                    const cakeDropdown = document.getElementById("cake");
+                    const decorationDropdown = document.getElementById("decoration");
+
+                    cakeDropdown.addEventListener("change", changePayButtonPrice);
+                    decorationDropdown.addEventListener("change", changePayButtonPrice);
                 }
-                linkColor.forEach(l => l.addEventListener('click', colorLink))
+                const calculatePrice = async () => {
 
-            });
-        </script>
+                    const theaterid = document.getElementById("theater").value;
+                    const date = document.getElementById("date").value;
+                    const slot = document.getElementById("slot").value;
+                    const name = document.getElementById("name").value;
+                    const whatsapp = document.getElementById("whatsapp").value;
+                    const email = document.getElementById("email").value;
+                    const count = document.getElementById("numberOfPeople").value;
+                    const decoration = document.getElementById("decoration").value;
+                    const cake = document.getElementById("cake").value;
+
+                    const response = await fetch(`/calculate`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            date,
+                            slot,
+                            name,
+                            whatsapp,
+                            email,
+                            count,
+                            decoration,
+                            cake,
+                            theaterid,
+                        }),
+                    });
+                    return response;
+                };
+
+
+                function formatDateFromISOToDMY(isoDate) {
+                    const parts = isoDate.split("-");
+                    if (parts.length !== 3) {
+                        throw new Error("Invalid ISO date format");
+                    }
+
+                    const year = parts[0];
+                    const month = parts[1];
+                    const day = parts[2];
+
+                    return `${day}/${month}/${year}`;
+                }
+            </script>
+            <script>
+                const logoutButton = document.getElementById("logout");
+                const logoutConfirmationModal = document.getElementById("logoutConfirmationModal");
+                const confirmLogoutButton = document.getElementById("confirmLogout");
+                const cancelLogoutButton = document.getElementById("cancelLogout");
+
+                // Event listener for Log Out button
+                logoutButton.addEventListener("click", () => {
+                    logoutConfirmationModal.style.display = "flex"; // Display the modal
+                });
+
+                // Event listener for confirm Log Out button
+                confirmLogoutButton.addEventListener("click", () => {
+                    // Redirect the user to the logout URL
+                    window.location.href = "/admin/logout"; // Replace with the actual logout URL
+                });
+
+                // Event listener for cancel Log Out button
+                cancelLogoutButton.addEventListener("click", () => {
+                    logoutConfirmationModal.style.display = "none"; // Hide the modal
+                });
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function (event) {
+                    const showNavbar = (toggleId, navId, bodyId, headerId) => {
+                        const toggle = document.getElementById(toggleId),
+                            nav = document.getElementById(navId),
+                            bodypd = document.getElementById(bodyId),
+                            headerpd = document.getElementById(headerId)
+
+                        // Validate that all variables exist
+                        if (toggle && nav && bodypd && headerpd) {
+                            toggle.addEventListener('click', () => {
+                                // show navbar
+                                nav.classList.toggle('show')
+                                // change icon
+                                toggle.classList.toggle('bx-x')
+                                // add padding to body
+                                bodypd.classList.toggle('body-pd')
+                                // add padding to header
+                                headerpd.classList.toggle('body-pd')
+                            })
+                        }
+                    }
+
+                    showNavbar('header-toggle', 'nav-bar', 'body-pd', 'header')
+
+                    /*===== LINK ACTIVE =====*/
+                    const linkColor = document.querySelectorAll('.nav_link')
+
+                    function colorLink() {
+                        if (linkColor) {
+                            linkColor.forEach(l => l.classList.remove('active'))
+                            this.classList.add('active')
+                        }
+                    }
+                    linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+                });
+            </script>
     </body>
 
 </html>
