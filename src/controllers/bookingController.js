@@ -1,11 +1,9 @@
 const Booking = require("../models/bookingModel");
-const { getTodaysFormattedDate } = require("../utils/helper");
+const { getTodaysFormattedDate, sendEmail } = require("../utils/helper");
 const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, advanceDecorationPrice, slotInfo } = require("../utils/constants");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
-const fs = require("fs").promises;
-const ejs = require("ejs");
 
 const calculate = async (req, res) => {
   try {
@@ -104,7 +102,15 @@ const confirmBooking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
-    await sendOrderConfirmationNotifiaction(finalOutput);
+    if (process.env.SEND_EMAIL === "true") {
+      const templatePath = path.join(__dirname, "../../views", "orderEmail.ejs");
+      sendEmail(
+        finalOutput.email, // Recipient's email address
+        "Booking confirmation", // Email subject
+        templatePath, // Path to the EJS template file
+        finalOutput
+      );
+    }
     res.status(201).json(finalOutput);
   } catch (err) {
     console.error(err);

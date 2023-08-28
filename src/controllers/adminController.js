@@ -1,10 +1,12 @@
 const Admin = require("../models/adminModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("../utils/helper");
 const Booking = require("../models/bookingModel");
 const { theaterType, decoration, cakeName } = require("../utils/constants");
 const { getSlotInfo } = require("./bookingController");
 const Picture = require("../models/pictureModel");
+const path = require("path");
 const registerAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -197,9 +199,30 @@ const updateBooking = async (req, res) => {
       booking.slotId = newSlotId;
     }
     // Save the updated booking
-    const updatedBooking = await booking.save();
+    const bookingData = await booking.save();
+    const finalOutput = {
+      orderId: bookingData.bookingId,
+      amount: bookingData.amountPaid,
+      theaterName: theaterType[bookingData.theaterId],
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
+      noOfPerson: bookingData.userDetails.noOfPerson,
+      cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
+      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+      name: bookingData.userDetails.name,
+      contactId: bookingData.userDetails.whatsapp,
+      email: bookingData.userDetails.email,
+    };
+    if (process.env.SEND_EMAIL === "true") {
+      const templatePath = path.join(__dirname, "../../views", "orderUpdateEmail.ejs");
+      sendEmail(
+        finalOutput.email, // Recipient's email address
+        "Booking rescheduled", // Email subject
+        templatePath, // Path to the EJS template file
+        finalOutput
+      );
+    }
 
-    const slotValue = getSlotInfo(updatedBooking.theaterId, updatedBooking.slotId);
+    const slotValue = getSlotInfo(bookingData.theaterId, bookingData.slotId);
 
     res.status(200).json({ message: "Booking updated successfully", slotValue });
   } catch (error) {
@@ -234,6 +257,15 @@ const booking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
+    if (process.env.SEND_EMAIL === "true") {
+      const templatePath = path.join(__dirname, "../../views", "orderEmail.ejs");
+      sendEmail(
+        finalOutput.email, // Recipient's email address
+        "Booking confirmation", // Email subject
+        templatePath, // Path to the EJS template file
+        finalOutput
+      );
+    }
     // await sendOrderConfirmationNotifiaction(finalOutput);
     res.status(201).json({ success: true, finalOutput });
   } catch (err) {
