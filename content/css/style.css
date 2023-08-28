@@ -379,8 +379,7 @@ div.radio-with-Icon p.radioOption-Item input[type="radio"]:active ~ label {
 }
 div.radio-with-Icon p.radioOption-Item input[type="radio"]:checked ~ label {
   opacity: 1;
-  border: none;
-  background-color: #de1831;
+  border: 2px solid red;
   color: #333;
 }
 div.radio-with-Icon p.radioOption-Item input[type="radio"]:hover,
