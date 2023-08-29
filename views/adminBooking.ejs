@@ -655,7 +655,10 @@
                     return response;
                 };
 
-
+                const changePayButtonPrice = async () => {
+                    const payButton = document.getElementById("payButton");
+                    payButton.style.display = "none";
+                };
                 function formatDateFromISOToDMY(isoDate) {
                     const parts = isoDate.split("-");
                     if (parts.length !== 3) {
