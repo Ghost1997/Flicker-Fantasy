@@ -224,7 +224,7 @@
           <div class="row">
             <% images.forEach((ele,index)=> { %>
               <div class="column">
-                <img class="demo cursor" src="<%= ele.url %>" style="width:100%"
+                <img class="demo cursor" src="<%= ele.url %>" style="width:100%; border: solid 1px black;"
                   onclick="currentSlide('<%= index+1 %>')">
               </div>
               <% }); %>
