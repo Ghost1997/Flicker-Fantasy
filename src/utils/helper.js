@@ -1,7 +1,6 @@
 const moment = require("moment-timezone");
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
-const AWS = require("aws-sdk");
 const getTodaysFormattedDate = () => {
   const todaysDate = moment().tz("Asia/Kolkata").format("DD/MM/YYYY");
   const timeStamp = moment().unix();
@@ -9,14 +8,14 @@ const getTodaysFormattedDate = () => {
 };
 
 async function sendEmail(to, subject, templatePath, data) {
-  AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET,
-    region: process.env.AWS_REGION,
-  });
   try {
-    const transporter = nodemailer.createTransport({
-      SES: new AWS.SES(),
+    let transporter = nodemailer.createTransport({
+      host: "smtp-relay.sendinblue.com",
+      port: 587,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
     });
 
     // Read and render the EJS template
