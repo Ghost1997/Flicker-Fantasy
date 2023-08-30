@@ -237,14 +237,14 @@
 <div class="note-text">
     <p class="note-red">Please note:</p>
     <p class="note-content">
-      Final amount will consist of Booking fee + 2.5% platform fees
+    "Kindly note that all online payment services for slot bookings are temporarily suspended until further notice. To secure your slot, we kindly request you to reach out to us at your convenience via phone or whatsapp at +917019693927 Our dedicated team will be delighted to assist you with your booking. Thank you for your understanding."
     </p>
   </div>
 <br>
 <br>
 <br>
 <div class="mb-3 text-center">
-<button id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
+<button  disabled id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
 </div>
 
 
