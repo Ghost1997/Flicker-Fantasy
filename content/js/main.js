@@ -312,30 +312,30 @@
     const payButton = document.getElementById("payButton");
     payButton.textContent = `Pay Now: ₹${amount}`;
     payButton.style.display = "inline";
-    payButton.addEventListener("click", async function () {
-      const options = {
-        key: rKey, // Replace with your actual Razorpay API key
-        amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
-        currency: "INR",
-        name: "Flicker Fantasy",
-        description: "Booking Payment",
-        order_id: orderId,
-        prefill: {
-          name: payload.name,
-          email: payload.email,
-          contact: payload.whatsapp,
-        },
-        handler: async (response) => {
-          const bookingResponse = await confirmBooking(response, payload);
-          const responseData = await bookingResponse.json();
-          const queryParams = new URLSearchParams(responseData).toString();
-          window.location.href = `/booking/success?${queryParams}`;
-        },
-      };
+    // payButton.addEventListener("click", async function () {
+    //   const options = {
+    //     key: rKey, // Replace with your actual Razorpay API key
+    //     amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
+    //     currency: "INR",
+    //     name: "Flicker Fantasy",
+    //     description: "Booking Payment",
+    //     order_id: orderId,
+    //     prefill: {
+    //       name: payload.name,
+    //       email: payload.email,
+    //       contact: payload.whatsapp,
+    //     },
+    //     handler: async (response) => {
+    //       const bookingResponse = await confirmBooking(response, payload);
+    //       const responseData = await bookingResponse.json();
+    //       const queryParams = new URLSearchParams(responseData).toString();
+    //       window.location.href = `/booking/success?${queryParams}`;
+    //     },
+    //   };
 
-      const rzp = new Razorpay(options);
-      rzp.open();
-    });
+    //   const rzp = new Razorpay(options);
+    //   rzp.open();
+    // });
   };
   const changePayButtonPrice = async () => {
     const payButton = document.getElementById("payButton");
