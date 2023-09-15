@@ -1,0 +1,28 @@
+1. Hosting Info 
+    AWS Console 
+    Console sign-in URL: https://957609174032.signin.aws.amazon.com/console 
+    Console Username: Admin
+    Console password: Admin@12345
+
+2. Database Mongo DB Atlas
+    Loging with google (flickerfantasy1@gmail.com)
+    connection string: mongodb+srv://flickerfantasy:rcKqkptXE8bvXVp4@cluster0.3hmojph.mongodb.net/flickerfantasy
+
+3. Paymnent Manged By Admin
+    Razor Pay
+
+4. Domain Info 
+    Godaddy
+    Loging with google (flickerfantasy1@gmail.com)
+
+5. Admin Page URL
+    url: https://flickerfantasy.in/admin/login
+    Username: admin@gmail.com
+    Password: Admin@12345
+
+6.  Feedback Url 
+    url: https://flickerfantasy.in/feedback
+
+7. SSH Info 
+    connection command
+    ssh -i "flickerfantasy.pem" ec2-user@ec2-16-171-187-213.eu-north-1.compute.amazonaws.com
