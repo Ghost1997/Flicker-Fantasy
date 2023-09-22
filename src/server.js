@@ -6,6 +6,7 @@ const routes = require("./routes/route");
 const { get404 } = require("./controllers/404");
 const path = require("path");
 const session = require("express-session");
+require("./cron");
 dotenv.config();
 
 // Create Express app

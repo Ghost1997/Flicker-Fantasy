@@ -37,5 +37,6 @@ router.get("/gallery", galleryPage);
 router.get("/refund", refundPage);
 router.get("/services", servicesPage);
 router.get("/pictures/getAll", getAllImages);
+router.get("/health", (req, res) => res.json({ status: "OK" }));
 
 module.exports = router;
