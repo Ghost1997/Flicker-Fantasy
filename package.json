@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Ghost1997/restaurant#readme",
   "dependencies": {
     "aws-sdk": "^2.1445.0",
+    "axios": "^1.5.0",
     "bcrypt": "^5.1.0",
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
@@ -31,6 +32,7 @@
     "moment-timezone": "^0.5.43",
     "mongoose": "^7.4.1",
     "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.2",
     "nodemailer": "^6.9.4",
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^3.0.1",
