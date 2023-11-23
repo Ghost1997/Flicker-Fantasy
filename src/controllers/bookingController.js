@@ -133,18 +133,20 @@ const successBooking = async (req, res) => {
 
 const sendBookingRequest = async (req, res) => {
   try {
-    const finalOutput = {
-      name: "John Doe",
-      slotInfo: "Slot A",
-      noOfPerson: 5,
-      theaterName: "ABC Theater",
-      decorationName: "Balloon Decor",
-      cakeName: "Chocolate Cake",
-      amount: 5000,
-      contactId: "1234567890",
-    };
-
-    await bookingRequestNotification(finalOutput);
+  const {payload, amount} = req.body
+  const finalOutput = {
+    theaterName: theaterType[parseInt(payload.theaterid)],
+    slotInfo: `Slot ${getSlotInfo(parseInt(payload.theaterid), parseInt(payload.slot))} on ${payload.date}`,
+    noOfPerson: payload.count,
+    cakeName: cakeName[payload?.cake] ? cakeName[payload?.cake] : "Not Required",
+    decorationName: decoration.includes(payload.decoration) ? payload.decoration : "Not Required",
+    name: payload.name,
+    contactId: payload.whatsapp,
+    email: payload.email,
+    amount: amount
+  };
+   await bookingRequestNotification(finalOutput);
+    res.status(200).json({'success':true});
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
@@ -167,9 +169,9 @@ const bookingRequestNotification = async (finalOutput) => {
     const client = require("twilio")(accountSid, authToken);
 
     const sendMessage = await client.messages.create({
-      body: `You have a new booking request\n\nBooking Request details:\n\nName: ${finalOutput.name}\nSlot Info: ${finalOutput.slotInfo}\nNumber of people: ${finalOutput.noOfPerson}\nTheater: ${finalOutput.theaterName}\nDecoration: ${finalOutput.decorationName}\nCake: ${finalOutput.cakeName}\nTotal amount: Rs ${finalOutput.amount}\n\nLooking forward to hosting you!😊`,
-      from: `whatsapp:+1${TWILLIO_SENDER_PHONE}`,
-      to: `whatsapp:+91${process.env.TWILLIO_ADMIN_PHONE}`,
+      body: `You have a new booking request\n\nBooking Request details:\n\nName: ${finalOutput.name}\nSlot Info: ${finalOutput.slotInfo}\nNumber of people: ${finalOutput.noOfPerson}\nTheater: ${finalOutput.theaterName}\nDecoration: ${finalOutput.decorationName}\nCake: ${finalOutput.cakeName}\nTotal amount: Rs ${finalOutput.amount}\n\n Take appropriate action`,
+      from: `whatsapp:${process.env.TWILLIO_SENDER_PHONE}`,
+      to: `whatsapp:${process.env.TWILLIO_RECIVER_PHONE}`,
     });
   } catch (error) {
     console.log(error);

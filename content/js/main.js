@@ -233,7 +233,7 @@
   </optgroup>
 </select>
 </div>
-<button type="submit" class="btn btn-primary">Check Price</button>
+<button type="submit" id="checkPrice" class="btn btn-primary">Check Price</button>
 <br>
 <br>
 <br>
@@ -331,7 +331,19 @@
     //   rzp.open();
     // });
 
-    payButton.addEventListener("click", async () => {});
+    payButton.addEventListener("click", async () => {
+      const response = await fetch(`/sendBookingRequest`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          payload,
+          amount
+        }),
+      });
+      return response;
+    });
   };
   const changePayButtonPrice = async () => {
     const payButton = document.getElementById("payButton");
