@@ -4,6 +4,8 @@ const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, 
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const calculate = async (req, res) => {
   try {
@@ -129,33 +131,49 @@ const successBooking = async (req, res) => {
   }
 };
 
-const sendOrderConfirmationNotifiaction = async (finalOutput) => {
+const sendBookingRequest = async (req, res) => {
   try {
+    const finalOutput = {
+      name: "John Doe",
+      slotInfo: "Slot A",
+      noOfPerson: 5,
+      theaterName: "ABC Theater",
+      decorationName: "Balloon Decor",
+      cakeName: "Chocolate Cake",
+      amount: 5000,
+      contactId: "1234567890",
+    };
+
+    await bookingRequestNotification(finalOutput);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const bookingRequestNotification = async (finalOutput) => {
+  try {
+    console.log(finalOutput);
     const accountSid = process.env.TWILLIO_SID;
     const authToken = process.env.TWILLIO_AUTH;
+
+    console.log(accountSid, authToken);
+
+    if (!accountSid || !authToken) {
+      console.error("Twilio credentials are missing. Unable to send WhatsApp notification.");
+      return;
+    }
+
     const client = require("twilio")(accountSid, authToken);
 
     const sendMessage = await client.messages.create({
-      body: `Thank you for Booking with Flicker Fantasy!
-
-Booking details:
-
-Order Id: ${finalOutput.orderId}
-Name: ${finalOutput.name}
-Slot Info: ${finalOutput.slotInfo}
-Number of people: ${finalOutput.noOfPerson}
-Location: Vijaynagar
-Theater: ${finalOutput.theaterName}
-Decoration: ${finalOutput.decorationName}
-Cake: ${finalOutput.cakeName}
-Total amount: Rs ${finalOutput.amount}
-
-Looking forward to host you!😊`,
-      from: "whatsapp:+14155238886",
-      to: `whatsapp:+91${finalOutput.contactId}`,
+      body: `You have a new booking request\n\nBooking Request details:\n\nName: ${finalOutput.name}\nSlot Info: ${finalOutput.slotInfo}\nNumber of people: ${finalOutput.noOfPerson}\nTheater: ${finalOutput.theaterName}\nDecoration: ${finalOutput.decorationName}\nCake: ${finalOutput.cakeName}\nTotal amount: Rs ${finalOutput.amount}\n\nLooking forward to hosting you!😊`,
+      from: `whatsapp:+1${TWILLIO_SENDER_PHONE}`,
+      to: `whatsapp:+91${process.env.TWILLIO_ADMIN_PHONE}`,
     });
   } catch (error) {
-    console.error("Error sending order confirmation email:", error);
+    console.log(error);
+    console.error("Error sending WhatsApp notification:", error.message);
   }
 };
 
@@ -170,4 +188,4 @@ function getSlotInfo(theaterId, slotId) {
   return "Slot information not found";
 }
 
-module.exports = { calculate, confirmBooking, successBooking, getSlotInfo };
+module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, sendBookingRequest };

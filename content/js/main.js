@@ -234,17 +234,11 @@
 </select>
 </div>
 <button type="submit" class="btn btn-primary">Check Price</button>
-<div class="note-text">
-    <p class="note-red">Please note:</p>
-    <p class="note-content">
-    "Kindly note that all online payment services for slot bookings are temporarily suspended until further notice. To secure your slot, we kindly request you to reach out to us at your convenience via phone or whatsapp at +917019693927 Our dedicated team will be delighted to assist you with your booking. Thank you for your understanding."
-    </p>
-  </div>
 <br>
 <br>
 <br>
 <div class="mb-3 text-center">
-<button  disabled id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
+<button  id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
 </div>
 
 
@@ -308,34 +302,36 @@
     });
     return response;
   };
+
+  const payfunction = async function () {
+    const options = {
+      key: rKey, // Replace with your actual Razorpay API key
+      amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
+      currency: "INR",
+      name: "Flicker Fantasy",
+      description: "Booking Payment",
+      order_id: orderId,
+      prefill: {
+        name: payload.name,
+        email: payload.email,
+        contact: payload.whatsapp,
+      },
+      handler: async (response) => {
+        const bookingResponse = await confirmBooking(response, payload);
+        const responseData = await bookingResponse.json();
+        const queryParams = new URLSearchParams(responseData).toString();
+        window.location.href = `/booking/success?${queryParams}`;
+      },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  };
   const updatePayButtonPrice = async (amount, orderId, payload) => {
     const payButton = document.getElementById("payButton");
-    payButton.textContent = `Pay Now: ₹${amount}`;
+    payButton.textContent = `Send Booking Request: ₹${amount}`;
     payButton.style.display = "inline";
-    // payButton.addEventListener("click", async function () {
-    //   const options = {
-    //     key: rKey, // Replace with your actual Razorpay API key
-    //     amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
-    //     currency: "INR",
-    //     name: "Flicker Fantasy",
-    //     description: "Booking Payment",
-    //     order_id: orderId,
-    //     prefill: {
-    //       name: payload.name,
-    //       email: payload.email,
-    //       contact: payload.whatsapp,
-    //     },
-    //     handler: async (response) => {
-    //       const bookingResponse = await confirmBooking(response, payload);
-    //       const responseData = await bookingResponse.json();
-    //       const queryParams = new URLSearchParams(responseData).toString();
-    //       window.location.href = `/booking/success?${queryParams}`;
-    //     },
-    //   };
-
-    //   const rzp = new Razorpay(options);
-    //   rzp.open();
-    // });
+    payButton.addEventListener("click", () => payfunction());
   };
   const changePayButtonPrice = async () => {
     const payButton = document.getElementById("payButton");

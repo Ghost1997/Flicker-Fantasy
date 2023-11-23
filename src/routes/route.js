@@ -3,7 +3,7 @@ const router = express.Router();
 const { savePicture, deletePictures, galleryPage, getAllImages } = require("../controllers/pictureController");
 const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
-const { confirmBooking, calculate, successBooking } = require("../controllers/bookingController");
+const { confirmBooking, calculate, successBooking, sendBookingRequest } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
 const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking, booking } = require("../controllers/adminController");
 const { upload } = require("../middlewares/uplaodMiddleware");
@@ -23,9 +23,7 @@ router.post("/theater/saveInfo", saveTheaterInfo);
 router.post("/theater/getSlotInfo", getSlotInfo);
 router.post("/booking/bookTheater", confirmBooking);
 router.post("/testimonial/save", saveTestimonial);
-router.get("/", async (req, res) => {
-  res.render("offlinePage");
-});
+router.get("/", homePage);
 router.get("/about", aboutPage);
 router.get("/terms", termsPage);
 router.post("/calculate", calculate);
@@ -39,6 +37,7 @@ router.get("/gallery", galleryPage);
 router.get("/refund", refundPage);
 router.get("/services", servicesPage);
 router.get("/pictures/getAll", getAllImages);
+router.get("/sendBookingRequest", sendBookingRequest);
 router.get("/health", (req, res) => res.json({ status: "OK" }));
 
 module.exports = router;
