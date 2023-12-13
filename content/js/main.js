@@ -339,10 +339,12 @@
         },
         body: JSON.stringify({
           payload,
-          amount
+          amount,
         }),
       });
-      return response;
+      const responseData = await response.json();
+
+      if (responseData.success) window.location.href = `/requestSent`;
     });
   };
   const changePayButtonPrice = async () => {
