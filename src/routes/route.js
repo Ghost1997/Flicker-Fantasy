@@ -23,7 +23,10 @@ router.post("/theater/saveInfo", saveTheaterInfo);
 router.post("/theater/getSlotInfo", getSlotInfo);
 router.post("/booking/bookTheater", confirmBooking);
 router.post("/testimonial/save", saveTestimonial);
-router.get("/", homePage);
+// router.get("/", homePage);
+router.get("/", async (req, res) => {
+  res.render("offlinePage");
+});
 router.get("/about", aboutPage);
 router.get("/terms", termsPage);
 router.post("/calculate", calculate);
