@@ -43,7 +43,9 @@ const homePage = async (req, res) => {
 const aboutPage = async (req, res) => {
   try {
     const whatsApp = process.env.BUSINESS_NUMBER;
-    res.render("about", { whatsApp });
+    const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 }).limit(4);
+    const imageUrlArray = images.map((ele) => ele.url);
+    res.render("about", { whatsApp, imageUrlArray });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
