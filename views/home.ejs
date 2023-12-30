@@ -255,18 +255,33 @@
           <p class="radioOption-Item">
             <input type="radio" name="theaterId" id="BannerType1" value="0"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
-              data-bs-target="#datePickerModal" data-theater="executive" />
+              data-bs-target="#datePickerModal" data-theater="one" />
             <label for="BannerType1" style="background-color:#fff;">
               <i class="fa fa-3x fa-users text-primary mb-4"></i>
 
-              <strong>Executive Theater</strong>
+              <strong>Theater 1</strong>
               <br />
               <br />
-              ₹<%= priceInfo['0'] %> upto 4 people
+              Starting ₹<%= priceInfo['0'] %> upto 4 people
                 <br>
                 <br>
                 <%= slotInfo['0'] %>
             </label>
+            </label>
+          </p>
+          <p class="radioOption-Item">
+            <input style="background-color: gold;" type="radio" name="theaterId" id="BannerType3" value="1"
+              class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
+              data-bs-target="#datePickerModal" data-theater="two" />
+            <label for="BannerType3" style="background-color:#fff;">
+              <i class="fa fa-3x fa-users text-primary mb-4"></i>
+              <strong>Theater 2</strong>
+              <br />
+              <br />
+              Starting ₹<%= priceInfo['1'] %> upto 4 people
+                <br>
+                <br>
+                <%= slotInfo['1'] %>
             </label>
           </p>
           <p class="radioOption-Item">
@@ -279,25 +294,10 @@
               <strong>Couples Theater</strong>
               <br />
               <br />
-              ₹<%= priceInfo['2'] %> upto 2 people
+              Starting ₹<%= priceInfo['2'] %> upto 2 people
                 <br>
                 <br>
                 <%= slotInfo['2'] %>
-            </label>
-          </p>
-          <p class="radioOption-Item">
-            <input style="background-color: gold;" type="radio" name="theaterId" id="BannerType3" value="1"
-              class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
-              data-bs-target="#datePickerModal" data-theater="standerd" />
-            <label for="BannerType3" style="background-color:#fff;">
-              <i class="fa fa-3x fa-user text-primary mb-4"></i>
-              <strong>Standard Theater</strong>
-              <br />
-              <br />
-              ₹<%= priceInfo['1'] %> upto 6 people
-                <br>
-                <br>
-                <%= slotInfo['1'] %>
             </label>
           </p>
         </div>

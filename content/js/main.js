@@ -63,8 +63,8 @@
   theaterRadios.forEach((radio) => {
     radio.addEventListener("click", function () {
       const theaterType = this.getAttribute("data-theater");
-      if (theaterType === "executive") theaterId = 0;
-      else if (theaterType === "standerd") theaterId = 1;
+      if (theaterType === "one") theaterId = 0;
+      else if (theaterType === "two") theaterId = 1;
       else if (theaterType === "couple") theaterId = 2;
 
       if (theaterId === 2) showMovieContainer("movie-container2");
@@ -188,51 +188,40 @@
   <label for="numberOfPeople" class="form-label">Number of People</label>
   <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="6" required>
 </div>
-
+<div class="mb-3">
+  <label for="decoration" class="form-label">Celebrating</label>
+  <select name="decoration" class="form-select" id="decoration" required >
+      <option value="" selected>Not Required</option>
+      <option value="privateTheater">Private Theater - @1199</option>
+      <option value="birthday">Surprise Birthday - @1999</option>
+      <option value="anniversary">Surprise Anniversary - @1999</option>
+      <option value="momToBe">Surprise Mom To Be - @2299</option>
+      <option value="brideToBe">Surprise Bride To Be - @2299</option>
+</select>
+</div>
 <div class="mb-3">
   <label for="cake" class="form-label">Cake</label>
   <select name="cake" class="form-select" id="cake">
     <option value="" selected>Not Required</option>
-    <option value="blackForest">Black Forest - ₹500</option>
-    <option value="butterScotch">Butter Scotch - ₹500</option>
-    <option value="chocolate">Chocolate - ₹500</option>
-    <option value="pineApple">Pine Apple - ₹500</option>
-    <option value="roundRedVelvet">Round Red Velvet - ₹600</option>
-    <option value="buleBerry">Blueberry - ₹600</option>
-    <option value="mangoCake">Mango Cake - ₹600</option>
-    <option value="heartRedVelvet">Heart Red Velvet - ₹600</option>
-    <option value="deathByChocolate">Death By Chocolate - ₹700</option>
-    <option value="chocoAlmond">Choco Almond - ₹750</option>
-    <option value="heartPinata">Heart Pinata - ₹850</option>
+    <option value="blackForest">Black Forest</option>
+    <option value="butterScotch">Butter Scotch</option>
+    <option value="chocolate">Chocolate</option>
+    <option value="pineApple">Pine Apple</option>
+    <option value="roundRedVelvet">Round Red Velvet</option>
+    <option value="buleBerry">Blueberry</option>
+    <option value="mangoCake">Mango Cake</option>
+    <option value="heartRedVelvet">Heart Red Velvet</option>
+    <option value="deathByChocolate">Death By Chocolate</option>
+    <option value="chocoAlmond">Choco Almond</option>
+    <option value="heartPinata">Heart Pinata</option>
   </select>
 </div>
-
 <div class="mb-3">
-  <label for="decoration" class="form-label">Decoration</label>
-  <select name="decoration" class="form-select" id="decoration">
-  <option value="" selected>Not Required</option>
-  <optgroup label="Regular Decoration - ₹300">
-      <option value="Birthday">Birthday</option>
-      <option value="Anniversary">Anniversary</option>
-      <option value="Romantic Date">Romantic Date</option>
-      <option value="Marriage Proposal">Marriage Proposal</option>
-      <option value="Bride To Be">Bride To Be</option>
-      <option value="Farewell">Farewell</option>
-      <option value="Congratulations">Congratulations</option>
-      <option value="Baby Shower">Baby Shower</option>
-  </optgroup>
-  <optgroup label="Advanced Decoration - ₹500">
-      <option value="Birthday-Advance">Birthday - Advanced</option>
-      <option value="Anniversary-Advance">Anniversary - Advanced</option>
-      <option value="Romantic Date-Advance">Romantic Date - Advanced</option>
-      <option value="Marriage Proposal-Advance">Marriage Proposal - Advanced</option>
-      <option value="Bride To Be-Advance">Bride To Be - Advanced</option>
-      <option value="Farewell-Advance">Farewell - Advanced</option>
-      <option value="Congratulations-Advance">Congratulations - Advanced</option>
-      <option value="Baby Shower-Advance">Baby Shower - Advanced</option>
-  </optgroup>
-</select>
+  
+  <img src="" alt="Decoration" id="decorationImage" style="max-width: 100%; max-height: 100%;">
 </div>
+
+
 <button type="submit" id="checkPrice" class="btn btn-primary">Check Price</button>
 <br>
 <br>
@@ -268,9 +257,50 @@
 
     const cakeDropdown = document.getElementById("cake");
     const decorationDropdown = document.getElementById("decoration");
-
+    const noOfPerson = document.getElementById("numberOfPeople");
     cakeDropdown.addEventListener("change", changePayButtonPrice);
+    noOfPerson.addEventListener("change", changePayButtonPrice);
     decorationDropdown.addEventListener("change", changePayButtonPrice);
+
+    const decorationImage = document.getElementById("decorationImage");
+
+    decorationDropdown.addEventListener("change", function () {
+      const selectedOption = decorationDropdown.value;
+
+      // Set the image source based on the selected option
+      switch (selectedOption) {
+        case "privateTheater":
+          setDecorationImageSource("/img/theater.jpg");
+          break;
+        case "birthday":
+          setDecorationImageSource("/img/birthday.jpg");
+          break;
+        case "anniversary":
+          setDecorationImageSource("/img/anniversary.jpg");
+          break;
+        case "momToBe":
+          setDecorationImageSource("/img/mom.jpg");
+          break;
+        case "brideToBe":
+          setDecorationImageSource("/img/bride.jpg");
+          break;
+        default:
+          setDecorationImageSource("");
+      }
+    });
+
+    // Trigger the change event to initialize the image based on the default selected option
+    decorationDropdown.dispatchEvent(new Event("change"));
+    function setDecorationImageSource(source) {
+      // Check if the source is valid
+      if (source && source.trim() !== "") {
+        decorationImage.src = source;
+        decorationImage.style.display = "block"; // Show the image
+      } else {
+        decorationImage.src = "";
+        decorationImage.style.display = "none"; // Hide the image
+      }
+    }
   }
 
   const calculatePrice = async () => {
@@ -302,6 +332,7 @@
     });
     return response;
   };
+
   const updatePayButtonPrice = async (amount, orderId, payload) => {
     const payButton = document.getElementById("payButton");
     payButton.textContent = `Send Booking Request: ₹${amount}`;

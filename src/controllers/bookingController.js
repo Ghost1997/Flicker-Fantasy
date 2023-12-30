@@ -1,6 +1,6 @@
 const Booking = require("../models/bookingModel");
 const { getTodaysFormattedDate, sendEmail } = require("../utils/helper");
-const { pricingInfo, theaterType, decoration, decorationPrice, cakePricingInfo, cakeName, advanceDecorationPrice, slotInfo } = require("../utils/constants");
+const { theaterType, decoration, decorationPrice, cakeName, advanceDecorationPrice, slotInfo } = require("../utils/constants");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
@@ -14,7 +14,8 @@ const calculate = async (req, res) => {
       key_id: process.env.PAYMENT_API_KEY,
       key_secret: process.env.PAYMENT_SECRET,
     });
-    const amount = calculateAmount(payload.theaterid, payload.cake, payload.decoration);
+
+    const amount = calculateTotalCost(payload.theaterid, payload.decoration, payload.count);
     const dateValue = getTodaysFormattedDate();
     const receipt = dateValue.timeStamp.toString();
     const options = {
@@ -31,26 +32,59 @@ const calculate = async (req, res) => {
   }
 };
 
-const calculateAmount = (theaterId, cake, decoration) => {
-  try {
-    let amount = 0;
-    const theaterTypeSelected = theaterType[theaterId];
-    amount += pricingInfo[theaterTypeSelected];
+const calculateTotalCost = (theaterId, packageType, numberOfPeople) => {
+  console.log(theaterId, packageType, numberOfPeople);
 
-    if (cake.length && cakePricingInfo[cake]) {
-      amount += cakePricingInfo[cake];
-    }
+  // Base prices for each package
+  const packagePrices = {
+    birthday: 1999,
+    anniversary: 1999,
+    brideToBe: 2299,
+    momToBe: 2299,
+    privateTheater: {
+      couple: 1199,
+      one: 1299,
+      two: 1299,
+    },
+  };
 
-    if (decoration.length) {
-      decoration.includes("Advance") ? (amount += advanceDecorationPrice) : (amount += decorationPrice);
-    }
+  const theaters = {
+    0: "one",
+    1: "two",
+    2: "couple",
+  };
+  const theaterType = theaters[theaterId];
 
-    const additionalCharge = amount * 0.025; // 2.5% of the total amount
-    amount += parseInt(additionalCharge);
-    return amount;
-  } catch (err) {
-    console.log(err);
+  // Seating capacity for each theater type
+  const seatingCapacity = {
+    couple: 2,
+    one: 6,
+    two: 6,
+  };
+
+  // Additional charge for extra person above 4 in one and two
+  const extraPersonCharge = 200;
+
+  // Tax rate
+  const taxRate = 2.5 / 100;
+
+  // Calculate base cost based on theater type and package type
+  let baseCost;
+  if (packageType === "privateTheater") {
+    baseCost = theaterType === "couple" ? packagePrices.privateTheater.couple : packagePrices.privateTheater.one;
+  } else {
+    baseCost = packagePrices[packageType];
   }
+  const extraPersonCount = numberOfPeople > 4 ? numberOfPeople - 4 : 0;
+  baseCost += extraPersonCount * extraPersonCharge;
+
+  const tax = baseCost * taxRate;
+  const totalCost = baseCost + tax;
+
+  console.log(`baseCost: ${baseCost}`);
+  console.log(`tax: ${tax}`);
+  console.log(`totalCost: ${totalCost}`);
+  return parseInt(totalCost);
 };
 
 const confirmBooking = async (req, res) => {
@@ -167,7 +201,21 @@ const bookingRequestNotification = async (finalOutput) => {
     const client = require("twilio")(accountSid, authToken);
 
     const sendMessage = await client.messages.create({
-      body: `You have a new booking request\n\nBooking Request details:\n\n*Name*: ${finalOutput.name}\n*Email*: ${finalOutput.email}\n*Phone*: ${finalOutput.contactId}\n*Slot Info*: ${finalOutput.slotInfo}\n*Number of people*: ${finalOutput.noOfPerson}\n*Theater*: ${finalOutput.theaterName}\n*Decoration*: ${finalOutput.decorationName}\n*Cake*: ${finalOutput.cakeName}\n*Total amount*: Rs ${finalOutput.amount}\n\nTake appropriate action`,
+      body: `You have a new booking request
+
+      Booking Request details:
+      
+      Name: ${finalOutput.name}
+      Email: ${finalOutput.email}
+      Phone: ${finalOutput.contactId}
+      Slot Info: ${finalOutput.slotInfo}
+      Number of people: ${finalOutput.noOfPerson}
+      Theater: ${finalOutput.theaterName}
+      Decoration: ${finalOutput.decorationName}
+      Cake: ${finalOutput.cakeName}
+      Total amount: Rs ${finalOutput.amount}
+      
+      Take appropriate action`,
       from: `whatsapp:${process.env.TWILLIO_SENDER_PHONE}`,
       to: `whatsapp:${process.env.TWILLIO_RECIVER_PHONE}`,
     });

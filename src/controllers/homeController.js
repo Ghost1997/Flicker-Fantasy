@@ -16,15 +16,15 @@ const homePage = async (req, res) => {
         name: ele.name,
       };
     });
-    const [executive, standerd, couple] = await Promise.all([getSlot(0, today), getSlot(1, today), getSlot(2, today)]);
+    const [one, two, couple] = await Promise.all([getSlot(0, today), getSlot(1, today), getSlot(2, today)]);
     const slotInfo = {
-      0: slotAvailable(executive, today),
-      1: slotAvailable(standerd, today),
+      0: slotAvailable(one, today),
+      1: slotAvailable(two, today),
       2: slotAvailable(couple, today),
     };
     const priceInfo = {
-      0: pricingInfo.executive,
-      1: pricingInfo.standerd,
+      0: pricingInfo.one,
+      1: pricingInfo.two,
       2: pricingInfo.couple,
     };
     const testimonialArray = testimonials.map((ele) => {
