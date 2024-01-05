@@ -197,6 +197,7 @@
       <option value="anniversary">Surprise Anniversary - @1999</option>
       <option value="momToBe">Surprise Mom To Be - @2299</option>
       <option value="brideToBe">Surprise Bride To Be - @2299</option>
+      <option value="marriage">Surprise Love/Marriage Proposal - @2999</option>
 </select>
 </div>
 <div class="mb-3">
@@ -211,9 +212,6 @@
     <option value="buleBerry">Blueberry</option>
     <option value="mangoCake">Mango Cake</option>
     <option value="heartRedVelvet">Heart Red Velvet</option>
-    <option value="deathByChocolate">Death By Chocolate</option>
-    <option value="chocoAlmond">Choco Almond</option>
-    <option value="heartPinata">Heart Pinata</option>
   </select>
 </div>
 <div class="mb-3">
@@ -283,6 +281,9 @@
           break;
         case "brideToBe":
           setDecorationImageSource("/img/bride.jpg");
+          break;
+        case "marriage":
+          setDecorationImageSource("/img/marriage.jpg");
           break;
         default:
           setDecorationImageSource("");
