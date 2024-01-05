@@ -152,6 +152,26 @@
       margin: 5px;
       /* Adjust this value */
     }
+
+    .disclaimer {
+      background-color: #f8d7da;
+      /* Light red background color */
+      color: #721c24;
+      /* Dark red text color */
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #f5c6cb;
+      /* Border color */
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    /* Style the paragraph within the disclaimer */
+    .disclaimer p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -175,6 +195,7 @@
             style="width: 140px; height: 105px; margin-right: -25px; margin-left: -40px;">
           <a href="/">
             <h1 class="text-primary" style="margin-top: 20px;">Flicker Fantasy</h1>
+            <h6 class="text-primary">Private theater & celebration space</h6>
           </a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -197,6 +218,12 @@
     <br />
     <br />
     <br />
+    <br />
+    <br />
+    <div class="disclaimer">
+      <p>These are just sample decoration designs. We can't promise the same design and the color of the balloon.
+        Thank you 😊</p>
+    </div>
     <br />
     <div class="container">
       <% images.forEach((ele,index)=> { %>
@@ -229,6 +256,8 @@
               </div>
               <% }); %>
           </div>
+
+
     </div>
   </div>
 
