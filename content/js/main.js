@@ -143,12 +143,12 @@
       availableSlots.forEach((slot) => {
         const slotButton = document.createElement("button");
         slotButton.className = "slot-button";
-        slotButton.innerHTML = slot.value;
+        slotButton.innerHTML = slot.slotname;
         slotButton.name = "slot";
         slotButton.onclick = function () {
           slotContainer.classList.add("disabled");
           datePicker.disabled = true;
-          openBookingForm(selectedDate, slot.value, slot.id, theaterId);
+          openBookingForm(selectedDate, slot.slotname, slot.id, theaterId);
         };
         slotContainer.appendChild(slotButton);
       });
