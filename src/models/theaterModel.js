@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const slotSchema = new mongoose.Schema({
   id: Number,
   value: String,
+  slotname: String,
 });
 
 const theaterSchema = new mongoose.Schema({

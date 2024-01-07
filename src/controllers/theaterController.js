@@ -49,14 +49,19 @@ function checkTimeSlot(timeSlot) {
 
 const getSlot = async (theaterId, dateValue) => {
   const theater = await Theater.findOne({ theaterId });
-
   const bookings = await Booking.find({ theaterId, bookingDate: dateValue }, "bookingId bookingDate theaterId slotId bookingStatus");
 
-  const result = theater.slots.map((ele) => ({
-    id: ele.id,
-    value: ele.value,
-    booked: bookings.some((booking) => booking.bookingDate === dateValue && booking.slotId === ele.id && booking.bookingStatus === "Confirmed"),
-  }));
+  const result = (theater.slots || []).map((ele) => {
+    const isSunday = moment(dateValue, "DD/MM/YYYY").day() === 0; // Check if it's a Sunday
+    const isLastSlot = ele.id === theater.slots.length - 1; // Check if it's the last slot
+
+    return {
+      id: ele.id,
+      value: ele.value,
+      slotname: ele.slotname,
+      booked: bookings.some((booking) => booking.bookingDate === dateValue && booking.slotId === ele.id && booking.bookingStatus === "Confirmed") || (isSunday && isLastSlot), // Mark as booked on Sunday for the last slot
+    };
+  });
 
   const finalSlots = result.map((ele) => {
     if (dateValue === moment().tz("Asia/Kolkata").format("DD/MM/YYYY") && ele.booked === false) {
@@ -64,6 +69,7 @@ const getSlot = async (theaterId, dateValue) => {
     }
     return ele;
   });
+
   return finalSlots;
 };
 
