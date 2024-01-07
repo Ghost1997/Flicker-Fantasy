@@ -30,6 +30,13 @@
       text-align: center;
     }
 
+    .embedsocial-hashtag {
+      display: inline-block;
+      margin-top: 20px;
+      margin-left: 4rem;
+      /* Adjust the margin as needed */
+    }
+
     .movie-container {
       margin: 20px 0px;
       display: flex;
@@ -259,7 +266,7 @@
         <div class="radio-with-Icon">
           <p class="radioOption-Item">
             <input type="radio" name="theaterId" id="BannerType1" value="0"
-              class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
+              class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="one" />
             <label for="BannerType1" style="background-color:#fff;">
               <i class="fa fa-3x fa-users text-primary mb-4"></i>
@@ -385,7 +392,23 @@
         marriage proposal, a special day surprise for a loved one, or a relaxing movie night, everything from
         decorations, cakes, snacks, and drinks to make you feel special in complete privacy. We will make the best
         arrangements for your event. It's time to watch your favorite Movie</p>
+      <div class="embedsocial-hashtag" data-ref="eb28075ec1f461abec386b33f32cda40efa4088b">
+        <a class="feed-powered-by-es feed-powered-by-es-badge-img"
+          href="https://embedsocial.com/blog/embed-google-reviews/" target="_blank" title="Embed Google reviews">
+          <img src="https://embedsocial.com/cdn/images/embedsocial-icon.png" alt="EmbedSocial">
+        </a>
+      </div>
     </div>
+
+    <script>
+      (function (d, s, id) {
+        var js;
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://embedsocial.com/cdn/ht.js";
+        d.getElementsByTagName("head")[0].appendChild(js);
+      }(document, "script", "EmbedSocialHashtagScript"));
+    </script>
 
     <a href="https://wa.me/<%= whatsApp %>" class="whatsapp_float" target="_blank" rel="noopener noreferrer">
       <i class="fa fa-whatsapp whatsapp-icon"></i>
