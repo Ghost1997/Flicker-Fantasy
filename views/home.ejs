@@ -20,6 +20,16 @@
   <link href="css/style.css" rel="stylesheet" />
 
   <style>
+    .entertainment-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
     .movie-container {
       margin: 20px 0px;
       display: flex;
@@ -147,8 +157,8 @@
     }
 
     .slide img {
-      max-width: 80%;
-      max-height: 80%;
+      max-width: 100%;
+      max-height: 100%;
       display: block;
       margin: 0 auto;
     }
@@ -237,17 +247,11 @@
         <% imageUrlArray.forEach(ele=> { %>
 
           <div class="slide">
-            <img src="<%= ele.image %>" alt="Image 1">
-            <div class="slide-title">
-              <%= ele.name %> Theater
-            </div>
+            <img src="<%= ele %>" alt="Image 1">
           </div>
-
           <% }); %>
-            <!-- Add more slides here -->
       </div>
     </div>
-
     <hr>
     <h1 class="mb-5 text-center">Book Now</h1>
     <div class="center-align">
@@ -371,34 +375,17 @@
         </div>
       </form>
     </div>
+    <br />
 
-    <!-- Testimonial Start -->
-    <!-- <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-      <div class="container">
-        <div class="text-center">
-          <h5 class="section-title ff-secondary text-center text-primary fw-normal">Testimonial</h5>
-          <h1 class="mb-5">Our Clients Say!!!</h1>
-        </div>
-        <div class="owl-carousel testimonial-carousel">
-          <% testimonialArray.forEach(ele=> { %>
-            <div class="testimonial-item bg-transparent border rounded p-4">
-              <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-              <p>
-                <%= ele.comment %>
-              </p>
-              <div class="d-flex align-items-center">
-                <div class="ps-3">
-                  <h5 class="mb-1">
-                    <%= ele.name %>
-                  </h5>
-                </div>
-              </div>
-            </div>
-            <% }); %>
-        </div>
-      </div>
-    </div> -->
-    <!-- Testimonial End -->
+    <div class="entertainment-container">
+      <h2>Welcome to Flicker Fantasy!</h2>
+      <p>Flicker Fantasy is a Private theater and celebration space. We provide our guests with a premium theater
+        experience so they can watch their favorite movies and shows, celebrate special occasions, and create lasting
+        memories. The theater is located in Vijayanagar, Bangalore's heart. Whether it's a birthday, anniversary,
+        marriage proposal, a special day surprise for a loved one, or a relaxing movie night, everything from
+        decorations, cakes, snacks, and drinks to make you feel special in complete privacy. We will make the best
+        arrangements for your event. It's time to watch your favorite Movie</p>
+    </div>
 
     <a href="https://wa.me/<%= whatsApp %>" class="whatsapp_float" target="_blank" rel="noopener noreferrer">
       <i class="fa fa-whatsapp whatsapp-icon"></i>

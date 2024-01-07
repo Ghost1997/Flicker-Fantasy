@@ -8,14 +8,9 @@ const homePage = async (req, res) => {
     const whatsApp = process.env.BUSINESS_NUMBER;
     const imageCount = process.env.IMAGE_COUNT;
     const testimonialCount = process.env.FEEDBACK_COUNT;
-    const [images, testimonials] = await Promise.all([Picture.find({ type: "home" }).sort({ createdDate: -1 }).limit(imageCount), Testimonial.find().sort({ createdAt: -1 }).limit(testimonialCount)]);
+    const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 }).limit(imageCount);
     const today = moment().tz("Asia/Kolkata").format("DD/MM/YYYY");
-    const imageUrlArray = images.map((ele) => {
-      return {
-        image: ele.url,
-        name: ele.name,
-      };
-    });
+    const imageUrlArray = images.map((ele) => ele.url);
     const [one, two, couple] = await Promise.all([getSlot(0, today), getSlot(1, today), getSlot(2, today)]);
     const slotInfo = {
       0: slotAvailable(one, today),
@@ -27,13 +22,8 @@ const homePage = async (req, res) => {
       1: pricingInfo.two,
       2: pricingInfo.couple,
     };
-    const testimonialArray = testimonials.map((ele) => {
-      return {
-        name: ele.name,
-        comment: ele.comment,
-      };
-    });
-    res.render("home", { imageUrlArray, testimonialArray, slotInfo, priceInfo, whatsApp });
+
+    res.render("home", { imageUrlArray, slotInfo, priceInfo, whatsApp });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Server Error" });
