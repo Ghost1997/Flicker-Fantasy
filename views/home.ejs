@@ -37,24 +37,6 @@
       /* Adjust the margin as needed */
     }
 
-    .movie-container {
-      margin: 20px 0px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    .movie-container select {
-      appearance: none;
-      -moz-appearance: none;
-      -webkit-appearance: none;
-      border: 0;
-      padding: 5px 15px;
-      margin-bottom: 40px;
-      font-size: 14px;
-      border-radius: 5px;
-    }
 
     .container {
       perspective: 1000px;
@@ -181,25 +163,35 @@
       text-align: center;
     }
 
-    @media (max-width: 767px) {
-      .navbar-brand img {
-        max-height: 70px;
-      }
 
-      .navbar-toggler {
-        margin-right: 0;
-      }
 
-      .navbar-nav .nav-link {
-        margin-left: 0;
-        padding: 15px 0;
-        font-size: 14px;
-      }
+    .radio-with-Icon {
+      display: flex;
+      justify-content: space-evenly;
+    }
 
-      .section-title::before,
-      .section-title::after {
-        display: none;
-      }
+    .radioOption-Item {
+      background: url('/img/movie1.jpg') center/cover no-repeat;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      width: 300px;
+      position: relative;
+      margin: 10px;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .radioOption-Item label {
+      background-color: black;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 
@@ -223,7 +215,7 @@
             style="width: 140px; height: 105px; margin-right: -25px; margin-left: -40px;">
           <a href="/">
             <h1 class="text-primary" style="margin-top: 20px;">Flicker Fantasy</h1>
-            <h6 class="text-primary">Private theater & celebration space</h6>
+            <p style="margin-top: -1rem;" class="text-primary">Private theater & celebration space</p>
           </a>
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -268,10 +260,9 @@
             <input type="radio" name="theaterId" id="BannerType1" value="0"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="one" />
-            <label for="BannerType1" style="background-color:#fff;">
-              <i class="fa fa-3x fa-users text-primary mb-4"></i>
-
+            <label for="BannerType1">
               <strong>Theater 1</strong>
+              <br />
               <br />
               <br />
               Starting ₹<%= priceInfo['0'] %> upto 4 people
@@ -283,17 +274,18 @@
                   <%= slotInfo['0'] %>
                 </strong>
             </label>
-            </label>
+
           </p>
+
           <p class="radioOption-Item">
             <input style="background-color: gold;" type="radio" name="theaterId" id="BannerType3" value="1"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="two" />
-            <label for="BannerType3" style="background-color:#fff;">
-              <i class="fa fa-3x fa-users text-primary mb-4"></i>
+            <label for="BannerType3">
               <strong>Theater 2</strong>
               <br />
-              <br />
+              <br>
+              <br>
               Starting ₹<%= priceInfo['1'] %> upto 4 people
                 <br>
                 Additional members ₹200 extra
@@ -303,17 +295,18 @@
                   <%= slotInfo['1'] %>
                 </strong>
             </label>
+
           </p>
+
           <p class="radioOption-Item">
             <input type="radio" name="theaterId" id="BannerType2" value="2"
               class="ng-valid ng-dirty ng-touched ng-empty" aria-invalid="false" style="" data-bs-toggle="modal"
               data-bs-target="#datePickerModal" data-theater="couple" />
-            <label for="BannerType2" style="background-color:#fff;">
-              <i class="fa fa-3x fa-solid fa-heart text-primary mb-4"></i>
-
+            <label for="BannerType2">
               <strong>Couples Theater</strong>
               <br />
-              <br />
+              <br>
+              <br>
               Starting ₹<%= priceInfo['2'] %> upto 2 people
                 <br>
                 Additional members ₹200 extra
@@ -323,6 +316,7 @@
                   <%= slotInfo['2'] %>
                 </strong>
             </label>
+
           </p>
         </div>
 
