@@ -163,6 +163,22 @@
   function openBookingForm(slotDate, slotTime, slotId, theaterId) {
     modalBody.innerHTML = `
     <br/>
+    <div class="mb-3">
+  <label for="decoration" class="form-label">Celebration type</label>
+  <select name="decoration" class="form-select" id="decoration" required >
+      <option value="" selected>Not Required</option>
+      <option value="privateTheater">Private Theater - @1199</option>
+      <option value="birthday">Surprise Birthday - @1999</option>
+      <option value="anniversary">Surprise Anniversary - @1999</option>
+      <option value="momToBe">Surprise Mom To Be - @2299</option>
+      <option value="brideToBe">Surprise Bride To Be - @2299</option>
+      <option value="marriage">Surprise Love/Marriage Proposal - @2999</option>
+</select>
+</div>
+<div class="mb-3">
+
+<img src="" alt="Decoration" id="decorationImage" style="max-width: 100%; max-height: 100%;">
+</div>
       <h5>Date: ${slotDate} & Time: ${slotTime}</h5>
       <br/>
       <input type="hidden" value="${slotDate}" name="date" id="date">
@@ -186,40 +202,29 @@
 
 <div class="mb-3">
   <label for="numberOfPeople" class="form-label">Number of People</label>
-  <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="6" required>
+  <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="10" placeholder="1 - 10" required>
 </div>
-<div class="mb-3">
-  <label for="decoration" class="form-label">Celebrating</label>
-  <select name="decoration" class="form-select" id="decoration" required >
-      <option value="" selected>Not Required</option>
-      <option value="privateTheater">Private Theater - @1199</option>
-      <option value="birthday">Surprise Birthday - @1999</option>
-      <option value="anniversary">Surprise Anniversary - @1999</option>
-      <option value="momToBe">Surprise Mom To Be - @2299</option>
-      <option value="brideToBe">Surprise Bride To Be - @2299</option>
-      <option value="marriage">Surprise Love/Marriage Proposal - @2999</option>
-</select>
-</div>
+
 <div class="mb-3">
   <label for="cake" class="form-label">Cake</label>
   <select name="cake" class="form-select" id="cake">
     <option value="" selected>Not Required</option>
-    <option value="blackForest">Black Forest</option>
-    <option value="butterScotch">Butter Scotch</option>
-    <option value="chocolate">Chocolate</option>
-    <option value="pineApple">Pine Apple</option>
-    <option value="roundRedVelvet">Round Red Velvet</option>
-    <option value="buleBerry">Blueberry</option>
-    <option value="mangoCake">Mango Cake</option>
-    <option value="heartRedVelvet">Heart Red Velvet</option>
+    <option value="blackForestRound">Black Forest Round</option>
+    <option value="blackForestHeart">Black Forest Heart</option>
+    <option value="butterScotchRound">Butter Scotch Round</option>
+    <option value="butterScotchHeart">Butter Scotch Heart</option>
+    <option value="chocolateRound">Chocolate Round</option>
+    <option value="chocolateHeart">Chocolate Heart</option>
+    <option value="pineAppleRound">Pine Apple Round</option>
+    <option value="pineAppleHeart">Pine Apple Heart</option>
+    <option value="roundRedVelvetRound">Red Velvet Round</option>
+    <option value="roundRedVelvetHeart">Red Velvet Heart</option>
+    <option value="buleBerryRound">Blueberry Round</option>
+    <option value="buleBerryHeart">Blueberry Heart</option>
+    <option value="mangoCakeRound">Mango Cake Round</option>
+    <option value="mangoCakeHeart">Mango Cake Heart</option>
   </select>
 </div>
-<div class="mb-3">
-  
-  <img src="" alt="Decoration" id="decorationImage" style="max-width: 100%; max-height: 100%;">
-</div>
-
-
 <button type="submit" id="checkPrice" class="btn btn-primary">Check Price</button>
 <br>
 <br>
@@ -227,9 +232,6 @@
 <div class="mb-3 text-center">
 <button  id="payButton" style="display: none; background-color: green" class="btn btn-primary"></button>
 </div>
-
-
-
 
     `;
 
@@ -256,6 +258,7 @@
     const cakeDropdown = document.getElementById("cake");
     const decorationDropdown = document.getElementById("decoration");
     const noOfPerson = document.getElementById("numberOfPeople");
+
     cakeDropdown.addEventListener("change", changePayButtonPrice);
     noOfPerson.addEventListener("change", changePayButtonPrice);
     decorationDropdown.addEventListener("change", changePayButtonPrice);
