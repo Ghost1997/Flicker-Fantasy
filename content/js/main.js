@@ -202,7 +202,7 @@
 
 <div class="mb-3">
   <label for="numberOfPeople" class="form-label">Number of People</label>
-  <input type="number" name="count" class="form-control" id="numberOfPeople" min="1" max="10" placeholder="1 - 10" required>
+  <input type="number" name="count" class="form-control" id="numberOfPeople" required>
 </div>
 
 <div class="mb-3">
@@ -225,6 +225,19 @@
     <option value="mangoCakeHeart">Mango Cake Heart</option>
   </select>
 </div>
+<div class="mb-3">
+  <label for="message" class="form-label">Message on Cake</label>
+  <input type="message" name="message" class="form-control" id="message" placeholder="Upto 25 Character" maxlength="25">
+  <small id="charCount" class="form-text text-muted">0/25 characters</small>
+</div>
+<div class="mb-3">
+  <label for="chocolate" class="form-label">Add On: Chocolates</label>
+  <select name="chocolate" class="form-select" id="chocolate">
+    <option value="" selected>No</option>
+    <option value="yes">Yes</option>
+    </select>
+    <small  class="form-text text-muted"><a href="/img/chocolate.jpg" target="_blank">Click here</a> to know more</small>
+</div>
 <button type="submit" id="checkPrice" class="btn btn-primary">Check Price</button>
 <br>
 <br>
@@ -234,7 +247,24 @@
 </div>
 
     `;
+    const theaterid = document.getElementById("theater").value;
+    const numberOfPeopleInput = document.getElementById("numberOfPeople");
+    if (theaterid === "2") {
+      numberOfPeopleInput.max = 4;
+      numberOfPeopleInput.min = 1;
+      numberOfPeopleInput.placeholder = "1 - 4";
+    } else {
+      console.log(theaterid);
+      numberOfPeopleInput.max = 10;
+      numberOfPeopleInput.min = 1;
+      numberOfPeopleInput.placeholder = "1 - 10";
+    }
+    const messageInput = document.getElementById("message");
+    const charCount = document.getElementById("charCount");
 
+    messageInput.addEventListener("input", function () {
+      charCount.textContent = `${messageInput.value.length}/25 characters`;
+    });
     // Show the modal
     const datePickerModal = new bootstrap.Modal(document.getElementById("datePickerModal"));
     datePickerModal.show();
