@@ -50,7 +50,7 @@
     }
   });
 
-  const rKey = "rzp_test_OdnawryqhvxPn7";
+  const rKey = "rzp_test_3VHA6PauX0jlhZ";
 
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
@@ -186,7 +186,7 @@
       <input type="hidden" value="${theaterId}" name="theater" id="theater">
 
 <div class="mb-3">
-  <label for="name" class="form-label">Name</label>
+  <label for="name" class="form-label">Booking Name</label>
   <input type="text" name="name" class="form-control" id="name" required>
 </div>
 
@@ -347,6 +347,9 @@
     const count = document.getElementById("numberOfPeople").value;
     const decoration = document.getElementById("decoration").value;
     const cake = document.getElementById("cake").value;
+    const message = document.getElementById("message").value;
+    const chocolate = document.getElementById("chocolate").value;
+    console.log(message, chocolate);
     const response = await fetch(`/calculate`, {
       method: "POST",
       headers: {
@@ -362,6 +365,8 @@
         decoration,
         cake,
         theaterid,
+        message,
+        chocolate,
       }),
     });
     return response;
@@ -369,48 +374,48 @@
 
   const updatePayButtonPrice = async (amount, orderId, payload) => {
     const payButton = document.getElementById("payButton");
-    payButton.textContent = `Send Booking Request: ₹${amount}`;
+    payButton.textContent = `Book Now: ₹${amount}`;
     payButton.style.display = "inline";
-    // payButton.addEventListener("click", async function () {
-    //   const options = {
-    //     key: rKey, // Replace with your actual Razorpay API key
-    //     amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
-    //     currency: "INR",
-    //     name: "Flicker Fantasy",
-    //     description: "Booking Payment",
-    //     order_id: orderId,
-    //     prefill: {
-    //       name: payload.name,
-    //       email: payload.email,
-    //       contact: payload.whatsapp,
-    //     },
-    //     handler: async (response) => {
-    //       const bookingResponse = await confirmBooking(response, payload);
-    //       const responseData = await bookingResponse.json();
-    //       const queryParams = new URLSearchParams(responseData).toString();
-    //       window.location.href = `/booking/success?${queryParams}`;
-    //     },
-    //   };
-
-    //   const rzp = new Razorpay(options);
-    //   rzp.open();
-    // });
-
-    payButton.addEventListener("click", async () => {
-      const response = await fetch(`/sendBookingRequest`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    payButton.addEventListener("click", async function () {
+      const options = {
+        key: rKey, // Replace with your actual Razorpay API key
+        amount: amount * 100, // Razorpay amount is in paisa, so multiply by 100
+        currency: "INR",
+        name: "Flicker Fantasy",
+        description: "Booking Payment",
+        order_id: orderId,
+        prefill: {
+          name: payload.name,
+          email: payload.email,
+          contact: payload.whatsapp,
         },
-        body: JSON.stringify({
-          payload,
-          amount,
-        }),
-      });
-      const responseData = await response.json();
+        handler: async (response) => {
+          const bookingResponse = await confirmBooking(response, payload);
+          const responseData = await bookingResponse.json();
+          const queryParams = new URLSearchParams(responseData).toString();
+          window.location.href = `/booking/success?${queryParams}`;
+        },
+      };
 
-      if (responseData.success) window.location.href = `/requestSent`;
+      const rzp = new Razorpay(options);
+      rzp.open();
     });
+
+    // payButton.addEventListener("click", async () => {
+    //   const response = await fetch(`/sendBookingRequest`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       payload,
+    //       amount,
+    //     }),
+    //   });
+    //   const responseData = await response.json();
+
+    //   if (responseData.success) window.location.href = `/requestSent`;
+    // });
   };
   const changePayButtonPrice = async () => {
     const payButton = document.getElementById("payButton");

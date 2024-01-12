@@ -33,14 +33,13 @@ const calculate = async (req, res) => {
 };
 
 const calculateTotalCost = (theaterId, packageType, numberOfPeople) => {
-  console.log(theaterId, packageType, numberOfPeople);
-
   // Base prices for each package
   const packagePrices = {
     birthday: 1999,
     anniversary: 1999,
     brideToBe: 2299,
     momToBe: 2299,
+    marriage: 2999,
     privateTheater: {
       couple: 1199,
       one: 1299,
@@ -81,9 +80,6 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople) => {
   const tax = baseCost * taxRate;
   const totalCost = baseCost + tax;
 
-  console.log(`baseCost: ${baseCost}`);
-  console.log(`tax: ${tax}`);
-  console.log(`totalCost: ${totalCost}`);
   return parseInt(totalCost);
 };
 
@@ -91,6 +87,7 @@ const confirmBooking = async (req, res) => {
   try {
     const { paymentInfo, userInfo } = req.body;
 
+    console.log(paymentInfo, userInfo);
     // Validate HMAC Signature
     const hmac = crypto.createHmac("sha256", process.env.PAYMENT_SECRET);
     hmac.update(paymentInfo.razorpay_order_id + "|" + paymentInfo.razorpay_payment_id);
