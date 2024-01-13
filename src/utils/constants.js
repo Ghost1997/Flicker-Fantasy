@@ -11,39 +11,30 @@ const theaterType = {
 };
 
 const cakeName = {
-  blackForest: "Black Forest",
-  butterScotch: "Butter Scotch",
-  chocolate: "Chocolate",
-  pineApple: "Pine Apple",
-  roundRedVelvet: "Round Red Velvet",
-  buleBerry: "Blueberry",
-  mangoCake: "Mango Cake",
-  heartRedVelvet: "Heart Red Velvet",
-  deathByChocolate: "Death By Chocolate",
-  chocoAlmond: "Choco Almond",
-  heartPinata: "Heart Pinata",
+  blackForestRound: "Black Forest Round",
+  blackForestHeart: "Black Forest Heart",
+  butterScotchRound: "Butter Scotch Round",
+  butterScotchHeart: "Butter Scotch Heart",
+  chocolateRound: "Chocolate Round",
+  chocolateHeart: "Chocolate Heart",
+  pineAppleRound: "Pine Apple Round",
+  pineAppleHeart: "Pine Apple Heart",
+  buleBerryRound: "Blueberry Round",
+  buleBerryHeart: "Blueberry Heart",
+  mangoCakeRound: "Mango Cake Round",
+  mangoCakeHeart: "Mango Cake Heart",
+  roundRedVelvetRound: "Red Velvet Round",
+  roundRedVelvetHeart: "Red Velvet Heart",
 };
 
-const decorationPrice = 300;
-const advanceDecorationPrice = 500;
-const decoration = [
-  "Birthday",
-  "Anniversary",
-  "Romantic Date",
-  "Marriage Proposal",
-  "Bride To Be",
-  "Farewell",
-  "Congratulations",
-  "Baby Shower",
-  "Birthday-Advance",
-  "Anniversary-Advance",
-  "Romantic Date-Advance",
-  "Marriage Proposal-Advance",
-  "Bride To Be-Advance",
-  "Farewell-Advance",
-  "Congratulations-Advance",
-  "Baby Shower-Advance",
-];
+const decoration = {
+  privateTheater: "Private Theater",
+  birthday: "Surprise Birthday",
+  anniversary: "Surprise Anniversary",
+  momToBe: "Surprise Mom To Be",
+  brideToBe: "Surprise Bride To Be",
+  marriage: "Surprise Love/Marriage Proposal ",
+};
 const emailSubject = "Flicker Fantasy Order Confirmation";
 
 const slotInfo = [
@@ -168,4 +159,4 @@ const slotInfo = [
     ],
   },
 ];
-module.exports = { advanceDecorationPrice, pricingInfo, theaterType, decoration, decorationPrice, cakeName, emailSubject, slotInfo };
+module.exports = { pricingInfo, theaterType, decoration, cakeName, emailSubject, slotInfo };

@@ -1,138 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Success</title>
     <style>
-      body {
-          font-family: Arial, sans-serif;
-          background-color: #f8f8f8;
-          text-align: center;
-          margin: 0;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+            margin: 0;
+        }
 
-      .container {
-          background-color: #ffffff;
-          border-radius: 8px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          padding: 20px;
-          margin: 20px auto;
-          max-width: 600px;
-      }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
 
-      .brand-name {
-          font-size: 28px;
-          color: #007bff;
-          margin-bottom: 10px;
-      }
+        .brand-name {
+            font-size: 28px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
 
-      .logo {
-          width: 200px;
-          height: auto;
-      }
+        .logo {
+            width: 200px;
+            height: auto;
+        }
 
-      h1 {
-          font-size: 28px;
-          color: #333333;
-          margin-bottom: 10px;
-      }
+        h1 {
+            font-size: 28px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
 
-      h2 {
-          font-size: 24px;
-          color: #333333;
-          margin-bottom: 10px;
-      }
+        h2 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+        }
 
-      p {
-          font-size: 18px;
-          color: #666666;
-          margin-bottom: 20px;
-      }
+        p {
+            font-size: 18px;
+            color: #666666;
+            margin-bottom: 20px;
+        }
 
-      .order-details {
-          background-color: #f2f2f2;
-          padding: 15px;
-          border-radius: 4px;
-          font-size: 16px;
-          margin-bottom: 20px;
-          text-align: left;
-      }
+        .order-details {
+            background-color: #f2f2f2;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
 
-      .btn-container {
-          margin-top: 20px;
-      }
+        .btn-container {
+            margin-top: 20px;
+        }
 
-      .btn {
-          display: inline-block;
-          padding: 10px 20px;
-          background-color: #007bff;
-          color: #ffffff;
-          text-decoration: none;
-          border-radius: 4px;
-          font-weight: bold;
-          transition: background-color 0.3s ease;
-          margin-right: 10px;
-          font-size: 16px;
-      }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+            font-size: 16px;
+        }
 
-      .btn:hover {
-          background-color: #0056b3;
-      }
+        .btn:hover {
+            background-color: #0056b3;
+        }
 
-      @media screen and (max-width: 768px) {
-          .container {
-              padding: 15px;
-          }
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
 
-          h1 {
-              font-size: 24px;
-          }
+            h1 {
+                font-size: 24px;
+            }
 
-          h2 {
-              font-size: 20px;
-          }
+            h2 {
+                font-size: 20px;
+            }
 
-          p {
-              font-size: 16px;
-          }
+            p {
+                font-size: 16px;
+            }
 
-          .order-details {
-              font-size: 14px;
-          }
+            .order-details {
+                font-size: 14px;
+            }
 
-          .brand-name {
-              font-size: 24px;
-          }
+            .brand-name {
+                font-size: 24px;
+            }
 
-          .btn {
-              font-size: 14px;
-          }
-      }
+            .btn {
+                font-size: 14px;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container">
-      <h1 class="brand-name">Flicker Fantasy</h1>
-      <img src="/img/logo.png" alt="Logo" class="logo" />
-      <h2>Order Successful</h2>
-      <p>Thank you for your booking! Your order has been successfully processed.</p>
-      <div class="order-details">
-        <strong>Order ID:</strong> <%= data.orderId %> <br />
-        <strong>Amount:</strong> ₹<%= data.amount %> <br />
-        <strong>Theater:</strong> <%= data.theaterName %> <br />
-        <strong>Slot Info:</strong> <%= data.slotInfo %> <br />
-        <strong>No Of Person:</strong> <%= data.noOfPerson %> <br />
-        <strong>Cake:</strong> <%= data.cakeName %> <br />
-        <strong>Decoration:</strong> <%= data.decorationName %> <br />
-        <strong>Name:</strong> <%= data.name %> <br />
-        <strong>Contact ID:</strong> <%= data.contactId %> <br />
-        <strong>Email:</strong> <%= data.email %>
-      </div>
-      <div class="btn-container">
-        <a href="/" class="btn">Return Home</a>
-        <button class="btn" onclick="window.print()">Print</button>
-      </div>
+        <h1 class="brand-name">Flicker Fantasy</h1>
+        <img src="/img/logo.png" alt="Logo" class="logo" />
+        <h2>Order Successful</h2>
+        <p>Thank you for your booking! Your order has been successfully processed.</p>
+        <div class="order-details">
+            <strong>Order ID:</strong>
+            <%= data.orderId %> <br />
+                <strong>Amount:</strong> ₹<%= data.amount %> <br />
+                    <strong>Theater:</strong>
+                    <%= data.theaterName %> <br />
+                        <strong>Slot Info:</strong>
+                        <%= data.slotInfo %> <br />
+                            <strong>No Of Person:</strong>
+                            <%= data.noOfPerson %> <br />
+                                <strong>Cake:</strong>
+                                <%= data.cakeName %> <br />
+                                    <strong>Message on Cake:</strong>
+                                    <%= data.message %> <br />
+                                        <strong>Add on Chocolate:</strong>
+                                        <%= data.addOnChocolate %> <br />
+                                            <strong>Celebration Type:</strong>
+                                            <%= data.decorationName %> <br />
+                                                <strong>Booking Name:</strong>
+                                                <%= data.name %> <br />
+                                                    <strong>Contact ID:</strong>
+                                                    <%= data.contactId %> <br />
+                                                        <strong>Email:</strong>
+                                                        <%= data.email %>
+        </div>
+        <div class="btn-container">
+            <a href="/" class="btn">Return Home</a>
+            <button class="btn" onclick="window.print()">Print</button>
+        </div>
     </div>
-  </body>
+</body>
+
 </html>
