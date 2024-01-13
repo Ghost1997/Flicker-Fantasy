@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Success</title>
     <style>
+        /* Add your styles here */
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
@@ -81,7 +82,15 @@
             background-color: #0056b3;
         }
 
+        .note {
+            font-size: 14px;
+            color: #999999;
+            margin-top: 20px;
+        }
+
         @media screen and (max-width: 768px) {
+
+            /* Add your responsive styles here */
             .container {
                 padding: 15px;
             }
@@ -132,7 +141,7 @@
                                 <%= data.cakeName %> <br />
                                     <strong>Message on Cake:</strong>
                                     <%= data.message %> <br />
-                                        <strong>Add on Chocolate:</strong>
+                                        <strong>Add on:</strong>
                                         <%= data.addOnChocolate %> <br />
                                             <strong>Celebration type:</strong>
                                             <%= data.decorationName %> <br />
@@ -143,7 +152,9 @@
                                                         <strong>Email:</strong>
                                                         <%= data.email %>
         </div>
-        <p>Thanks & Regards</p>
+        <p>Thanks & Regards,</p>
+        <p style="margin-top: -1rem;">Team Flicker Fantasy</p>
+        <p class="note">Note: This is a system-generated email. Please do not reply to this email.</p>
     </div>
 </body>
 

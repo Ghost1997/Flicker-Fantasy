@@ -154,6 +154,58 @@ const confirmBooking = async (req, res) => {
         finalOutput
       );
     }
+    if (process.env.SEND_MESSAGE === "true") {
+      const recipientPhoneNumber = `whatsapp:+91${finalOutput.contactId}`; // Replace with the recipient's phone number
+
+      const messageOne = `Flicker Fantasy - Your Private Theater Experience 🎬
+
+      Hello ${finalOutput.name}! 
+      
+      *We're thrilled to confirm your upcoming theater booking at Flicker Fantasy. Here are the details:*
+      
+      *Date & Time:* ${finalOutput.slotInfo}
+      
+      Address: 595, Govindaraja Nagar Ward, Opp Ganesh Gandhi Medicals, Bengaluru, 560040]
+      
+      *Theater:* ${finalOutput.theaterName}
+      
+      *Package:* ${finalOutput.decorationName}
+      
+      *Number of People:* ${finalOutput.noOfPerson}
+      
+      *Cake:* ${finalOutput.cakeName}
+      
+      *Add On:* ${finalOutput.addOnChocolate}
+      
+      *Total Cost:* ₹${finalOutput.amount} (including 2.5% platform fee)
+      
+      *Location Map:* https://shorturl.at/brDW2
+      
+      We can't wait to host your special event! For any assistance, contact us at:
+      📞 *Phone:* +917019693927
+      
+      See you soon at Flicker Fantasy! 🍿🎥`;
+
+      const messageTwo = `*Please note the following Terms and conditions for your booking:*
+
+    1. Smoking/Drinking is *NOT* allowed inside the theater. 
+    
+    2. Any *DAMAGE* caused to theater, including decorative materials like balloons, lights etc will have to be reimbursed.
+    
+    3. Guests are requested to maintain *CLEANLINESS* inside the theater.
+    
+    4. Party poppers/Snow sprays/Cold Fire/Sparkle candles, and any other similar items are strictly *PROHIBITED* inside the theater.
+    
+    5. Carrying *AADHAAR CARD/DL* is mandatory. It will be checked during entry.
+    
+    6. Couples below 18 years age are not allowed to enter the theater. Under *18 years* can come in groups.
+    
+    7. Refund will be processed only if the booking is cancelled *AT LEAST 72 HOURS BEFORE* the booking time.`;
+
+      // send message to customer
+      sendWhatsAppmessage(messageOne, recipientPhoneNumber);
+      sendWhatsAppmessage(messageTwo, recipientPhoneNumber);
+    }
     res.status(201).json(finalOutput);
   } catch (err) {
     console.error(err);
@@ -194,9 +246,8 @@ const sendBookingRequest = async (req, res) => {
   }
 };
 
-const bookingRequestNotification = async (finalOutput) => {
+const sendWhatsAppmessage = async (message, recipientPhoneNumber) => {
   try {
-    console.log(finalOutput);
     const accountSid = process.env.TWILLIO_SID;
     const authToken = process.env.TWILLIO_AUTH;
 
@@ -204,29 +255,15 @@ const bookingRequestNotification = async (finalOutput) => {
       console.error("Twilio credentials are missing. Unable to send WhatsApp notification.");
       return;
     }
-
     const client = require("twilio")(accountSid, authToken);
-
-    const sendMessage = await client.messages.create({
-      body: `You have a new booking request
-
-      Booking Request details:
-      
-      Name: ${finalOutput.name}
-      Email: ${finalOutput.email}
-      Phone: ${finalOutput.contactId}
-      Slot Info: ${finalOutput.slotInfo}
-      Number of people: ${finalOutput.noOfPerson}
-      Theater: ${finalOutput.theaterName}
-      Decoration: ${finalOutput.decorationName}
-      Cake: ${finalOutput.cakeName}
-      Total amount: Rs ${finalOutput.amount}
-      
-      Take appropriate action`,
-      from: `whatsapp:${process.env.TWILLIO_SENDER_PHONE}`,
-      to: `whatsapp:${process.env.TWILLIO_RECIVER_PHONE}`,
-    });
-    console.log(sendMessage);
+    client.messages
+      .create({
+        from: `whatsapp:${process.env.TWILLIO_SENDER_PHONE}`, // Replace with your Twilio WhatsApp number
+        body: message,
+        to: recipientPhoneNumber,
+      })
+      .then((message) => console.log(`WhatsApp message sent. SID: ${message.sid}`))
+      .catch((error) => console.error(`Error sending WhatsApp message: ${error.message}`));
   } catch (error) {
     console.log(error);
     console.error("Error sending WhatsApp notification:", error.message);
