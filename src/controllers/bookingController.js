@@ -1,6 +1,6 @@
 const Booking = require("../models/bookingModel");
 const { getTodaysFormattedDate, sendEmail } = require("../utils/helper");
-const { theaterType, decoration, decorationPrice, cakeName, advanceDecorationPrice, slotInfo } = require("../utils/constants");
+const { theaterType, decoration, cakeName, slotInfo } = require("../utils/constants");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const path = require("path");
@@ -87,7 +87,6 @@ const confirmBooking = async (req, res) => {
   try {
     const { paymentInfo, userInfo } = req.body;
 
-    console.log(paymentInfo, userInfo);
     // Validate HMAC Signature
     const hmac = crypto.createHmac("sha256", process.env.PAYMENT_SECRET);
     hmac.update(paymentInfo.razorpay_order_id + "|" + paymentInfo.razorpay_payment_id);
@@ -117,7 +116,16 @@ const confirmBooking = async (req, res) => {
       amountPaid: paymentDetails.amount / 100,
       theaterId: parseInt(userInfo.theaterid),
       slotId: parseInt(userInfo.slot),
-      userDetails: { name: userInfo.name, whatsapp: userInfo.whatsapp, email: userInfo.email, noOfPerson: userInfo.count, decoration: userInfo.decoration, cake: userInfo.cake },
+      userDetails: {
+        name: userInfo.name,
+        whatsapp: userInfo.whatsapp,
+        email: userInfo.email,
+        noOfPerson: userInfo.count,
+        decoration: userInfo.decoration,
+        cake: userInfo.cake,
+        message: userInfo.message,
+        chocolate: userInfo.chocolate,
+      },
       paymentDetails: paymentDetails,
       paymentResponse: paymentInfo,
       signatureVerified: isSignatureValid,
@@ -130,7 +138,9 @@ const confirmBooking = async (req, res) => {
       slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
-      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+      decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
+      message: bookingData?.userDetails?.message ? bookingData?.userDetails?.message : "Not Required",
+      addOnChocolate: bookingData?.userDetails?.chocolate ? bookingData?.userDetails?.chocolate : "Not Required",
       name: bookingData.userDetails.name,
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,

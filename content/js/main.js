@@ -238,6 +238,10 @@
     </select>
     <small  class="form-text text-muted"><a href="/img/chocolate.jpg" target="_blank">Click here</a> to know more</small>
 </div>
+<div class="note">
+      <p><strong>Note:</strong> The total price includes a 2.5% platform fee to ensure a seamless and secure payment processing experience.</p>
+    </div>
+
 <button type="submit" id="checkPrice" class="btn btn-primary">Check Price</button>
 <br>
 <br>
@@ -254,7 +258,6 @@
       numberOfPeopleInput.min = 1;
       numberOfPeopleInput.placeholder = "1 - 4";
     } else {
-      console.log(theaterid);
       numberOfPeopleInput.max = 10;
       numberOfPeopleInput.min = 1;
       numberOfPeopleInput.placeholder = "1 - 10";

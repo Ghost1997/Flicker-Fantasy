@@ -11,7 +11,14 @@
   bottom: 45px;
   z-index: 99;
 }
-
+.note {
+  background-color: #fbf6f6;
+  color: tomato;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 /*** Spinner ***/
 #spinner {
   opacity: 0;
