@@ -15,7 +15,7 @@ const calculate = async (req, res) => {
       key_secret: process.env.PAYMENT_SECRET,
     });
 
-    const amount = calculateTotalCost(payload.theaterid, payload.decoration, payload.count);
+    const amount = calculateTotalCost(payload.theaterid, payload.decoration, payload.count, payload.chocolate, payload.bouquet);
     const dateValue = getTodaysFormattedDate();
     const receipt = dateValue.timeStamp.toString();
     const options = {
@@ -32,7 +32,7 @@ const calculate = async (req, res) => {
   }
 };
 
-const calculateTotalCost = (theaterId, packageType, numberOfPeople) => {
+const calculateTotalCost = (theaterId, packageType, numberOfPeople, chocolate, bouquet) => {
   // Base prices for each package
   const packagePrices = {
     birthday: 1999,
@@ -45,6 +45,10 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople) => {
       one: 1299,
       two: 1299,
     },
+  };
+  const addOnPrice = {
+    chocolate: 50,
+    bouquet: 100,
   };
 
   const theaters = {
@@ -76,6 +80,14 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople) => {
   }
   const extraPersonCount = numberOfPeople > 4 ? numberOfPeople - 4 : 0;
   baseCost += extraPersonCount * extraPersonCharge;
+
+  if (chocolate && bouquet) {
+    baseCost = baseCost + addOnPrice.chocolate + addOnPrice.bouquet;
+  } else if (chocolate) {
+    baseCost = baseCost + addOnPrice.chocolate;
+  } else if (bouquet) {
+    baseCost = baseCost + addOnPrice.bouquet;
+  }
 
   const tax = baseCost * taxRate;
   const totalCost = baseCost + tax;
@@ -125,12 +137,21 @@ const confirmBooking = async (req, res) => {
         cake: userInfo.cake,
         message: userInfo.message,
         chocolate: userInfo.chocolate,
+        bouquet: userInfo.bouquet,
       },
       paymentDetails: paymentDetails,
       paymentResponse: paymentInfo,
       signatureVerified: isSignatureValid,
     });
     const bookingData = await newBooking.save();
+    let addOn = "Not Required";
+    if (userInfo.chocolate && userInfo.bouquet) {
+      addOn = "Chocolate & Bouquet";
+    } else if (userInfo.chocolate) {
+      addOn = "Chocolate";
+    } else if (userInfo.bouquet) {
+      addOn = "Bouquet";
+    }
     const finalOutput = {
       orderId: bookingData.bookingId,
       amount: bookingData.amountPaid,
@@ -140,7 +161,7 @@ const confirmBooking = async (req, res) => {
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
       decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
       message: bookingData?.userDetails?.message ? bookingData?.userDetails?.message : "Not Required",
-      addOnChocolate: bookingData?.userDetails?.chocolate ? bookingData?.userDetails?.chocolate : "Not Required",
+      addOn: addOn,
       name: bookingData.userDetails.name,
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
@@ -175,7 +196,7 @@ const confirmBooking = async (req, res) => {
       
       *Cake:* ${finalOutput.cakeName}
       
-      *Add On:* ${finalOutput.addOnChocolate}
+      *Add On:* ${finalOutput.addOn}
       
       *Total Cost:* ₹${finalOutput.amount} (including 2.5% platform fee)
       

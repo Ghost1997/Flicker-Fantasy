@@ -231,12 +231,22 @@
   <small id="charCount" class="form-text text-muted">0/25 characters</small>
 </div>
 <div class="mb-3">
-  <label for="chocolate" class="form-label">Add On: Chocolates</label>
-  <select name="chocolate" class="form-select" id="chocolate">
-    <option value="" selected>No</option>
-    <option value="yes">Yes</option>
-    </select>
-    <small  class="form-text text-muted"><a href="/img/chocolate.jpg" target="_blank">Click here</a> to know more</small>
+  <label for="addOn" class="form-label">Add On</label>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="bouquet" name="bouquet">
+        <label class="form-check-label" for="bouquet">Bouquet</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="chocolate" value= name="chocolate">
+        <label class="form-check-label" for="chocolate">Chocolate</label>
+      </div>
+    </div>
+  </div>
+  <small class="form-text text-muted"><a href="/img/chocolate.jpg" target="_blank">Click here</a> to know more</small>
 </div>
 <div class="note">
       <p><strong>Note:</strong> The total price includes a 2.5% platform fee to ensure a seamless and secure payment processing experience.</p>
@@ -291,10 +301,14 @@
     const cakeDropdown = document.getElementById("cake");
     const decorationDropdown = document.getElementById("decoration");
     const noOfPerson = document.getElementById("numberOfPeople");
+    const chocolate = document.getElementById("chocolate");
+    const bouquet = document.getElementById("bouquet");
 
     cakeDropdown.addEventListener("change", changePayButtonPrice);
     noOfPerson.addEventListener("change", changePayButtonPrice);
     decorationDropdown.addEventListener("change", changePayButtonPrice);
+    chocolate.addEventListener("change", changePayButtonPrice);
+    bouquet.addEventListener("change", changePayButtonPrice);
 
     const decorationImage = document.getElementById("decorationImage");
 
@@ -351,8 +365,8 @@
     const decoration = document.getElementById("decoration").value;
     const cake = document.getElementById("cake").value;
     const message = document.getElementById("message").value;
-    const chocolate = document.getElementById("chocolate").value;
-    console.log(message, chocolate);
+    const chocolate = document.getElementById("chocolate").checked;
+    const bouquet = document.getElementById("bouquet").checked;
     const response = await fetch(`/calculate`, {
       method: "POST",
       headers: {
@@ -370,6 +384,7 @@
         theaterid,
         message,
         chocolate,
+        bouquet,
       }),
     });
     return response;
