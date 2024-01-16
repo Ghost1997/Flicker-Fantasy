@@ -117,6 +117,12 @@
     selectedContainer.style.display = "block";
   }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    var datePickerModal = document.getElementById("datePickerModal");
+    datePickerModal.addEventListener("hidden.bs.modal", function () {
+      resetModal();
+    });
+  });
   function resetModal() {
     // Clear the selected date
     document.getElementById("datepicker").value = "";

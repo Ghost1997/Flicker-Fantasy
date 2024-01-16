@@ -47,8 +47,8 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople, chocolate, b
     },
   };
   const addOnPrice = {
-    chocolate: 50,
-    bouquet: 100,
+    chocolate: 449,
+    bouquet: 349,
   };
 
   const theaters = {
