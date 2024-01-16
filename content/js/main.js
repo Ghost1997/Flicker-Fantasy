@@ -52,6 +52,8 @@
 
   const rKey = "rzp_test_3VHA6PauX0jlhZ";
 
+  // Wait for the document to be fully loaded
+
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
@@ -117,6 +119,12 @@
     selectedContainer.style.display = "block";
   }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    var datePickerModal = document.getElementById("datePickerModal");
+    datePickerModal.addEventListener("hidden.bs.modal", function () {
+      resetModal();
+    });
+  });
   function resetModal() {
     // Clear the selected date
     document.getElementById("datepicker").value = "";
