@@ -52,8 +52,6 @@
 
   const rKey = "rzp_test_3VHA6PauX0jlhZ";
 
-  // Wait for the document to be fully loaded
-
   const datePicker = document.getElementById("datepicker");
   const slotContainer = document.getElementById("slotContainer");
   const theaterRadios = document.querySelectorAll("[data-theater]");
