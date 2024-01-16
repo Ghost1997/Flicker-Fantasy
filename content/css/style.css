@@ -242,7 +242,7 @@ div.radio-with-Icon p.radioOption-Item label {
   color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   cursor: pointer;
-  opacity: 0.8;
+  opacity: 0.6;
   transition: none;
   font-size: 11px;
   padding-top: 25px;
@@ -253,7 +253,7 @@ div.radio-with-Icon p.radioOption-Item label:hover,
 div.radio-with-Icon p.radioOption-Item label:focus,
 div.radio-with-Icon p.radioOption-Item label:active {
   opacity: 0.8;
-  background-color: tomato;
+  background-color: #0f172b;
   color: whitesmoke;
   margin: 0 !important;
 }
