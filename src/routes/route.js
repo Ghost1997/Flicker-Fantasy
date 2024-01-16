@@ -13,7 +13,7 @@ router.post("/admin/login", loginAdmin);
 router.get("/admin/dashboard", authenticateAdmin, adminDashboard);
 router.get("/admin/search", authenticateAdmin, search);
 router.get("/admin/upload", authenticateAdmin, adminImage);
-router.get("/admin/booking", authenticateAdmin, adminBooking);
+// router.get("/admin/booking", authenticateAdmin, adminBooking);
 router.post("/admin/updateBooking", authenticateAdmin, updateBooking);
 router.post("/admin/booking", authenticateAdmin, booking);
 router.get("/admin/logout", logout);
