@@ -252,7 +252,7 @@
       </div>
     </div>
   </div>
-  <small class="form-text text-muted"><a href="/img/chocolate.jpg" target="_blank">Click here</a> to know more</small>
+  <small class="form-text text-muted">Bouquet: <a href="/img/bouquet.jpg" target="_blank">Click here</a> & Chocolates: <a href="/img/chocolate.jpg" target="_blank">Click here</a></small>
 </div>
 <div class="note">
       <p><strong>Note:</strong> The total price includes a 2.5% platform fee to ensure a seamless and secure payment processing experience.</p>
@@ -424,22 +424,6 @@
       const rzp = new Razorpay(options);
       rzp.open();
     });
-
-    // payButton.addEventListener("click", async () => {
-    //   const response = await fetch(`/sendBookingRequest`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       payload,
-    //       amount,
-    //     }),
-    //   });
-    //   const responseData = await response.json();
-
-    //   if (responseData.success) window.location.href = `/requestSent`;
-    // });
   };
   const changePayButtonPrice = async () => {
     const payButton = document.getElementById("payButton");

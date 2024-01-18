@@ -156,7 +156,7 @@ const confirmBooking = async (req, res) => {
       orderId: bookingData.bookingId,
       amount: bookingData.amountPaid,
       theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
       decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
@@ -245,28 +245,6 @@ const successBooking = async (req, res) => {
   }
 };
 
-const sendBookingRequest = async (req, res) => {
-  try {
-    const { payload, amount } = req.body;
-    const finalOutput = {
-      theaterName: theaterType[parseInt(payload.theaterid)],
-      slotInfo: `Slot ${getSlotInfo(parseInt(payload.theaterid), parseInt(payload.slot))} on ${payload.date}`,
-      noOfPerson: payload.count,
-      cakeName: cakeName[payload?.cake] ? cakeName[payload?.cake] : "Not Required",
-      decorationName: decoration.includes(payload.decoration) ? payload.decoration : "Not Required",
-      name: payload.name,
-      contactId: payload.whatsapp,
-      email: payload.email,
-      amount: amount,
-    };
-    await bookingRequestNotification(finalOutput);
-    res.status(200).json({ success: true });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
 const sendWhatsAppmessage = async (message, recipientPhoneNumber) => {
   try {
     const accountSid = process.env.TWILLIO_SID;
@@ -296,7 +274,7 @@ function getSlotInfo(theaterId, slotId) {
   if (theater) {
     const slot = theater.slots.find((slot) => slot.id === slotId);
     if (slot) {
-      return slot.value;
+      return { name: slot.slotname, value: slot.value };
     }
   }
   return "Slot information not found";
@@ -310,4 +288,4 @@ const requestRecived = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, sendBookingRequest, requestRecived };
+module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, requestRecived };

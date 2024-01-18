@@ -127,15 +127,24 @@ const getBookingDetails = async (req) => {
     },
   ]);
   const finalOutput = result.map((bookingData) => {
+    let addOn = "Not Required";
+    if (bookingData.userDetails.chocolate && bookingData.userDetails.bouquet) {
+      addOn = "Chocolate & Bouquet";
+    } else if (bookingData.userDetails.chocolate) {
+      addOn = "Chocolate";
+    } else if (bookingData.userDetails.bouquet) {
+      addOn = "Bouquet";
+    }
     return {
       orderId: bookingData.bookingId,
       amount: bookingData.amountPaid,
       theaterName: theaterType[bookingData.theaterId],
-      slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId),
+      slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId).name,
       date: bookingData.bookingDate,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
-      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+      decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
+      addOn: addOn,
       name: bookingData.userDetails.name,
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
@@ -204,10 +213,11 @@ const updateBooking = async (req, res) => {
       orderId: bookingData.bookingId,
       amount: bookingData.amountPaid,
       theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
-      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
+      decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
+      addOn: addOn,
       name: bookingData.userDetails.name,
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
@@ -222,7 +232,7 @@ const updateBooking = async (req, res) => {
       );
     }
 
-    const slotValue = getSlotInfo(bookingData.theaterId, bookingData.slotId);
+    const slotValue = getSlotInfo(bookingData.theaterId, bookingData.slotId).value;
 
     res.status(200).json({ message: "Booking updated successfully", slotValue });
   } catch (error) {
@@ -249,7 +259,7 @@ const booking = async (req, res) => {
       orderId: bookingData.bookingId,
       amount: bookingData.amountPaid,
       theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
       decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",

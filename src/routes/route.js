@@ -3,7 +3,7 @@ const router = express.Router();
 const { savePicture, deletePictures, galleryPage, getAllImages } = require("../controllers/pictureController");
 const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refundPage, servicesPage } = require("../controllers/homeController");
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
-const { confirmBooking, calculate, successBooking, sendBookingRequest, requestRecived } = require("../controllers/bookingController");
+const { confirmBooking, calculate, successBooking, requestRecived } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
 const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking, booking } = require("../controllers/adminController");
 const { upload } = require("../middlewares/uplaodMiddleware");
@@ -40,7 +40,6 @@ router.get("/gallery", galleryPage);
 router.get("/refund", refundPage);
 router.get("/services", servicesPage);
 router.get("/pictures/getAll", getAllImages);
-router.post("/sendBookingRequest", sendBookingRequest);
 router.get("/requestSent", requestRecived);
 router.get("/health", (req, res) => res.json({ status: "OK" }));
 
