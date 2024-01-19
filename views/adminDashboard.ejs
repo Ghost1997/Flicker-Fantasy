@@ -664,7 +664,7 @@
                         if (!slot.booked) {
                             const option = document.createElement("option");
                             option.value = slot.id;
-                            option.textContent = slot.value;
+                            option.textContent = slot.slotname;
                             selectDropdown.appendChild(option);
                         }
                     });

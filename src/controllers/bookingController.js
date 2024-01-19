@@ -14,8 +14,8 @@ const calculate = async (req, res) => {
       key_id: process.env.PAYMENT_API_KEY,
       key_secret: process.env.PAYMENT_SECRET,
     });
-
-    const amount = calculateTotalCost(payload.theaterid, payload.decoration, payload.count, payload.chocolate, payload.bouquet);
+    const amount = 1000;
+    const total = calculateTotalCost(payload.theaterid, payload.decoration, payload.count, payload.chocolate, payload.bouquet);
     const dateValue = getTodaysFormattedDate();
     const receipt = dateValue.timeStamp.toString();
     const options = {
@@ -26,7 +26,8 @@ const calculate = async (req, res) => {
     const order = await razorpay.orders.create(options);
     const orderId = order.id;
     payload.receipt = receipt;
-    res.status(200).json({ amount, orderId, payload });
+
+    res.status(200).json({ amount, orderId, payload, total });
   } catch (err) {
     console.log(err);
   }
@@ -97,8 +98,8 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople, chocolate, b
 
 const confirmBooking = async (req, res) => {
   try {
-    const { paymentInfo, userInfo } = req.body;
-
+    const { paymentInfo, userInfo, total } = req.body;
+    console.log(total);
     // Validate HMAC Signature
     const hmac = crypto.createHmac("sha256", process.env.PAYMENT_SECRET);
     hmac.update(paymentInfo.razorpay_order_id + "|" + paymentInfo.razorpay_payment_id);
@@ -138,6 +139,7 @@ const confirmBooking = async (req, res) => {
         message: userInfo.message,
         chocolate: userInfo.chocolate,
         bouquet: userInfo.bouquet,
+        total: total,
       },
       paymentDetails: paymentDetails,
       paymentResponse: paymentInfo,
@@ -154,7 +156,7 @@ const confirmBooking = async (req, res) => {
     }
     const finalOutput = {
       orderId: bookingData.bookingId,
-      amount: bookingData.amountPaid,
+      amount: `${total} & Paid: ₹${bookingData.amountPaid}`,
       theaterName: theaterType[bookingData.theaterId],
       slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,

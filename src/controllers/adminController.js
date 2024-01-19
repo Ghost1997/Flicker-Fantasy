@@ -209,30 +209,30 @@ const updateBooking = async (req, res) => {
     }
     // Save the updated booking
     const bookingData = await booking.save();
-    const finalOutput = {
-      orderId: bookingData.bookingId,
-      amount: bookingData.amountPaid,
-      theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
-      noOfPerson: bookingData.userDetails.noOfPerson,
-      cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
-      decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
-      addOn: addOn,
-      name: bookingData.userDetails.name,
-      contactId: bookingData.userDetails.whatsapp,
-      email: bookingData.userDetails.email,
-    };
-    if (process.env.SEND_EMAIL === "true") {
-      const templatePath = path.join(__dirname, "../../views", "orderUpdateEmail.ejs");
-      sendEmail(
-        finalOutput.email, // Recipient's email address
-        "Booking rescheduled", // Email subject
-        templatePath, // Path to the EJS template file
-        finalOutput
-      );
-    }
+    // const finalOutput = {
+    //   orderId: bookingData.bookingId,
+    //   amount: bookingData.amountPaid,
+    //   theaterName: theaterType[bookingData.theaterId],
+    //   slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
+    //   noOfPerson: bookingData.userDetails.noOfPerson,
+    //   cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
+    //   decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
+    //   addOn: addOn,
+    //   name: bookingData.userDetails.name,
+    //   contactId: bookingData.userDetails.whatsapp,
+    //   email: bookingData.userDetails.email,
+    // };
+    // if (process.env.SEND_EMAIL === "true") {
+    //   const templatePath = path.join(__dirname, "../../views", "orderUpdateEmail.ejs");
+    //   // sendEmail(
+    //   //   finalOutput.email, // Recipient's email address
+    //   //   "Booking rescheduled", // Email subject
+    //   //   templatePath, // Path to the EJS template file
+    //   //   finalOutput
+    //   // );
+    // }
 
-    const slotValue = getSlotInfo(bookingData.theaterId, bookingData.slotId).value;
+    const slotValue = getSlotInfo(bookingData.theaterId, bookingData.slotId).name;
 
     res.status(200).json({ message: "Booking updated successfully", slotValue });
   } catch (error) {
