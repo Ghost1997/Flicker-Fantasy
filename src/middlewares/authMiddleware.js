@@ -16,7 +16,10 @@ const authenticateAdmin = async (req, res, next) => {
       return res.status(401).json({ error: "Invalid authentication token." });
     }
 
-    req.admin = admin; // Store admin data in the request for further use
+    // Store the decoded token in the request for further use
+    req.decodedToken = decodedToken;
+
+    // Continue with the next middleware
     next();
   } catch (error) {
     console.log(error);
