@@ -309,7 +309,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="bookingTableBody" style="text-transform: capitalize; text-align: left;">
+                            <tbody id="bookingTableBody" style="text-transform: capitalize; font-size:small; text-align: left;">
                                 <% data.forEach(ele=> { %>
                                     <tr>
                                         <td>
@@ -341,7 +341,7 @@
                                             <%= ele.addOn %>
                                         </td>
                                         <td>
-                                            Rs.<%= ele.amount %>
+                                            <%= ele.amount %>
                                         </td>
                                         <td class="action-cell">
                                             <button class="btn btn-success btn-sm save-button"

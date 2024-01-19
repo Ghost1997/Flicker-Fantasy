@@ -137,7 +137,7 @@ const getBookingDetails = async (req) => {
     }
     return {
       orderId: bookingData.bookingId,
-      amount: bookingData.amountPaid,
+      amount:`Total: ₹${bookingData.userDetails.total} | Paid: ₹${bookingData.amountPaid}`,
       theaterName: theaterType[bookingData.theaterId],
       slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId).name,
       date: bookingData.bookingDate,
