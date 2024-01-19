@@ -156,7 +156,7 @@ const confirmBooking = async (req, res) => {
     }
     const finalOutput = {
       orderId: bookingData.bookingId,
-      amount: `${total} & Paid: ₹${bookingData.amountPaid}`,
+      amount: `Total: ${total} | Paid: ₹${bookingData.amountPaid}`,
       theaterName: theaterType[bookingData.theaterId],
       slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
