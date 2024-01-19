@@ -242,21 +242,24 @@
     <div class="col-md-6">
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="bouquet" name="bouquet">
-        <label class="form-check-label" for="bouquet">Bouquet</label>
+        <label class="form-check-label" for="bouquet">Bouquet: ₹349</label>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-check">
         <input type="checkbox" class="form-check-input" id="chocolate" value= name="chocolate">
-        <label class="form-check-label" for="chocolate">Chocolate</label>
+        <label class="form-check-label" for="chocolate">Chocolate: ₹449</label>
       </div>
     </div>
   </div>
-  <small class="form-text text-muted"><a href="/img/chocolate.jpg" target="_blank">Click here</a> to know more</small>
+  <small class="form-text text-muted">Bouquet: <a href="/img/bouquet.jpg" target="_blank">Click here</a> & Chocolates: <a href="/img/chocolate.jpg" target="_blank">Click here</a></small>
 </div>
 <div class="note">
-      <p><strong>Note:</strong> The total price includes a 2.5% platform fee to ensure a seamless and secure payment processing experience.</p>
-    </div>
+<strong>Note:</strong> The total price includes a 2.5% platform fee to ensure a seamless and secure payment processing experience.
+<br>
+<br>
+Please be aware that a booking fee of ₹1000 is required upfront. The remaining amount is to be paid on the booking date.
+</div>
 
 <button type="submit" id="checkPrice" class="btn btn-primary">Check Price</button>
 <br>
@@ -300,8 +303,9 @@
 
       const responseData = await response.json();
       const amount = responseData.amount;
+      const total = responseData.total;
 
-      await updatePayButtonPrice(amount, responseData.orderId, responseData.payload);
+      await updatePayButtonPrice(amount, total, responseData.orderId, responseData.payload);
     });
 
     const cakeDropdown = document.getElementById("cake");
@@ -396,9 +400,9 @@
     return response;
   };
 
-  const updatePayButtonPrice = async (amount, orderId, payload) => {
+  const updatePayButtonPrice = async (amount, total, orderId, payload) => {
     const payButton = document.getElementById("payButton");
-    payButton.textContent = `Book Now: ₹${amount}`;
+    payButton.textContent = `Pay Now: ₹${amount} (Total: ₹${total})`;
     payButton.style.display = "inline";
     payButton.addEventListener("click", async function () {
       const options = {
@@ -414,7 +418,7 @@
           contact: payload.whatsapp,
         },
         handler: async (response) => {
-          const bookingResponse = await confirmBooking(response, payload);
+          const bookingResponse = await confirmBooking(response, payload, total);
           const responseData = await bookingResponse.json();
           const queryParams = new URLSearchParams(responseData).toString();
           window.location.href = `/booking/success?${queryParams}`;
@@ -424,22 +428,6 @@
       const rzp = new Razorpay(options);
       rzp.open();
     });
-
-    // payButton.addEventListener("click", async () => {
-    //   const response = await fetch(`/sendBookingRequest`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       payload,
-    //       amount,
-    //     }),
-    //   });
-    //   const responseData = await response.json();
-
-    //   if (responseData.success) window.location.href = `/requestSent`;
-    // });
   };
   const changePayButtonPrice = async () => {
     const payButton = document.getElementById("payButton");
@@ -459,7 +447,7 @@
     return `${day}/${month}/${year}`;
   }
 
-  const confirmBooking = async (paymentInfo, userInfo) => {
+  const confirmBooking = async (paymentInfo, userInfo, total) => {
     const response = await fetch(`/booking/bookTheater`, {
       method: "POST",
       headers: {
@@ -468,6 +456,7 @@
       body: JSON.stringify({
         paymentInfo,
         userInfo,
+        total,
       }),
     });
     return response;

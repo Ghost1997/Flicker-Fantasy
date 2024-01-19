@@ -14,8 +14,8 @@ const calculate = async (req, res) => {
       key_id: process.env.PAYMENT_API_KEY,
       key_secret: process.env.PAYMENT_SECRET,
     });
-
-    const amount = calculateTotalCost(payload.theaterid, payload.decoration, payload.count, payload.chocolate, payload.bouquet);
+    const amount = 1000;
+    const total = calculateTotalCost(payload.theaterid, payload.decoration, payload.count, payload.chocolate, payload.bouquet);
     const dateValue = getTodaysFormattedDate();
     const receipt = dateValue.timeStamp.toString();
     const options = {
@@ -26,7 +26,8 @@ const calculate = async (req, res) => {
     const order = await razorpay.orders.create(options);
     const orderId = order.id;
     payload.receipt = receipt;
-    res.status(200).json({ amount, orderId, payload });
+
+    res.status(200).json({ amount, orderId, payload, total });
   } catch (err) {
     console.log(err);
   }
@@ -97,8 +98,8 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople, chocolate, b
 
 const confirmBooking = async (req, res) => {
   try {
-    const { paymentInfo, userInfo } = req.body;
-
+    const { paymentInfo, userInfo, total } = req.body;
+    console.log(total);
     // Validate HMAC Signature
     const hmac = crypto.createHmac("sha256", process.env.PAYMENT_SECRET);
     hmac.update(paymentInfo.razorpay_order_id + "|" + paymentInfo.razorpay_payment_id);
@@ -138,6 +139,7 @@ const confirmBooking = async (req, res) => {
         message: userInfo.message,
         chocolate: userInfo.chocolate,
         bouquet: userInfo.bouquet,
+        total: total,
       },
       paymentDetails: paymentDetails,
       paymentResponse: paymentInfo,
@@ -154,9 +156,9 @@ const confirmBooking = async (req, res) => {
     }
     const finalOutput = {
       orderId: bookingData.bookingId,
-      amount: bookingData.amountPaid,
+      amount: `Total: ${total} | Paid: ₹${bookingData.amountPaid}`,
       theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId)} on ${bookingData.bookingDate}`,
+      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
       cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
       decorationName: decoration[bookingData?.userDetails?.decoration] ? decoration[bookingData?.userDetails?.decoration] : "Not Required",
@@ -245,28 +247,6 @@ const successBooking = async (req, res) => {
   }
 };
 
-const sendBookingRequest = async (req, res) => {
-  try {
-    const { payload, amount } = req.body;
-    const finalOutput = {
-      theaterName: theaterType[parseInt(payload.theaterid)],
-      slotInfo: `Slot ${getSlotInfo(parseInt(payload.theaterid), parseInt(payload.slot))} on ${payload.date}`,
-      noOfPerson: payload.count,
-      cakeName: cakeName[payload?.cake] ? cakeName[payload?.cake] : "Not Required",
-      decorationName: decoration.includes(payload.decoration) ? payload.decoration : "Not Required",
-      name: payload.name,
-      contactId: payload.whatsapp,
-      email: payload.email,
-      amount: amount,
-    };
-    await bookingRequestNotification(finalOutput);
-    res.status(200).json({ success: true });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-
 const sendWhatsAppmessage = async (message, recipientPhoneNumber) => {
   try {
     const accountSid = process.env.TWILLIO_SID;
@@ -296,7 +276,7 @@ function getSlotInfo(theaterId, slotId) {
   if (theater) {
     const slot = theater.slots.find((slot) => slot.id === slotId);
     if (slot) {
-      return slot.value;
+      return { name: slot.slotname, value: slot.value };
     }
   }
   return "Slot information not found";
@@ -310,4 +290,4 @@ const requestRecived = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, sendBookingRequest, requestRecived };
+module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, requestRecived };

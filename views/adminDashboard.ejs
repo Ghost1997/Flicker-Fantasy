@@ -303,12 +303,13 @@
                                     <th>Slot</th>
                                     <th>Theater</th>
                                     <th>Cake</th>
-                                    <th>Decoration</th>
+                                    <th>Celebration Type</th>
+                                    <th>Add On </th>
                                     <th>Amount</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="bookingTableBody" style="text-transform: capitalize; text-align: left;">
+                            <tbody id="bookingTableBody" style="text-transform: capitalize; font-size:small; text-align: left;">
                                 <% data.forEach(ele=> { %>
                                     <tr>
                                         <td>
@@ -337,7 +338,10 @@
                                             <%= ele.decorationName %>
                                         </td>
                                         <td>
-                                            Rs.<%= ele.amount %>
+                                            <%= ele.addOn %>
+                                        </td>
+                                        <td>
+                                            <%= ele.amount %>
                                         </td>
                                         <td class="action-cell">
                                             <button class="btn btn-success btn-sm save-button"
@@ -421,6 +425,7 @@
             <td>${ele.theaterName}</td>
             <td>${ele.cakeName}</td>
             <td>${ele.decorationName}</td>
+            <td>${ele.addOn}</td>
             <td>Rs.${ele.amount}</td>
             <td class="action-cell">
                 <button class="btn btn-success btn-sm save-button" style="display: none;">Save</button>
@@ -659,7 +664,7 @@
                         if (!slot.booked) {
                             const option = document.createElement("option");
                             option.value = slot.id;
-                            option.textContent = slot.value;
+                            option.textContent = slot.slotname;
                             selectDropdown.appendChild(option);
                         }
                     });
