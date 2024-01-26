@@ -211,19 +211,15 @@ const confirmBooking = async (req, res) => {
 
       const messageTwo = `*Please note the following Terms and conditions for your booking:*
 
-    1. Smoking/Drinking is *NOT* allowed inside the theater. 
-    
-    2. Any *DAMAGE* caused to theater, including decorative materials like balloons, lights etc will have to be reimbursed.
-    
-    3. Guests are requested to maintain *CLEANLINESS* inside the theater.
-    
-    4. Party poppers/Snow sprays/Cold Fire/Sparkle candles, and any other similar items are strictly *PROHIBITED* inside the theater.
-    
-    5. Carrying *AADHAAR CARD/DL* is mandatory. It will be checked during entry.
-    
-    6. Couples below 18 years age are not allowed to enter the theater. Under *18 years* can come in groups.
-    
-    7. Refund will be processed only if the booking is cancelled *AT LEAST 72 HOURS BEFORE* the booking time.`;
+      1. Smoking/Drinking is *NOT* allowed inside the theater. 
+      
+      2. Any *DAMAGE* caused to theater, including decorative materials like balloons, lights etc will have to be reimbursed.
+      
+      3. Guests are requested to maintain *CLEANLINESS* inside the theater.
+      
+      4. Party poppers/Snow sprays/Cold Fire/Sparkle candles, and any other similar items are strictly *PROHIBITED* inside the theater.
+      
+      5. Refund will be processed only if the booking is cancelled *AT LEAST 72 HOURS BEFORE* the booking time.`;
 
       // send message to customer
       sendWhatsAppmessage(messageOne, recipientPhoneNumber);
