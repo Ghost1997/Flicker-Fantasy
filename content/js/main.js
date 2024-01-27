@@ -203,7 +203,7 @@
 
 <div class="mb-3">
   <label for="email" class="form-label">Email</label>
-  <input type="email" name="email" class="form-control" id="email" required>
+  <input type="email" name="email" class="form-control" id="email">
 </div>
 
 <div class="mb-3">
@@ -214,7 +214,6 @@
 <div class="mb-3">
   <label for="cake" class="form-label">Cake</label>
   <select name="cake" class="form-select" id="cake">
-    <option value="" selected>Not Required</option>
     <option value="blackForestRound">Black Forest Round</option>
     <option value="blackForestHeart">Black Forest Heart</option>
     <option value="butterScotchRound">Butter Scotch Round</option>
