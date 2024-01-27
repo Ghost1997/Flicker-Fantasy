@@ -5,7 +5,7 @@ const { homePage, aboutPage, termsPage, contactPage, faqPage, reviewPage, refund
 const { saveTheaterInfo, getSlotInfo } = require("../controllers/theaterController");
 const { confirmBooking, calculate, successBooking, requestRecived } = require("../controllers/bookingController");
 const { saveTestimonial } = require("../controllers/testimonialController");
-const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking, booking } = require("../controllers/adminController");
+const { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, updateBooking } = require("../controllers/adminController");
 const { upload } = require("../middlewares/uplaodMiddleware");
 const { authenticateAdmin } = require("../middlewares/authMiddleware");
 router.post("/admin/register", registerAdmin);
@@ -13,9 +13,7 @@ router.post("/admin/login", loginAdmin);
 router.get("/admin/dashboard", authenticateAdmin, adminDashboard);
 router.get("/admin/search", authenticateAdmin, search);
 router.get("/admin/upload", authenticateAdmin, adminImage);
-// router.get("/admin/booking", authenticateAdmin, adminBooking);
 router.post("/admin/updateBooking", authenticateAdmin, updateBooking);
-router.post("/admin/booking", authenticateAdmin, booking);
 router.get("/admin/logout", logout);
 router.post("/pictures", upload.array("photos", 10), savePicture);
 router.post("/deletePictures", deletePictures);
@@ -24,9 +22,6 @@ router.post("/theater/getSlotInfo", getSlotInfo);
 router.post("/booking/bookTheater", confirmBooking);
 router.post("/testimonial/save", saveTestimonial);
 router.get("/", homePage);
-// router.get("/", async (req, res) => {
-//   res.render("offlinePage");
-// });
 router.get("/about", aboutPage);
 router.get("/terms", termsPage);
 router.post("/calculate", calculate);

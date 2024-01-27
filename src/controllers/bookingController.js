@@ -99,7 +99,6 @@ const calculateTotalCost = (theaterId, packageType, numberOfPeople, chocolate, b
 const confirmBooking = async (req, res) => {
   try {
     const { paymentInfo, userInfo, total } = req.body;
-    console.log(total);
     // Validate HMAC Signature
     const hmac = crypto.createHmac("sha256", process.env.PAYMENT_SECRET);
     hmac.update(paymentInfo.razorpay_order_id + "|" + paymentInfo.razorpay_payment_id);
@@ -156,7 +155,7 @@ const confirmBooking = async (req, res) => {
     }
     const finalOutput = {
       orderId: bookingData.bookingId,
-      amount: `Total: ${total} | Paid: ₹${bookingData.amountPaid}`,
+      amount: `Total: ₹${total} | Paid: ₹${bookingData.amountPaid}`,
       theaterName: theaterType[bookingData.theaterId],
       slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
       noOfPerson: bookingData.userDetails.noOfPerson,
@@ -168,7 +167,7 @@ const confirmBooking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
-    if (process.env.SEND_EMAIL === "true") {
+    if (process.env.SEND_EMAIL === "true" && finalOutput.email) {
       const templatePath = path.join(__dirname, "../../views", "orderEmail.ejs");
       sendEmail(
         finalOutput.email, // Recipient's email address
@@ -181,14 +180,14 @@ const confirmBooking = async (req, res) => {
       const recipientPhoneNumber = `whatsapp:+91${finalOutput.contactId}`; // Replace with the recipient's phone number
 
       const messageOne = `Flicker Fantasy - Your Private Theater Experience 🎬
-
+      
       Hello ${finalOutput.name}! 
       
       *We're thrilled to confirm your upcoming theater booking at Flicker Fantasy. Here are the details:*
       
       *Date & Time:* ${finalOutput.slotInfo}
       
-      Address: 595, Govindaraja Nagar Ward, Opp Ganesh Gandhi Medicals, Bengaluru, 560040]
+      *Address*: 595, Govindaraja Nagar Ward, Opp Ganesh Gandhi Medicals, Bengaluru, 560040
       
       *Theater:* ${finalOutput.theaterName}
       
@@ -200,7 +199,7 @@ const confirmBooking = async (req, res) => {
       
       *Add On:* ${finalOutput.addOn}
       
-      *Total Cost:* ₹${finalOutput.amount} (including 2.5% platform fee)
+      *Total Cost:* ${finalOutput.amount}
       
       *Location Map:* https://shorturl.at/brDW2
       
@@ -208,7 +207,6 @@ const confirmBooking = async (req, res) => {
       📞 *Phone:* +917019693927
       
       See you soon at Flicker Fantasy! 🍿🎥`;
-
       const messageTwo = `*Please note the following Terms and conditions for your booking:*
 
       1. Smoking/Drinking is *NOT* allowed inside the theater. 
@@ -286,4 +284,4 @@ const requestRecived = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, requestRecived };
+module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, requestRecived, sendWhatsAppmessage };

@@ -298,10 +298,10 @@
                                     <th>Id</th>
                                     <th>Name</th>
                                     <th>Phone</th>
-
                                     <th>Date</th>
                                     <th>Slot</th>
                                     <th>Theater</th>
+                                    <th>People</th>
                                     <th>Cake</th>
                                     <th>Celebration Type</th>
                                     <th>Add On </th>
@@ -309,7 +309,8 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="bookingTableBody" style="text-transform: capitalize; font-size:small; text-align: left;">
+                            <tbody id="bookingTableBody"
+                                style="text-transform: capitalize; font-size:small; text-align: left;">
                                 <% data.forEach(ele=> { %>
                                     <tr>
                                         <td>
@@ -330,6 +331,9 @@
                                         </td>
                                         <td>
                                             <%= ele.theaterName %>
+                                        </td>
+                                        <td>
+                                            <%= ele.noOfPerson %>
                                         </td>
                                         <td>
                                             <%= ele.cakeName %>

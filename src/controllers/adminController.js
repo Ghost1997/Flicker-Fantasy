@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const { sendEmail } = require("../utils/helper");
 const Booking = require("../models/bookingModel");
 const { theaterType, decoration, cakeName } = require("../utils/constants");
-const { getSlotInfo } = require("./bookingController");
+const { getSlotInfo, sendWhatsAppmessage } = require("./bookingController");
 const Picture = require("../models/pictureModel");
 const path = require("path");
 const registerAdmin = async (req, res) => {
@@ -137,7 +137,7 @@ const getBookingDetails = async (req) => {
     }
     return {
       orderId: bookingData.bookingId,
-      amount:`Total: ₹${bookingData.userDetails.total} | Paid: ₹${bookingData.amountPaid}`,
+      amount: `Total: ₹${bookingData.userDetails.total} | Paid: ₹${bookingData.amountPaid}`,
       theaterName: theaterType[bookingData.theaterId],
       slotInfo: getSlotInfo(bookingData.theaterId, bookingData.slotId).name,
       date: bookingData.bookingDate,
@@ -178,14 +178,6 @@ const adminImage = async (req, res) => {
     const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 });
 
     res.render("adminImage", { images });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error loading admin login page" });
-  }
-};
-const adminBooking = async (req, res) => {
-  try {
-    res.render("adminBooking");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error loading admin login page" });
@@ -232,8 +224,8 @@ const updateBooking = async (req, res) => {
       contactId: bookingData.userDetails.whatsapp,
       email: bookingData.userDetails.email,
     };
-    console.log(finalOutput)
-    if (process.env.SEND_EMAIL === "true") {
+
+    if (process.env.SEND_EMAIL === "true" && finalOutput.email) {
       const templatePath = path.join(__dirname, "../../views", "orderUpdateEmail.ejs");
       sendEmail(
         finalOutput.email, // Recipient's email address
@@ -242,7 +234,39 @@ const updateBooking = async (req, res) => {
         finalOutput
       );
     }
+    if (process.env.SEND_MESSAGE === "true") {
+      const recipientPhoneNumber = `whatsapp:+91${finalOutput.contactId}`;
 
+      const messageOne = `Flicker Fantasy - Your Private Theater Experience 🎬
+      
+      Hello ${finalOutput.name}! 
+      
+      *Your booking has been updated to the new slot. Please find the updated details below:*
+      
+      *Date & Time:* ${finalOutput.slotInfo}
+      
+      *Address*: 595, Govindaraja Nagar Ward, Opp Ganesh Gandhi Medicals, Bengaluru, 560040
+      
+      *Theater:* ${finalOutput.theaterName}
+      
+      *Package:* ${finalOutput.decorationName}
+      
+      *Number of People:* ${finalOutput.noOfPerson}
+      
+      *Cake:* ${finalOutput.cakeName}
+      
+      *Add On:* ${finalOutput.addOn}
+      
+      *Total Cost:* ${finalOutput.amount}
+      
+      *Location Map:* https://shorturl.at/brDW2
+      
+      We can't wait to host your special event! For any assistance, contact us at:
+      📞 *Phone:* +917019693927
+      
+      See you soon at Flicker Fantasy! 🍿🎥`;
+      sendWhatsAppmessage(messageOne, recipientPhoneNumber);
+    }
     const slotValue = getSlotInfo(bookingData.theaterId, bookingData.slotId).name;
 
     res.status(200).json({ message: "Booking updated successfully", slotValue });
@@ -252,46 +276,4 @@ const updateBooking = async (req, res) => {
   }
 };
 
-const booking = async (req, res) => {
-  try {
-    const { userInfo } = req.body;
-    const payload = userInfo.payload;
-    // Create Booking
-    const newBooking = new Booking({
-      bookingId: payload.receipt,
-      bookingDate: payload.date,
-      amountPaid: userInfo.amount,
-      theaterId: parseInt(payload.theaterid),
-      slotId: parseInt(payload.slot),
-      userDetails: { name: payload.name, whatsapp: payload.whatsapp, email: payload.email, noOfPerson: payload.count, decoration: payload.decoration, cake: payload.cake },
-    });
-    const bookingData = await newBooking.save();
-    const finalOutput = {
-      orderId: bookingData.bookingId,
-      amount: bookingData.amountPaid,
-      theaterName: theaterType[bookingData.theaterId],
-      slotInfo: `Slot ${getSlotInfo(bookingData.theaterId, bookingData.slotId).name} on ${bookingData.bookingDate}`,
-      noOfPerson: bookingData.userDetails.noOfPerson,
-      cakeName: cakeName[bookingData?.userDetails?.cake] ? cakeName[bookingData?.userDetails?.cake] : "Not Required",
-      decorationName: decoration.includes(bookingData.userDetails.decoration) ? bookingData.userDetails.decoration : "Not Required",
-      name: bookingData.userDetails.name,
-      contactId: bookingData.userDetails.whatsapp,
-      email: bookingData.userDetails.email,
-    };
-    if (process.env.SEND_EMAIL === "true") {
-      const templatePath = path.join(__dirname, "../../views", "orderEmail.ejs");
-      sendEmail(
-        finalOutput.email, // Recipient's email address
-        "Booking confirmation", // Email subject
-        templatePath, // Path to the EJS template file
-        finalOutput
-      );
-    }
-    // await sendOrderConfirmationNotifiaction(finalOutput);
-    res.status(201).json({ success: true, finalOutput });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
-module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, adminBooking, updateBooking, booking };
+module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, updateBooking };
