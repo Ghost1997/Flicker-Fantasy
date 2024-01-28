@@ -7,7 +7,7 @@ const homePage = async (req, res) => {
   try {
     const whatsApp = process.env.BUSINESS_NUMBER;
     const imageCount = process.env.IMAGE_COUNT;
-    const testimonialCount = process.env.FEEDBACK_COUNT;
+
     const images = await Picture.find({ type: "gallery" }).sort({ createdDate: -1 }).limit(imageCount);
     const today = moment().tz("Asia/Kolkata").format("DD/MM/YYYY");
     const imageUrlArray = images.map((ele) => ele.url);
