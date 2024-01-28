@@ -284,4 +284,35 @@ const requestRecived = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, requestRecived, sendWhatsAppmessage };
+
+const adminBooking = async (req, res) => {
+  try {
+    const { payload, amount, orderId, total } = req.body;
+    const newBooking = new Booking({
+      bookingId: payload.receipt,
+      bookingDate: payload.date,
+      amountPaid: amount,
+      theaterId: parseInt(payload.theaterid),
+      slotId: parseInt(payload.slot),
+      userDetails: {
+        name: payload.name,
+        whatsapp: payload.whatsapp,
+        email: payload.email,
+        noOfPerson: payload.count,
+        decoration: payload.decoration,
+        cake: payload.cake,
+        message: payload.message,
+        chocolate: payload.chocolate,
+        bouquet: payload.bouquet,
+        total: total,
+      },
+      paymentDetails: { BookingType: "Admin" },
+    });
+    const bookingData = await newBooking.save();
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+module.exports = { calculate, confirmBooking, successBooking, getSlotInfo, requestRecived, sendWhatsAppmessage, adminBooking };

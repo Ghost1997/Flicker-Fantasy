@@ -3,10 +3,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { sendEmail } = require("../utils/helper");
 const Booking = require("../models/bookingModel");
-const { theaterType, decoration, cakeName } = require("../utils/constants");
+const { theaterType, decoration, cakeName, pricingInfo } = require("../utils/constants");
 const { getSlotInfo, sendWhatsAppmessage } = require("./bookingController");
+const { slotAvailable } = require("./homeController");
+const { getSlot } = require("./theaterController");
 const Picture = require("../models/pictureModel");
 const path = require("path");
+const moment = require("moment-timezone");
 const registerAdmin = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -276,4 +279,25 @@ const updateBooking = async (req, res) => {
   }
 };
 
-module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, updateBooking };
+const adminBookingPage = async (req, res) => {
+  try {
+    const today = moment().tz("Asia/Kolkata").format("DD/MM/YYYY");
+    const [one, two, couple] = await Promise.all([getSlot(0, today), getSlot(1, today), getSlot(2, today)]);
+    const slotInfo = {
+      0: slotAvailable(one, today),
+      1: slotAvailable(two, today),
+      2: slotAvailable(couple, today),
+    };
+    const priceInfo = {
+      0: pricingInfo.one,
+      1: pricingInfo.two,
+      2: pricingInfo.couple,
+    };
+    res.render("adminBooking", { slotInfo, priceInfo });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error loading adminBooking page" });
+  }
+};
+
+module.exports = { registerAdmin, loginAdmin, loginPage, adminDashboard, logout, search, adminImage, updateBooking, adminBookingPage };
