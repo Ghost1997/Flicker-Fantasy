@@ -4,12 +4,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const indexRoute = require("./routes/index");
-// const { get404 } = require("./controllers/404");
+const cors = require("cors");
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
